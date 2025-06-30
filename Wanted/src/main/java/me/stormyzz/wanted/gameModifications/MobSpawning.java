@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -51,8 +55,8 @@ public class MobSpawning{
 	Location spawnLocation = null;
 	
 	for (MobSpawnConfig config : spawnerManager.getSpawnConfigs()) {
-            // if (!loc.getWorld().getName().equalsIgnoreCase(config.getWorldName())) continue;
-            // if (!isLocationInRegion(loc, config.getRegionName())) continue;
+		if (!player.getWorld().getName().equalsIgnoreCase(config.getWorldName())) continue;
+		if (!isLocationInRegion(player.getLocation(), config.getRegionName())) continue;
 
             // Check Y constraints
 	    minY = config.getMinY();
@@ -95,6 +99,18 @@ public class MobSpawning{
 	}
 	
     }
+
+	private boolean isLocationInRegion(Location loc, String regionName) {
+		var container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		var world = BukkitAdapter.adapt(loc.getWorld());
+		RegionManager regionManager = container.get(world);
+		if (regionManager == null) return false;
+
+		ProtectedRegion region = regionManager.getRegion(regionName);
+		if (region == null) return false;
+
+		return region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+	}
 
     public void stopSpawning(){
 	if (mobSpawning != null){
