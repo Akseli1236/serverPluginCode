@@ -1,0 +1,8 @@
+name: RestartPlugin
+version: '1.0'
+main: org.Akseli.restartPlugin.RestartPlugin
+api-version: '1.21'
+commands:
+  restartserver:
+    description: Restarts the server by calling a batch file
+    usage: /restartserver
