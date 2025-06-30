@@ -1,0 +1,45 @@
+#MOB SPAWNING SETTINGS
+regions:
+  - world: GTA3
+    region: gta3
+    minY: 64
+    maxY: 80
+    spawnSpeed: 1
+    spawnRadius: 30
+    requireSky: false
+    allowedMobs:
+      ZOMBIE:
+        name: "&cCrook"
+        allowArmor: false
+        allowItems: false
+      SKELETON:
+        name: "&cThug"
+        allowArmor: false
+        allowItems: true
+
+#SCOREBOARD SETTINGS
+scoreboard:
+  enabled: true
+  hub:
+    title: "&b&lServer: %world%"
+    lines:
+      - "&6&lOnline: &7%players%"
+      - "&9&lDiscord:"
+      - "&7discord.gg/nS2Xmff66u"
+      - ""
+      - "&boggta.me"
+  default:
+    title: "&b&lServer: %world%"
+    lines:
+      - "&6&lOnline: &7%players%"
+      - "&e&lBalance: &7%balance%"
+      - "&a&lKills: &7%kills%"
+      - "&d&lKDR: &7%kdr%"
+      - "&4&lDeaths: &7%deaths%"
+      - "&3&lKillstreak: &7%killstreak%"
+      - "&c&lWanted Level: &7%wanted%"
+      - ""
+      - "&9&lDiscord:"
+      - "&7discord.gg/nS2Xmff66u"
+      - ""
+      - "&boggta.me"

@@ -1,0 +1,12 @@
+name: GTAMCMechanics
+version: '1.0'
+main: org.server.gtamc.GTAMC
+api-version: '1.21'
+depend: [ProtocolLib, WorldGuard, SignShop]
+commands:
+  itempickup:
+    description: Toggle item pickup on and off
+    usage: /itempickup
+  rweapons:
+    description: Reload weapons
+    usage: /rweapons

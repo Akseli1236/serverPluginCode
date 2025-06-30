@@ -1,0 +1,9 @@
+name: ChestRestocker
+version: '1.0'
+main: org.chestrestocker.chestRestocker.ChestRestocker
+api-version: '1.21'
+depend: [WorldGuard, WorldEdit]
+commands:
+  rcheststocker:
+    description: Reload chest restocker config-file
+    usage: /rcheststocker

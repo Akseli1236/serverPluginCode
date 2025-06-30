@@ -1,0 +1,33 @@
+name: FirstPlugin
+version: '1.0'
+main: org.Akseli.firstPlugin.FirstPlugin
+api-version: '1.21'
+depend: [ProtocolLib, WorldGuard, SignShop]
+commands:
+  tpback:
+    description: Teleports the player to their last death location.
+    usage: /tpback
+  lastpos:
+    description: Coordinates to last death location
+    usage: /lastpos
+  location:
+    description: Tells the player location
+    usage: /location
+  tp:
+    description: Teleport to player or coordinates
+    usage: /tp
+  arrows:
+    description: Amount of arrows a bow shoots
+    usage: /arrows
+  repair:
+    description: Repair item in hand
+    usage: /repair
+  arrowspread:
+    description: Spread of arrows
+    usage: /arrowspread
+  itempickup:
+    description: Toggle item pickup on and off
+    usage: /itempickup
+  rweapons:
+    description: Reload weapons
+    usage: /rweapons
