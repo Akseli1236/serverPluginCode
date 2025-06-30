@@ -56,7 +56,14 @@ public class CustomScoreboard implements Listener {
             playerScoreboards.put(uuid, board);
             playerObjectives.put(uuid, obj);
             player.setScoreboard(board);
-            updateNametagsFor(player);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    updateNametagsFor(player);
+                }
+            }.runTaskLater(plugin, 1L);
+
         } else {
             obj.setDisplayName(title);
         }
@@ -169,6 +176,7 @@ public class CustomScoreboard implements Listener {
 
     private void updateNametagsFor(Player viewer) {
         Scoreboard board = viewer.getScoreboard();
+        if (board == null) return;
 
         for (Player target : Bukkit.getOnlinePlayers()) {
             String teamName = "prefix_" + target.getName();
@@ -203,13 +211,6 @@ public class CustomScoreboard implements Listener {
                 updateScoreboard(player);  // Update scoreboard for each player in this world
             }
         }
-    }
-
-    // Event listener to update stats when a player joins
-    @EventHandler
-    public void onPlayerStatsChange(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        updateScoreboard(player);
     }
 
     // Listener for player killing another player (updates kills, killstreak)
