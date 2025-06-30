@@ -1,0 +1,94 @@
+root:
+  info:
+    weapon_item:
+      type: Iron_Pickaxe
+      name: <light_purple>AK-47
+      lore: [
+        '<gray>Type: Fully-Auto',
+        '<gray>Damage: 4',
+        <light_purple>(Tier 4)
+      ]
+      unbreakable: true
+      hide_flags: true
+      deny_use_in_crafting: true
+    weapon_info_display:
+      action_bar: {
+        message: <light_purple>AK-47<firearm_state> <light_purple>«<light_purple><ammo_left><light_purple>»<light_purple><reload>
+      }
+    weapon_get_mechanics: [
+      'Sound{sound=ITEM_ARMOR_EQUIP_CHAIN, pitch=0.75, listeners=Source{}}'
+    ]
+    cancel: {
+      drop_item: true,
+      arm_swing_animation: true,
+      break_blocks: false
+    }
+  skin: {
+    default_skin: 5,
+    scope: ADD 1000,
+    sprint: ADD 2000,
+    blue: ADD 10000,
+    red: ADD 20000
+  }
+  projectile: assault_rifle.Projectile
+  shoot:
+    trigger:
+      main_hand: RIGHT_CLICK
+      off_hand: RIGHT_CLICK
+      circumstance: {
+        swimming: DENY,
+        dual_wielding: DENY
+      }
+    projectile_speed: 80
+    fully_automatic_shots_per_second: 8
+    spread:
+      base_spread: 3.9
+      modify_spread_when: {
+        in_midair: 150%
+      }
+    mechanics: [
+      'Leap{speed=0.09} @Source{offset=~0 0 -1}',
+      'Sound{sound=ENTITY_IRON_GOLEM_HURT, volume=1, pitch=1.5, noise=0.1}',
+      'Sound{sound=ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, volume=1, pitch=0.7, noise=0.1}'
+    ]
+    
+  reload:
+    ammo:
+      out_of_ammo_mechanics: [
+        'Sound{sound=BLOCK_NOTE_BLOCK_HAT}'
+      ]
+      ammos: [
+        Assaultrifle_Ammo
+      ]
+      
+    trigger: {
+      main_hand: DROP_ITEM,
+      off_hand: DROP_ITEM
+    }
+    magazine_size: 30
+    reload_duration: 57
+    start_mechanics: [
+      'Sound{sound=BLOCK_NOTE_BLOCK_HAT, volume=0.5, noise=0.1, listeners=Source{}}',
+      'Sound{sound=BLOCK_PISTON_EXTEND, volume=0.5, noise=0.1, listeners=Source{}}'
+    ]
+    finish_mechanics: [
+      'Sound{sound=BLOCK_PISTON_EXTEND, volume=0.5, pitch=0.6, noise=0.1, listeners=Source{}}'
+    ]
+    
+  damage:
+    base_damage: 4
+    armor_damage: 3
+    dropoff: [
+      10 -1.66,
+      25 -3.32,
+      50 -4.98
+    ]
+    
+  firearm_action:
+    type: SLIDE
+    open: {
+      time: 8
+    }
+    close: {
+      time: 8
+    }

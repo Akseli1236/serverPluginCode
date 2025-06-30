@@ -1,0 +1,15 @@
+name: Wanted
+version: '2.0'
+main: me.stormyzz.wanted.Wanted
+api-version: '1.21'
+authors: [ Stormyzz_ ]
+description: A Wanted plugin for the OGGTA server
+depend:
+  - Vault
+softdepend: [Essentials]
+commands:
+  wantedreload:
+    description: Wanted config command
+    usage: /<command> reload
+    permission: wanted.admin
+    aliases: [w]
