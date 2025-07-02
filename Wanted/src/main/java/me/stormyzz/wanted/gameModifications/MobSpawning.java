@@ -46,8 +46,8 @@ public class MobSpawning{
     }
 
     private void spawnMobsAroundPlayer(){
-	int minY;
-	int maxY;
+	int minY = 0;
+	int maxY = 0;
 	double spawnRadius;
 	int currentSpawnSpeed = spawnSpeed;
 	
@@ -85,12 +85,24 @@ public class MobSpawning{
                 entity.setCustomNameVisible(true);
             }
 
+			if (!mobSettings.isAllowArmor()){
+				entity.getEquipment().setHelmet(null);
+				entity.getEquipment().setChestplate(null);
+				entity.getEquipment().setLeggings(null);
+				entity.getEquipment().setBoots(null);
+			}
+
+			if (!mobSettings.isAllowItems()){
+				entity.getEquipment().setItemInMainHand(null);
+				entity.getEquipment().setItemInOffHand(null);
+			}
+
             // Stop after first match
             break;
         }
 	
 	
-	if (spawnLocation != null && entity != null){
+	if (spawnLocation != null && entity != null) {
 	    entity.teleport(spawnLocation);
 	}
 	if (currentSpawnSpeed != spawnSpeed){
