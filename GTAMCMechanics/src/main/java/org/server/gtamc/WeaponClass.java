@@ -118,6 +118,7 @@ public class WeaponClass {
                 private boolean hide_flags;
                 private boolean deny_use_in_crafting;
                 private boolean secondary_fire_type;
+		private boolean burst_mode;
 
                 // Getter and Setter for type
                 public String getType() {
@@ -175,6 +176,13 @@ public class WeaponClass {
                 public boolean isSecondary_fire_type() {
                     return secondary_fire_type;
                 }
+
+		public void setBurst_mode(boolean burst_mode){
+		    this.burst_mode = burst_mode;
+		}
+		public boolean isBurst_mode(){
+		    return burst_mode;
+		}
 
 
             }
@@ -332,11 +340,12 @@ public class WeaponClass {
             private int fully_automatic_shots_per_second;
             private int projectiles_per_shot;
             private int delay_between_shots;
+	    private int shots_per_burst;
+	    private int burst_fire_rate;
+	    private int burst_restart_delay;
             private Spread spread;
             private List<String> mechanics;
-
-
-
+	    
 
             public int getFully_automatic_shots_per_second() {
                 return fully_automatic_shots_per_second;
@@ -368,6 +377,37 @@ public class WeaponClass {
                 this.delay_between_shots = delay_between_shots;
             }
 
+	    public List<String> getMechanics() {
+                return mechanics;
+            }
+	    
+	    public void setMechanics(List<String> mechanics) {
+                this.mechanics = mechanics;
+            }
+
+	    public void setShots_per_burst(int shots_per_burst){
+		this.shots_per_burst = shots_per_burst;
+	    }
+
+	    public int getShots_per_burst(){
+		return shots_per_burst;
+	    }
+
+	    public void setBurst_fire_rate(int burst_fire_rate){
+		this.burst_fire_rate = burst_fire_rate;
+	    }
+	    
+	    public int getBurst_fire_rate(){
+		return burst_fire_rate;
+	    }
+	     public void setBurst_restart_delay(int burst_restart_delay){
+		 this.burst_restart_delay = burst_restart_delay;
+	    }
+
+	    public int getBurst_restart_delay(){
+		return burst_restart_delay;
+	    }
+
 
             public Spread getSpread() {
                 return spread;
@@ -376,15 +416,8 @@ public class WeaponClass {
             public void setSpread(Spread spread) {
                 this.spread = spread;
             }
-
-            public List<String> getMechanics() {
-                return mechanics;
-            }
-
-            public void setMechanics(List<String> mechanics) {
-                this.mechanics = mechanics;
-            }
-
+	   
+	    
             // Inner classes
             public static class Trigger {
                 private String main_hand;
