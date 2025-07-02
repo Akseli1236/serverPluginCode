@@ -55,7 +55,6 @@ public class Shoot implements Listener {
     private BukkitTask controlFire = null;
     private BukkitTask zoomScheduler = null;
     private final List<BukkitTask> reloadTasks = new ArrayList<>();
-    private BukkitTask breakBlockTask = null;
 
     private Double spread;
     private double damage = 5;
@@ -69,6 +68,8 @@ public class Shoot implements Listener {
     private Double bonusDamage;
     private double armorDamage;
     private Integer itemSlot;
+    private Integer shotsPerBurst;
+    private Integer burstFireRate;
 
     private String Projectile_Type;
     private String weapon_Type;
@@ -87,6 +88,7 @@ public class Shoot implements Listener {
     private boolean dualWield = false;
     private boolean shiftSteady = false;
     private boolean breakingBlock = false;
+    private boolean burstMode = false;
     
     private InventoryAction inventoryActions;
 
@@ -303,6 +305,9 @@ public class Shoot implements Listener {
                     ammoPerReload = value.getRoot().getReload().getAmmo_per_reload();
                     armorDamage = value.getRoot().getDamage().getArmor_damage();
                     hasSecondaryAction = value.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
+		    burstMode = value.getRoot().getInfo().getWeapon_item().isBurst_mode();
+		    shotsPerBurst = Math.max(1, value.getRoot().getShoot().getShots_per_burst());
+		    burstFireRate =  value.getRoot().getShoot().getBurst_fire_rate();
                     zoomAmount = 0.0;
                     bonusDamage = 0.0;
                     shiftSteady = false;
@@ -321,6 +326,13 @@ public class Shoot implements Listener {
                     if (value.getRoot().getShoot().getTrigger().isSteady_with_sneak()){
                         shiftSteady = true;
                     }
+
+		    if (burstMode) {
+			fireRate = value.getRoot().getShoot().getBurst_restart_delay();
+		    }
+
+		    System.out.println(burstMode + ":" + shotsPerBurst + ":" + burstFireRate + ":" + fireRate);
+		    
 
                     flaming = value.getRoot().getDamage().getFlaming();
 
@@ -375,6 +387,7 @@ public class Shoot implements Listener {
                     magSize = tool.getRoot().getReload().getMagazine_size();
                     fireRate = tool.getRoot().getShoot().getDelay_between_shots();
 		    hasSecondaryAction = tool.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
+		    burstMode = tool.getRoot().getInfo().getWeapon_item().isBurst_mode();
                     itemMeta.setDisplayName(color + itemName);
 
                     resetNextShotCooldown = false;
@@ -619,8 +632,26 @@ public class Shoot implements Listener {
 
     private void correctShoot(Integer indexOfbullets, Integer val, UUID finalUuid, WeaponClass value, Player player, Integer indexOfSide) {
         bulletsLeft.get(finalUuid).set(indexOfSide, true);
-        bulletsLeft.get(finalUuid).set(indexOfbullets, val);
-        fireRifle(value, player);
+        bulletsLeft.get(finalUuid).set(indexOfbullets, val-shotsPerBurst+1);
+	if (burstMode){
+	    Bukkit.getScheduler().runTask(plugin, () -> {
+		    new BukkitRunnable() {
+			int count = 0;
+			
+
+			@Override
+			public void run() {
+			    fireRifle(value, player);
+			    count++;
+			    if (count >= shotsPerBurst) {
+				this.cancel();
+			    }
+			}
+		    }.runTaskTimer(plugin, 0L, burstFireRate); // start immediately, repeat every 3 ticks
+		});
+	}else{
+	    fireRifle(value, player);
+	}
         Bukkit.getScheduler().runTaskLater(plugin, () -> bulletsLeft.get(finalUuid).set(indexOfSide, false), fireRate);
     }
 
@@ -934,7 +965,7 @@ public class Shoot implements Listener {
                 if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     // Launch an egg from the player's location
                     UUID finalUuid = returnUUID(ItemInHand);
-                    if (ItemInHand.getType() == Material.FLINT_AND_STEEL && isFlagAllowed(player, Flags.PVP)) {
+                    if (ItemInHand.getType() == Material.WOODEN_HOE && isFlagAllowed(player, Flags.PVP)) {
                         flameThrower(player, ItemInHand, value);
                     }else{
                         if (!shootingType.equalsIgnoreCase("semi-auto")){
