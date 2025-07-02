@@ -83,10 +83,6 @@
       <id>papermc</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
-    <repository>
-      <id>local-plugins</id>
-      <url>file://${project.basedir}/plugins</url>
-    </repository>
   </repositories>
 
   <dependencies>
@@ -156,9 +152,7 @@
     <dependency>
       <groupId>com.kasslecraft</groupId>
       <artifactId>signshop</artifactId>
-      <version>1.0.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/plugins/SignShop-4.0.0.jar</systemPath>
+      <version>4.0.0</version>
     </dependency>
   </dependencies>
 </project>
