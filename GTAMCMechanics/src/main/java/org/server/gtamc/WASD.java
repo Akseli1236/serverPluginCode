@@ -3,7 +3,6 @@ package org.server.gtamc;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;

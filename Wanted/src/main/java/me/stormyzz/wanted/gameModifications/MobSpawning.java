@@ -27,7 +27,7 @@ import me.stormyzz.wanted.dataManagers.MobSpawnerManager;
 public class MobSpawning{
     private Wanted plugin;
     private Player player;
-    private MobSpawnerManager spawnerManager;
+    private static MobSpawnerManager spawnerManager;
     private BukkitTask mobSpawning = null;
     private int spawnSpeed = 0;
     
@@ -46,8 +46,9 @@ public class MobSpawning{
     }
 
     private void spawnMobsAroundPlayer(){
-	int minY = 0;
-	int maxY = 0;
+    // TODO: Implement checking for specific height restrictions
+    //int minY = 0;
+	//int maxY = 0;
 	double spawnRadius;
 	int currentSpawnSpeed = spawnSpeed;
 	
@@ -59,8 +60,8 @@ public class MobSpawning{
 		if (!isLocationInRegion(player.getLocation(), config.getRegionName())) continue;
 
             // Check Y constraints
-	    minY = config.getMinY();
-	    maxY = config.getMaxY();
+	    //minY = config.getMinY();
+	    //maxY = config.getMaxY();
 	    
 	    spawnRadius = config.getSpawnRadius();
 	    spawnSpeed = config.getSpawnSpeed();

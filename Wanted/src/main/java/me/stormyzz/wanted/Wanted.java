@@ -22,7 +22,7 @@ public final class Wanted extends JavaPlugin {
         mobSpawnerManager.loadConfig();
         saveDefaultConfig();
 
-        getServer().getPluginManager().registerEvents(new MobSpawnListener(mobSpawnerManager, this), this);
+        getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
         getServer().getPluginManager().registerEvents(customScoreboard, this);
         getServer().getPluginManager().registerEvents(new MobBurnPreventionListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerKillListener(this), this);

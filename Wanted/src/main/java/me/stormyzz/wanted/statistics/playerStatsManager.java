@@ -1,12 +1,9 @@
 package me.stormyzz.wanted.statistics;
 import com.google.gson.*;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class playerStatsManager {
 

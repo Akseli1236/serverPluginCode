@@ -107,7 +107,6 @@ public class ShootTest {
 
     @Test
     public void testSetOrGetUUID(){
-	UUID uuid = UUID.randomUUID();
 	ItemMeta mockItemMeta = mock(ItemMeta.class);
 	when(mockPlugin.getName()).thenReturn("Sammakko");
 	PersistentDataContainer mockContainer = mock(PersistentDataContainer.class);

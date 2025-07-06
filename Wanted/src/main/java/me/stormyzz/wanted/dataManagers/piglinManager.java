@@ -36,7 +36,7 @@ public class piglinManager {
                 // Spawn the initial Zombified Piglins
                 for (int i = 0; i < 3; i++) {
                     PigZombie piglin = (PigZombie) world.spawnEntity(spawnLocation, EntityType.ZOMBIFIED_PIGLIN);
-                    piglin.setBaby(false);
+                    piglin.setAdult();
                     piglins.add(piglin);
                     piglin.setTarget(killer);
                     equipPiglin(piglin);
@@ -51,7 +51,7 @@ public class piglinManager {
 
                     for (int i = 0; i < 3; i++) {
                         PigZombie piglin = (PigZombie) world.spawnEntity(backupSpawnLocation, EntityType.ZOMBIFIED_PIGLIN);
-                        piglin.setBaby(false);
+                        piglin.setAdult();
                         piglins.add(piglin);
                         piglin.setTarget(killer);
                         equipPiglin(piglin);
