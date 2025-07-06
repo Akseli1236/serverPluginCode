@@ -1105,6 +1105,7 @@ public class Shoot implements Listener {
         renamePreProcess(finalUuid, value, player);
         player.sendMessage(Component.text("Reloading...", NamedTextColor.YELLOW));
         playWeaponSound(player, "Start_Mechanics");
+        bulletsLeft.get(finalUuid).set(1, true);
         reloadTasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> {
 
             magSize = value.getRoot().getReload().getMagazine_size();
