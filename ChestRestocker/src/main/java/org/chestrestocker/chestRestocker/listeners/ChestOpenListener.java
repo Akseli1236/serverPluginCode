@@ -54,10 +54,10 @@ public class ChestOpenListener implements Listener {
         if (holder instanceof DoubleChest doubleChest) {
             Chest left = (Chest) doubleChest.getLeftSide();
             identifier = left.getLocation().toVector();
+            chest = left;
         }else {
             identifier = chest.getLocation().toVector();
         }
-
 
         // Check if the chest is inside a valid region
         if (isInValidRegion(chest.getLocation())) {
