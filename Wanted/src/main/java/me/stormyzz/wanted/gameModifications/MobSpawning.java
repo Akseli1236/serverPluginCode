@@ -27,14 +27,12 @@ import me.stormyzz.wanted.dataManagers.MobSpawnerManager;
 public class MobSpawning{
     private Wanted plugin;
     private Player player;
-    private static MobSpawnerManager spawnerManager;
     private BukkitTask mobSpawning = null;
     private int spawnSpeed = 0;
     
-    public MobSpawning(Wanted plugin, Player player, MobSpawnerManager mobSpawnerManager){
+    public MobSpawning(Wanted plugin, Player player){
 	this.plugin = plugin;
 	this.player = player;
-	this.spawnerManager = mobSpawnerManager;
 	
 	
     }
@@ -55,7 +53,7 @@ public class MobSpawning{
 	LivingEntity entity = null;
 	Location spawnLocation = null;
 	
-	for (MobSpawnConfig config : spawnerManager.getSpawnConfigs()) {
+	for (MobSpawnConfig config : MobSpawnerManager.getSpawnConfigs()) {
 		if (!player.getWorld().getName().equalsIgnoreCase(config.getWorldName())) continue;
 		if (!isLocationInRegion(player.getLocation(), config.getRegionName())) continue;
 
