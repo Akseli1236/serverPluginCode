@@ -1,8 +1,13 @@
 package org.server.gtamc;
 
+<<<<<<< HEAD
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+=======
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +22,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
+<<<<<<< HEAD
 import org.mockbukkit.mockbukkit.ServerMock;
+=======
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 
 
@@ -27,12 +35,19 @@ public class HoldingDetectionTest {
     Player mockPlayer = mock(Player.class);
     ProtocolManager mockManager = mock(ProtocolManager.class);
 
+<<<<<<< HEAD
     private ServerMock server;
 
     @BeforeEach
     public void setUp() {
         // Start the mock server
         //server =  MockBukkit.mock();
+=======
+    @BeforeEach
+    public void setUp() {
+        // Start the mock server
+        MockBukkit.mock();
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         // Load your plugin
     }
     @AfterEach
@@ -44,10 +59,15 @@ public class HoldingDetectionTest {
 
     @Test
     public void testPacketReveiving() {
+<<<<<<< HEAD
 	MockBukkit.mock();
 	PacketEvent mockEvent = mock(PacketEvent.class);
 	Map<String, Shoot> mockShootMap = new HashMap<>();
 	Shoot mockShootInstance = mock(Shoot.class);
+=======
+	PacketEvent mockEvent = mock(PacketEvent.class);
+	Map<String, Shoot> mockShootMap = new HashMap<>();
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 	PacketType mockPacketType = mock(PacketType.class);
 	PlayerData mockData = mock(PlayerData.class);  //new PlayerData(mockPlugin, new WASD(mockPlugin, mock(PacketType.class)));
 					     

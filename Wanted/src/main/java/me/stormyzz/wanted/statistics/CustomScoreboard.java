@@ -346,9 +346,13 @@ public class CustomScoreboard implements Listener {
         StringBuilder suffix = new StringBuilder();
 
         int visibleChars = 0;
+<<<<<<< HEAD
         boolean isInColorCode = false;
 
         List<String> codes = new ArrayList<>();
+=======
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         String lastColorCode = "";
 
         for (int i = 0; i < text.length(); i++) {

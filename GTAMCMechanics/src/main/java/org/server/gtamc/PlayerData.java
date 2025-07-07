@@ -3,7 +3,10 @@ package org.server.gtamc;
 import java.util.HashMap;
 import java.util.Map;
 
+<<<<<<< HEAD
 import org.bukkit.GameMode;
+=======
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

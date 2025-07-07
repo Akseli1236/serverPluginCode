@@ -1,5 +1,21 @@
 package org.server.gtamc;
 
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -7,17 +23,51 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+<<<<<<< HEAD
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+=======
+
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+<<<<<<< HEAD
 import org.bukkit.entity.*;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
+=======
+import org.bukkit.entity.Egg;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,10 +88,16 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+<<<<<<< HEAD
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+=======
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 
 public class Shoot implements Listener {
@@ -49,7 +105,11 @@ public class Shoot implements Listener {
     private final Plugin plugin;
     private final Weapon weapon;
     private final ModifiedItemBehavior modifiedItemBehavior;
+<<<<<<< HEAD
     private final WASD wasd;
+=======
+    //private final WASD wasd;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
     private BukkitTask currentTask = null;
     private BukkitTask controlFire = null;
@@ -97,13 +157,40 @@ public class Shoot implements Listener {
     private final Map<Double, Double> damageDrop = new HashMap<>();
     private final Map<String, List<String>> weaponSounds = new HashMap<>();
 
+<<<<<<< HEAD
+=======
+    private final Map<String, TextColor> colorCodes = Map.ofEntries(
+        Map.entry("black", TextColor.color(0x000000)),
+        Map.entry("dark_blue", TextColor.color(0x0000AA)),
+        Map.entry("dark_green", TextColor.color(0x00AA00)),
+        Map.entry("dark_aqua", TextColor.color(0x00AAAA)),
+        Map.entry("dark_red", TextColor.color(0xAA0000)),
+        Map.entry("dark_purple", TextColor.color(0xAA00AA)),
+        Map.entry("gold", TextColor.color(0xFFAA00)),
+        Map.entry("gray", TextColor.color(0xAAAAAA)),
+        Map.entry("dark_gray", TextColor.color(0x555555)),
+        Map.entry("blue", TextColor.color(0x5555FF)),
+        Map.entry("green", TextColor.color(0x55FF55)),
+        Map.entry("aqua", TextColor.color(0x55FFFF)),
+        Map.entry("red", TextColor.color(0xFF5555)),
+        Map.entry("light_purple", TextColor.color(0xFF55FF)),
+        Map.entry("yellow", TextColor.color(0xFFFF55)),
+        Map.entry("white", TextColor.color(0xFFFFFF))
+    );
+
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
     public Shoot(Plugin plugin, Weapon weapon, WASD wasd)
     {
         this.weapon = weapon;
         this.plugin = plugin;
         this.modifiedItemBehavior = new ModifiedItemBehavior(plugin);
+<<<<<<< HEAD
         this.wasd = wasd;
+=======
+        //this.wasd = wasd;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
     }
 
     public void update(){
@@ -210,27 +297,51 @@ public class Shoot implements Listener {
     }
 
     private List<Object> processMeta(WeaponClass value, ItemMeta itemMeta){
+<<<<<<< HEAD
         List<String> lore = new ArrayList<>();
         List<Object> loreItems = new ArrayList<>();
         int iterator = 0;
+=======
+        List<Object> loreItems = new ArrayList<>();
+        int iterator = 0;
+        List<Component> fullLoreLine =  new ArrayList<>();
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         for (String loreItem :  value.getRoot().getInfo().getWeapon_item().getLore()){
 
             int index = loreItem.indexOf(">");
             String itemName = loreItem.substring(index + 1);
+<<<<<<< HEAD
             ChatColor color = ChatColor.valueOf(loreItem.substring(1, index).toUpperCase());
             lore.add(color + itemName);
+=======
+
+            TextColor setColor = colorCodes.get(loreItem.substring(1, index));
+            NamedTextColor color = NamedTextColor.nearestTo(setColor);
+            Component coloredItemName = Component.text(itemName, color);
+            fullLoreLine.addLast(coloredItemName);
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
             if (iterator == 0){
                 shootingType = itemName.split(" ")[1];
             }
             iterator++;
         }
+<<<<<<< HEAD
         itemMeta.setLore(lore);
 
+=======
+        itemMeta.lore(fullLoreLine);
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
         String name = value.getRoot().getInfo().getWeapon_item().getName();
         int index = name.indexOf(">");
         loreItems.add(name.substring(index + 1));
+<<<<<<< HEAD
         loreItems.add(ChatColor.valueOf(name.substring(1, index).toUpperCase()));
+=======
+        TextColor setColor = colorCodes.get(name.substring(1, index));
+        NamedTextColor color = NamedTextColor.nearestTo(setColor);
+        loreItems.add(NamedTextColor.nearestTo(color));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         return loreItems;
 
     }
@@ -270,6 +381,7 @@ public class Shoot implements Listener {
             // Get the existing lore or create a new one if it's null
 
             weapon.getWeapons().forEach((key, value) -> {
+<<<<<<< HEAD
                 if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())) {
                     removeAttackCooldown(player);
                     UUID finalUuid = setOrGetUUID(itemMeta, ItemInHand);
@@ -303,6 +415,41 @@ public class Shoot implements Listener {
                     projectilesPerShot = value.getRoot().getShoot().getProjectiles_per_shot();
                     fireRate = value.getRoot().getShoot().getDelay_between_shots();
                     ammoPerReload = value.getRoot().getReload().getAmmo_per_reload();
+=======
+                    if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())) {
+                        removeAttackCooldown(player);
+                        UUID finalUuid = setOrGetUUID(itemMeta, ItemInHand);
+                        if (value.getRoot().getInfo().getWeapon_item().isUnbreakable()){
+                            itemMeta.setUnbreakable(true);
+                        }
+                        dualWield = false;
+                        if (value.getRoot().getInfo().getDual_wield() != null){
+                            dualWield = true;
+                            if (value.getRoot().getInfo().getDual_wield().isUnbreakable()){
+                                itemMeta.setUnbreakable(true);
+                            }
+                        }
+
+                        List<Object> loreItems = processMeta(value, itemMeta);
+                        String itemName = (String) loreItems.getFirst();
+                        NamedTextColor color = (NamedTextColor) loreItems.get(1);
+
+                        Component displayName = Component.text(itemName, color);
+                        itemMeta.displayName(displayName);
+                        damage = value.getRoot().getDamage().getBase_damage();
+                        reloadTime = value.getRoot().getReload().getReload_duration();
+                        magSize = value.getRoot().getReload().getMagazine_size();
+
+                        Projectile_Type = null;
+                        if (value.getRoot().getReload().getAmmo().getAmmos() != null){
+                            Projectile_Type = value.getRoot().getReload().getAmmo().getAmmos().getFirst();
+                        }
+
+                        weapon_Type = value.getRoot().getProjectile().split("\\.")[0];
+                        projectilesPerShot = value.getRoot().getShoot().getProjectiles_per_shot();
+                        fireRate = value.getRoot().getShoot().getDelay_between_shots();
+                        ammoPerReload = value.getRoot().getReload().getAmmo_per_reload();
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
                     armorDamage = value.getRoot().getDamage().getArmor_damage();
                     hasSecondaryAction = value.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
 		    burstMode = value.getRoot().getInfo().getWeapon_item().isBurst_mode();
@@ -332,7 +479,11 @@ public class Shoot implements Listener {
 		    }
 
 		    System.out.println(burstMode + ":" + shotsPerBurst + ":" + burstFireRate + ":" + fireRate);
+<<<<<<< HEAD
 		    
+=======
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
                     flaming = value.getRoot().getDamage().getFlaming();
 
@@ -381,14 +532,23 @@ public class Shoot implements Listener {
                     }
                     List<Object> loreItems = processMeta(tool, itemMeta);
                     String itemName = (String) loreItems.getFirst();
+<<<<<<< HEAD
                     ChatColor color = (ChatColor) loreItems.get(1);
+=======
+                    NamedTextColor color = (NamedTextColor) loreItems.get(1);
+                    Component displayName = Component.text(itemName, color);
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
                     reloadTime = tool.getRoot().getReload().getReload_duration();
                     magSize = tool.getRoot().getReload().getMagazine_size();
                     fireRate = tool.getRoot().getShoot().getDelay_between_shots();
 		    hasSecondaryAction = tool.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
 		    burstMode = tool.getRoot().getInfo().getWeapon_item().isBurst_mode();
+<<<<<<< HEAD
                     itemMeta.setDisplayName(color + itemName);
+=======
+                    itemMeta.displayName(displayName);
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
                     resetNextShotCooldown = false;
                     fillBullets(finalUuid);
@@ -464,7 +624,11 @@ public class Shoot implements Listener {
             boolean isReloading = (boolean) bulletsLeft.get(finalUuid).get(1);
             if (isReloading){
                 cancelReloadTasks(finalUuid, player);
+<<<<<<< HEAD
                 player.sendMessage(ChatColor.DARK_AQUA + "Reload canceled!");
+=======
+                player.sendMessage(Component.text("Reload canceled!", NamedTextColor.DARK_AQUA));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
             }
 
         }
@@ -637,7 +801,11 @@ public class Shoot implements Listener {
 	    Bukkit.getScheduler().runTask(plugin, () -> {
 		    new BukkitRunnable() {
 			int count = 0;
+<<<<<<< HEAD
 			
+=======
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 			@Override
 			public void run() {
@@ -739,7 +907,11 @@ public class Shoot implements Listener {
         AtomicBoolean state = new AtomicBoolean((boolean) bulletsLeft.get(finalUuid).get(3));
         if (secondaryAmmo.get() <= 0 && !isReloading) {
             bulletsLeft.get(finalUuid).set(1, true);
+<<<<<<< HEAD
             player.sendMessage(ChatColor.YELLOW + "Reloading...");
+=======
+            player.sendMessage(Component.text("Reloading...", NamedTextColor.YELLOW));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
             playWeaponSound(player, "Start_Mechanics");
             reloadTasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 secondaryAmmo.set(1);
@@ -747,7 +919,11 @@ public class Shoot implements Listener {
                 Integer[] arr = {primaryAmmo.get(), secondaryAmmo.get(), -1};
                 renameItem(weapon_name, arr, player, state.get());
                 playWeaponSound(player, "Finish_Mechanics");
+<<<<<<< HEAD
                 player.sendMessage(ChatColor.GREEN + "Reload complete! Magazine refilled.");
+=======
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.", NamedTextColor.GREEN));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
                 bulletsLeft.get(finalUuid).set(1, false);
             }, reloadTime));
         }
@@ -785,6 +961,7 @@ public class Shoot implements Listener {
         // Check if the player is holding a diamond pickaxe
         ItemStack ItemInHand = player.getInventory().getItemInMainHand();
         UUID finalUuid = returnUUID(ItemInHand);
+<<<<<<< HEAD
 	
         if (bulletsLeft.get(finalUuid) == null || !isFlagAllowed(player, Flags.PVP) || shootingType == null || ItemInHand.getType() == Material.AIR || InventoryOpen || breakingBlock){
             return;
@@ -792,6 +969,15 @@ public class Shoot implements Listener {
         
 
 	
+=======
+
+        if (bulletsLeft.get(finalUuid) == null || !isFlagAllowed(player, Flags.PVP) || shootingType == null || ItemInHand.getType() == Material.AIR || InventoryOpen || breakingBlock){
+            return;
+        }
+
+
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (shootingType.equalsIgnoreCase("semi-auto") && !dontShoot){
@@ -892,7 +1078,12 @@ public class Shoot implements Listener {
 
                     // Cancel the original block placement
                     event.setCancelled(true);
+<<<<<<< HEAD
                     event.getPlayer().sendMessage(ChatColor.GREEN + "Minecart placed!");
+=======
+
+                    event.getPlayer().sendMessage(Component.text("Minecart placed!",NamedTextColor.GREEN));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
                     player.getInventory().remove(item);
                 }
             }
@@ -999,7 +1190,11 @@ public class Shoot implements Listener {
                             renamePreProcess(finalUuid, value, player);
                             if (isReloading){
                                 cancelReloadTasks(finalUuid, player);
+<<<<<<< HEAD
                                 player.sendMessage(ChatColor.DARK_AQUA + "Reload canceled!");
+=======
+                                player.sendMessage(Component.text("Reload canceled!", NamedTextColor.DARK_AQUA));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
                             }
 
@@ -1044,8 +1239,14 @@ public class Shoot implements Listener {
 
     public void reloadTool(WeaponClass value, Player player, UUID finalUuid) {
         renamePreProcess(finalUuid, value, player);
+<<<<<<< HEAD
         player.sendMessage(ChatColor.YELLOW + "Reloading...");
         playWeaponSound(player, "Start_Mechanics");
+=======
+        player.sendMessage(Component.text("Reloading...", NamedTextColor.YELLOW));
+        playWeaponSound(player, "Start_Mechanics");
+        bulletsLeft.get(finalUuid).set(1, true);
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         reloadTasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> {
 
             magSize = value.getRoot().getReload().getMagazine_size();
@@ -1055,7 +1256,11 @@ public class Shoot implements Listener {
             renamePreProcess(finalUuid, value, player);
 
             playWeaponSound(player, "Finish_Mechanics");
+<<<<<<< HEAD
             player.sendMessage(ChatColor.GREEN + "Reload complete! Magazine refilled.");
+=======
+            player.sendMessage(Component.text("Reload complete! Magazine refilled.", NamedTextColor.GREEN));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         }, reloadTime));
     }
 
@@ -1065,7 +1270,11 @@ public class Shoot implements Listener {
                 String play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf("}"));
                 String volume = "1";
                 String pitch = "1";
+<<<<<<< HEAD
                 String noise = "1";
+=======
+                //String noise = "1";
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
                 if (sound.contains("volume")) {
                     play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf(", v"));
                     if (sound.contains("pitch")) {
@@ -1082,6 +1291,7 @@ public class Shoot implements Listener {
                         pitch = sound.substring(sound.indexOf("pitch=")+6, sound.indexOf("}"));
                     }
                 }
+<<<<<<< HEAD
 
                 if (sound.contains("noise") && !sound.contains("listener")) {
                     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
@@ -1090,6 +1300,23 @@ public class Shoot implements Listener {
                 }
 
                 player.getWorld().playSound(player.getLocation(), Sound.valueOf(play), Float.parseFloat(volume), Float.parseFloat(pitch));
+=======
+                play = "minecraft:" + play;
+                // if (sound.contains("noise") && !sound.contains("listener")) {
+                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
+                // }else if (sound.contains("noise")) {
+                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
+                // }
+
+                net.kyori.adventure.sound.Sound playSound = net.kyori.adventure.sound.Sound.sound(
+                    net.kyori.adventure.key.Key.key(play),// the string name of the sound, e.g., "minecraft:block.note_block.harp"
+                    net.kyori.adventure.sound.Sound.Source.MASTER, // or PLAYER, MUSIC, etc.
+                    Float.parseFloat(volume),                // volume
+                    Float.parseFloat(pitch)                 // pitch
+                );
+                player.getWorld().playSound(playSound);
+                //player.getWorld().playSound(player.getLocation(), Sound.valueOf(play), Float.parseFloat(volume), Float.parseFloat(pitch));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
             }
         }
     }
@@ -1120,7 +1347,11 @@ public class Shoot implements Listener {
             bulletsLeft.get(finalUuid).set(1, false);
             if (!outOfAmmoCooldown){
                 playWeaponSound(player, "Out_Of_Ammo_Mechanics");
+<<<<<<< HEAD
                 player.sendMessage(ChatColor.GREEN + "No ammo");
+=======
+                player.sendMessage(Component.text("No ammo",NamedTextColor.GREEN));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
                 outOfAmmoCooldown = true;
                 Bukkit.getScheduler().runTaskLater(plugin, () -> outOfAmmoCooldown = false,fireRate);
             }
@@ -1131,7 +1362,11 @@ public class Shoot implements Listener {
 
         // Check the material
         // Add the stack size
+<<<<<<< HEAD
         player.sendMessage(ChatColor.YELLOW + "Reloading...");
+=======
+        player.sendMessage(Component.text("Reloading...", NamedTextColor.YELLOW));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         playWeaponSound(player, "Start_Mechanics");
 
         reloadByIndexing(0, finalUuid, value, player, ammoMaterial);
@@ -1182,6 +1417,7 @@ public class Shoot implements Listener {
             AtomicInteger finalTotalCount = new AtomicInteger(Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() == ammoMaterial).mapToInt(ItemStack::getAmount).sum());
             if (finalTotalCount.get() <= 0){
                 bulletsLeft.get(finalUuid).set(1, false);
+<<<<<<< HEAD
                 player.sendMessage(ChatColor.GREEN + "Reload complete! Magazine refilled.");
             }
             if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize) && bulletsLeft.get(finalUuid).get(5).equals(-1)){
@@ -1189,6 +1425,16 @@ public class Shoot implements Listener {
                 player.sendMessage(ChatColor.GREEN + "Reload complete! Magazine refilled.");
             }else if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize) && bulletsLeft.get(finalUuid).get(5).equals(finalMagSize)){
                 player.sendMessage(ChatColor.GREEN + "Reload complete! Magazine refilled.");
+=======
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.",NamedTextColor.GREEN));
+
+            }
+            if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize) && bulletsLeft.get(finalUuid).get(5).equals(-1)){
+                bulletsLeft.get(finalUuid).set(1, false);
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.",NamedTextColor.GREEN));
+            }else if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize) && bulletsLeft.get(finalUuid).get(5).equals(finalMagSize)){
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.",NamedTextColor.GREEN));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
                 bulletsLeft.get(finalUuid).set(1, false);
             }
 
@@ -1472,9 +1718,29 @@ public class Shoot implements Listener {
                 String play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf(", v")).strip();
                 String volume = sound.substring(sound.indexOf("volume=")+7, sound.indexOf(", p"));
                 String pitch = sound.substring(sound.indexOf("pitch=")+6, sound.indexOf(", n"));
+<<<<<<< HEAD
                 String noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
 
                 player.getWorld().playSound(player.getLocation(), Sound.valueOf(play), Float.parseFloat(volume), Float.parseFloat(pitch)); // Gunshot-like sound
+=======
+                //String noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
+                play = "minecraft:" + play;
+                // if (sound.contains("noise") && !sound.contains("listener")) {
+                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
+                // }else if (sound.contains("noise")) {
+                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
+                // }
+
+                net.kyori.adventure.sound.Sound playSound = net.kyori.adventure.sound.Sound.sound(
+                    net.kyori.adventure.key.Key.key(play),// the string name of the sound, e.g., "minecraft:block.note_block.harp"
+                    net.kyori.adventure.sound.Sound.Source.MASTER, // or PLAYER, MUSIC, etc.
+                    Float.parseFloat(volume),                // volume
+                    Float.parseFloat(pitch)                 // pitch
+                );
+                player.getWorld().playSound(playSound);
+
+                //player.getWorld().playSound(player.getLocation(), Sound.valueOf(play), Float.parseFloat(volume), Float.parseFloat(pitch)); // Gunshot-like sound
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
             }
 
         }
@@ -1512,16 +1778,28 @@ public class Shoot implements Listener {
                 this.speed = speed;
             }
 
+<<<<<<< HEAD
             public String getType() {
                 return type;
             }
+=======
+            // public String getType() {
+            //     return type;
+            // }
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
             public double getGravity() {
                 return gravity;
             }
+<<<<<<< HEAD
             public double getSpeed() {
                 return speed;
             }
+=======
+            // public double getSpeed() {
+            //     return speed;
+            // }
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
             public double getDrag() {
                 return drag;
@@ -1558,7 +1836,11 @@ public class Shoot implements Listener {
         if (Objects.equals(projectile_type.type, "INVISIBLE")){
             projectile_type.type = "SNOWBALL";
         }
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         EntityType entityType = EntityType.valueOf(projectile_type.type.toUpperCase());
         Bukkit.getScheduler().runTask(plugin, () -> {
             for (int i = 0; i <= projectilesPerShot; i++) {
@@ -1569,7 +1851,11 @@ public class Shoot implements Listener {
                     projectile.setShooter(player);
                     projectile.setGravity(false);
 
+<<<<<<< HEAD
 		    
+=======
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
                     Vector velocity = player.getEyeLocation().getDirection().normalize().multiply((double) (Projectile_Speed + projectile_type.speed/10) / 100 + 0.5); // Custom initial velocity
 		    projectile.setVelocity(velocity);
@@ -1602,7 +1888,11 @@ public class Shoot implements Listener {
     private void renameItem(String newName, Integer[] bullets, Player player, boolean state) {
         int index = newName.indexOf(">");
         String itemName = newName.substring(index + 1);
+<<<<<<< HEAD
         ChatColor color = ChatColor.valueOf(newName.substring(1, index).toUpperCase());
+=======
+        TextColor color = colorCodes.get(newName.substring(1,index));
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
         int primaryAmmo = bullets[0];
         int secondaryAmmo = bullets[1];
@@ -1620,6 +1910,7 @@ public class Shoot implements Listener {
 
         if (secondaryAmmo != -1){
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+<<<<<<< HEAD
 
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(color+itemName+" «"+primaryAmmo + fireModeIdentifier+secondaryAmmo+"»"));
             }, 0L, 40L); // Repeats every 2 seconds (40 ticks)
@@ -1633,6 +1924,20 @@ public class Shoot implements Listener {
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
 
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(color+itemName+" «"+primaryAmmo+"»"));
+=======
+                player.sendActionBar(Component.text(color+itemName+" «"+primaryAmmo + fireModeIdentifier+secondaryAmmo+"»",color));
+
+            }, 0L, 40L); // Repeats every 2 seconds (40 ticks)
+        }else if (dualAmmo != -1){
+            currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                player.sendActionBar(Component.text(itemName+" «"+dualAmmo + "|" +primaryAmmo+"»",color));
+                }, 0L, 40L); // Repeats every 2 se
+        }
+        else {
+            currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                player.sendActionBar(Component.text(itemName+" «"+primaryAmmo+"»", color));
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
             }, 0L, 40L); // Repeats every 2 seconds (40 ticks)
         }
         // Schedule a new task to repeatedly send the message

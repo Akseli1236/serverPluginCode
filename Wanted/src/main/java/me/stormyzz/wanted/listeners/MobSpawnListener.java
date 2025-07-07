@@ -16,20 +16,31 @@ import me.stormyzz.wanted.gameModifications.MobSpawning;
 
 public class MobSpawnListener implements Listener {
 
+<<<<<<< HEAD
     private final MobSpawnerManager spawnerManager;
+=======
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
     private final Map<String, Player> playersMap = new HashMap<>();
     private final Map<String, MobSpawning> playerMobSpawning = new HashMap<>();
     private Wanted plugin;
     
+<<<<<<< HEAD
     public MobSpawnListener(MobSpawnerManager spawnerManager, Wanted plugin) {
         this.spawnerManager = spawnerManager;
+=======
+    public MobSpawnListener(Wanted plugin) {
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 	this.plugin = plugin;
 	
     }
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
 	playersMap.put(event.getPlayer().getName(), event.getPlayer());
+<<<<<<< HEAD
 	MobSpawning playerMobs = new MobSpawning(plugin, event.getPlayer(), spawnerManager);
+=======
+	MobSpawning playerMobs = new MobSpawning(plugin, event.getPlayer());
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 	playerMobSpawning.put(event.getPlayer().getName(), playerMobs);
 	playerMobs.startSpawning();
 	

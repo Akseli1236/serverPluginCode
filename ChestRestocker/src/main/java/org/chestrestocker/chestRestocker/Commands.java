@@ -1,6 +1,9 @@
 package org.chestrestocker.chestRestocker;
 
+<<<<<<< HEAD
 import org.bukkit.Location;
+=======
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

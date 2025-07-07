@@ -11,6 +11,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
@@ -42,6 +46,12 @@ import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockito.MockedConstruction;
 
+<<<<<<< HEAD
+=======
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 public class ShootManagerTest {
 
     private Plugin mockPlugin = mock(Plugin.class);
@@ -127,10 +137,17 @@ public class ShootManagerTest {
 	ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
 	ItemMeta meta = item.getItemMeta();
 	((Damageable) meta).setDamage(15);
+<<<<<<< HEAD
 	meta.setDisplayName("§cEpic Sword");
 	item.setItemMeta(meta);
 
 	assertEquals("§cEpic Sword", item.getItemMeta().getDisplayName());
+=======
+	meta.displayName(Component.text("Epic Sword", NamedTextColor.RED));
+	item.setItemMeta(meta);
+
+	assertEquals(Component.text("Epic Sword", NamedTextColor.RED), item.getItemMeta().displayName());
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 	ShootManager shootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
 
@@ -144,7 +161,11 @@ public class ShootManagerTest {
 	Damageable resultMeta = (Damageable) item.getItemMeta();
 	assertEquals(15, resultMeta.getDamage());
 	
+<<<<<<< HEAD
 	assertEquals("", item.getItemMeta().getDisplayName());
+=======
+	assertEquals(null, item.getItemMeta().displayName());
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
     }
 

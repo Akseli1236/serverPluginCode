@@ -1,12 +1,18 @@
 package me.stormyzz.wanted.statistics;
 import com.google.gson.*;
 import org.bukkit.Bukkit;
+<<<<<<< HEAD
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+=======
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 public class playerStatsManager {
 
@@ -86,4 +92,8 @@ public class playerStatsManager {
     public static void setStats(String uuid, playerStats stats) {
         playerStats.put(uuid, stats);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79

@@ -1,16 +1,23 @@
 package org.chestrestocker.chestRestocker.scanners;
 import com.sk89q.worldguard.WorldGuard;
+<<<<<<< HEAD
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+=======
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+<<<<<<< HEAD
 import org.bukkit.plugin.Plugin;
+=======
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 import java.util.List;
 
 public class RegionScanner {
 
+<<<<<<< HEAD
     private WorldGuardPlugin worldGuard;
 
     public RegionScanner() {
@@ -19,6 +26,9 @@ public class RegionScanner {
         if (plugin instanceof WorldGuardPlugin) {
             worldGuard = (WorldGuardPlugin) plugin;
         }
+=======
+    public RegionScanner() {
+>>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
     }
 
     public void fetchAllWorldRegions() {
