@@ -21,13 +21,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import me.stormyzz.wanted.Wanted;
-import me.stormyzz.wanted.Configurators.MobSpawnConfig;
+import me.stormyzz.wanted.Utilities.MobSpawnConfig;
 import me.stormyzz.wanted.dataManagers.MobSpawnerManager;
 
 public class MobSpawning{
     private Wanted plugin;
     private Player player;
-<<<<<<< HEAD
     private MobSpawnerManager spawnerManager;
     private BukkitTask mobSpawning = null;
     private int spawnSpeed = 0;
@@ -36,14 +35,6 @@ public class MobSpawning{
 	this.plugin = plugin;
 	this.player = player;
 	this.spawnerManager = mobSpawnerManager;
-=======
-    private BukkitTask mobSpawning = null;
-    private int spawnSpeed = 0;
-    
-    public MobSpawning(Wanted plugin, Player player){
-	this.plugin = plugin;
-	this.player = player;
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 	
 	
     }
@@ -55,36 +46,21 @@ public class MobSpawning{
     }
 
     private void spawnMobsAroundPlayer(){
-<<<<<<< HEAD
 	int minY = 0;
 	int maxY = 0;
-=======
-    // TODO: Implement checking for specific height restrictions
-    //int minY = 0;
-	//int maxY = 0;
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 	double spawnRadius;
 	int currentSpawnSpeed = spawnSpeed;
 	
 	LivingEntity entity = null;
 	Location spawnLocation = null;
 	
-<<<<<<< HEAD
 	for (MobSpawnConfig config : spawnerManager.getSpawnConfigs()) {
-=======
-	for (MobSpawnConfig config : MobSpawnerManager.getSpawnConfigs()) {
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 		if (!player.getWorld().getName().equalsIgnoreCase(config.getWorldName())) continue;
 		if (!isLocationInRegion(player.getLocation(), config.getRegionName())) continue;
 
             // Check Y constraints
-<<<<<<< HEAD
 	    minY = config.getMinY();
 	    maxY = config.getMaxY();
-=======
-	    //minY = config.getMinY();
-	    //maxY = config.getMaxY();
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 	    
 	    spawnRadius = config.getSpawnRadius();
 	    spawnSpeed = config.getSpawnSpeed();

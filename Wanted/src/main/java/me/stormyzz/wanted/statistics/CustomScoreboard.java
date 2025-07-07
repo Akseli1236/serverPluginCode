@@ -125,14 +125,15 @@ public class CustomScoreboard implements Listener {
     private String replacePlaceholders(Player player, String line) {
         // Your custom replacements
         String uuid = player.getUniqueId().toString();
+        playerStats stats = playerStatsManager.getStats(uuid);
         String worldName = player.getWorld().getName();
         int playersInWorld = (int) Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld().equals(player.getWorld())).count();
 
         line = line.replace("%world%", worldName);
         line = line.replace("%players%", String.valueOf(playersInWorld));
+        line = line.replace("%credits%", String.valueOf(stats.getCredits()));
 
         if (!worldName.equalsIgnoreCase("HUB")) {
-            playerStats stats = playerStatsManager.getStats(uuid);
             if (stats != null) {
                 line = line.replace("%kills%", String.valueOf(stats.getKills()));
                 line = line.replace("%deaths%", String.valueOf(stats.getDeaths()));
@@ -346,13 +347,9 @@ public class CustomScoreboard implements Listener {
         StringBuilder suffix = new StringBuilder();
 
         int visibleChars = 0;
-<<<<<<< HEAD
         boolean isInColorCode = false;
 
         List<String> codes = new ArrayList<>();
-=======
-
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         String lastColorCode = "";
 
         for (int i = 0; i < text.length(); i++) {

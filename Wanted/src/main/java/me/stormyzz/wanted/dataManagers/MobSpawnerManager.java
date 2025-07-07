@@ -1,6 +1,6 @@
 package me.stormyzz.wanted.dataManagers;
 
-import me.stormyzz.wanted.Configurators.MobSpawnConfig;
+import me.stormyzz.wanted.Utilities.MobSpawnConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;

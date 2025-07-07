@@ -10,6 +10,27 @@ softdepend: [Essentials]
 commands:
   wantedreload:
     description: Wanted config command
-    usage: /<command> reload
+    usage: /wanted reload
     permission: wanted.admin
     aliases: [w]
+  addcredits:
+    description: Adds credits to a player
+    usage: /addcredits <player> <amount>
+    permission: wanted.addcredits
+  credits:
+    description: View your own or another players' credits
+    usage: /credits <player>
+    permission: wanted.credits
+  creditshop:
+    description: Open the creditshop GUI
+    usage: /creditshop
+    permission: wanted.creditshop
+permissions:
+  wanted.credits:
+      description: Allows using /credits to see own credits
+      default: true
+  wanted.credits.others:
+      description: Allows checking other players' credits
+      default: op
+  wanted.creditshop:
+      default: true

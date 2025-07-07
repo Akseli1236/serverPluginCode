@@ -1,18 +1,12 @@
 package me.stormyzz.wanted.statistics;
 import com.google.gson.*;
 import org.bukkit.Bukkit;
-<<<<<<< HEAD
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-=======
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 
 public class playerStatsManager {
 
@@ -32,8 +26,9 @@ public class playerStatsManager {
                     int deaths = statsObj.get("deaths").getAsInt();
                     int wantedLevel = statsObj.get("wantedLevel").getAsInt();
                     int killstreak = statsObj.get("killstreak").getAsInt();
+                    int credits = statsObj.get("credits").getAsInt();
 
-                    playerStats.put(uuid, new playerStats(kills, deaths, wantedLevel, killstreak));
+                    playerStats.put(uuid, new playerStats(kills, deaths, wantedLevel, killstreak, credits));
                 }
                 Bukkit.getLogger().info("Stats successfully loaded from file!");
             } catch (IOException e) {
@@ -70,6 +65,7 @@ public class playerStatsManager {
             statsObj.addProperty("wantedLevel", stats.getWantedLevel());
             statsObj.addProperty("killstreak", stats.getKillstreak());
             statsObj.addProperty("kdr", stats.getKDR());
+            statsObj.addProperty("credits", stats.getCredits());
 
             json.add(uuid, statsObj);  // Add player stats to the JSON object
         }
@@ -85,15 +81,11 @@ public class playerStatsManager {
 
     // Get stats for a player
     public static playerStats getStats(String uuid) {
-        return playerStats.getOrDefault(uuid, new playerStats(0, 0, 0, 0));
+        return playerStats.getOrDefault(uuid, new playerStats(0, 0, 0, 0, 0));
     }
 
     // Set stats for a player
     public static void setStats(String uuid, playerStats stats) {
         playerStats.put(uuid, stats);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79

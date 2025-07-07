@@ -1,5 +1,6 @@
 package me.stormyzz.wanted.Commands;
 
+import me.stormyzz.wanted.Utilities.CreditShopGUI;
 import me.stormyzz.wanted.Wanted;
 import me.stormyzz.wanted.statistics.CustomScoreboard;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ public class WantedCommand implements CommandExecutor {
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             plugin.reloadConfig();
             plugin.getMobSpawnerManager().loadConfig();
+            CreditShopGUI.reloadConfig(plugin);
 
 
             sender.sendMessage(ChatColor.GREEN + "Wanted reloaded");

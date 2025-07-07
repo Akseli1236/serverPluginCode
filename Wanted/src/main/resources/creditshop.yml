@@ -1,0 +1,193 @@
+gui:
+  title: "&aOGCredits Shop"
+  rows: 5
+
+items:
+
+  filler1:
+    material: LIGHT_BLUE_STAINED_GLASS_PANE
+    slot: 0, 8, 9, 17, 18, 26, 27, 35, 36, 44
+    filler: true
+  filler2:
+    material: GRAY_STAINED_GLASS_PANE
+    slot: 1, 2, 3, 4, 5, 6, 7, 37, 38, 39, 40, 41, 42, 43
+    filler: true
+
+  minigun:
+    slot: 10
+    material: LEAD
+    name: "&eMinigun"
+    lore:
+      - "&cDevastate your enemies"
+      - "&cwith a hail of bullets!"
+      - "&eCost: &a1000 &8OGCredits"
+    cost: 1000
+    commands:
+      - "give %player% lead 1"
+
+  flamethrower:
+    slot: 11
+    material: FLINT_AND_STEEL
+    name: "&eFlamethrower"
+    lore:
+      - "&cBurn your enemies"
+      - "&cto a crisp!"
+      - "&eCost: &a700 &8OGCredits"
+    cost: 700
+    commands:
+      - "give %player% flint_and_steel 1"
+
+  jumper:
+    slot: 12
+    material: TRIPWIRE_HOOK
+    name: "&eJumper"
+    lore:
+      - "&cJump to the skies!"
+      - "&eCost: &a500 &8OGCredits"
+    cost: 500
+    commands:
+      - "give %player% tripwire_hook 1"
+
+  bazooka:
+    slot: 13
+    material: IRON_HORSE_ARMOR
+    name: "&eBazooka"
+    lore:
+      - "&cBlow your enemies to"
+      - "&ca million pieces!"
+      - "&eCost: &a1000 &8OGCredits"
+    cost: 1000
+    commands:
+      - "give %player% iron_horse_armor 1"
+
+  chainsaw:
+    slot: 14
+    material: SHEARS
+    name: "&eChainsaw"
+    lore:
+      - "&cSlice up your enemies"
+      - "&cat close range!"
+      - "&eCost: &a1200 &8OGCredits"
+    cost: 1200
+    commands:
+      - "give %player% shears 1"
+
+  needler:
+    slot: 15
+    material: ARROW
+    name: "&eNeedler"
+    lore:
+      - "&cPierce your enemies with"
+      - "&cdevastating needles!"
+      - "&eCost: &a900 &8OGCredits"
+    cost: 900
+    commands:
+      - "give %player% arrow 1"
+
+  raygun:
+    slot: 16
+    material: BLAZE_ROD
+    name: "&eRay Gun"
+    lore:
+      - "&cVaporize your enemies"
+      - "&cin mere seconds!"
+      - "&eCost: &a800 &8OGCredits"
+    cost: 800
+    commands:
+      - "give %player% blaze_rod 1"
+
+  antimatterlaser:
+    slot: 19
+    material: GLISTERING_MELON_SLICE
+    name: "&eAntimatter Laser"
+    lore:
+      - "&cThere will be nothing"
+      - "&cleft if you're hit!"
+      - "&eCost: &a800 &8OGCredits"
+    cost: 800
+    commands:
+      - "give %player% glistering_melon_slice 1"
+
+  warmachine:
+    slot: 20
+    material: STICK
+    name: "&eWar Machine"
+    lore:
+      - "&cBomb your enemies with"
+      - "&ca storm of grenades!"
+      - "&eCost: &a700 &8OGCredits"
+    cost: 700
+    commands:
+      - "give %player% stick 1"
+
+  freezeray:
+    slot: 21
+    material: BONE
+    name: "&eFreeze Ray"
+    lore:
+      - "&cSwiftly turn your"
+      - "&cenemies into ice!"
+      - "&eCost: &a1000 &8OGCredits"
+    cost: 1000
+    commands:
+      - "give %player% bone 1"
+
+  tesla:
+    slot: 22
+    material: DEAD_BUSH
+    name: "&eTesla"
+    lore:
+      - "&cElectrocute your enemies"
+      - "&cas if you were Zeus!"
+      - "&eCost: &a1750 &8OGCredits"
+    cost: 1750
+    commands:
+      - "give %player% dead_bush 1"
+
+  playerhook:
+    slot: 23
+    material: CLAY_BALL
+    name: "&ePlayer Hook"
+    lore:
+      - "&cBring your enemies closer"
+      - "&cin the blink of an eye!"
+      - "&eCost: &a1200 &8OGCredits"
+    cost: 1200
+    commands:
+      - "give %player% clay_ball 1"
+
+  Reaperxbow:
+    slot: 24
+    material: FLINT
+    name: "&eReaper X-Bow"
+    lore:
+      - "&cTurn your enemies into bones"
+      - "&clike the grimreaper!"
+      - "&eCost: &a2500 &8OGCredits"
+    cost: 2500
+    commands:
+      - "give %player% flint 1"
+
+  jetpack:
+    slot: 25
+    material: SUNFLOWER
+    name: "&eJetpack"
+    lore:
+      - "&cTake to the skies"
+      - "&clike ironman!"
+      - "&eCost: &a1600 &8OGCredits"
+    cost: 1600
+    commands:
+      - "give %player% sunflower 1"
+
+  enderstaff:
+    slot: 28
+    material: CARROT_ON_A_STICK
+    name: "&eEnderstaff"
+    lore:
+      - "&cLeap forth a dozen blocks"
+      - "&clike an enderman"
+      - "&eCost: &a1000 &8OGCredits"
+    cost: 1000
+    commands:
+      - "give %player% carrot_on_a_stick 1"

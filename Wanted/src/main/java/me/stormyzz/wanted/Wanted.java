@@ -1,6 +1,7 @@
 package me.stormyzz.wanted;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import me.stormyzz.wanted.Commands.WantedCommand;
+import me.stormyzz.wanted.Commands.*;
+import me.stormyzz.wanted.Utilities.CreditShopGUI;
 import me.stormyzz.wanted.dataManagers.MobSpawnerManager;
 import me.stormyzz.wanted.listeners.*;
 import me.stormyzz.wanted.statistics.CustomScoreboard;
@@ -14,6 +15,7 @@ public final class Wanted extends JavaPlugin {
 
     private MobSpawnerManager mobSpawnerManager;
     private CustomScoreboard customScoreboard;
+    CreditsTabCompleter tabCompleter = new CreditsTabCompleter();
 
     @Override
     public void onEnable() {
@@ -22,17 +24,21 @@ public final class Wanted extends JavaPlugin {
         mobSpawnerManager.loadConfig();
         saveDefaultConfig();
 
-<<<<<<< HEAD
         getServer().getPluginManager().registerEvents(new MobSpawnListener(mobSpawnerManager, this), this);
-=======
-        getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         getServer().getPluginManager().registerEvents(customScoreboard, this);
         getServer().getPluginManager().registerEvents(new MobBurnPreventionListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerKillListener(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new CustomScoreboard(this), this);
         Bukkit.getPluginManager().registerEvents(new DeathBalanceListener(this), this);
         getCommand("wantedreload").setExecutor(new WantedCommand(this));
+        getCommand("creditshop").setExecutor(new CreditShop());
+        getCommand("addcredits").setExecutor(new AddCredits());
+        getCommand("addcredits").setTabCompleter(tabCompleter);
+        getCommand("credits").setExecutor(new CheckCredits());
+        getCommand("credits").setTabCompleter(tabCompleter);
+        CreditShopGUI.loadConfig(this);
+
 
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(

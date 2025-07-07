@@ -5,28 +5,26 @@ public class playerStats {
     private int deaths;
     private int wantedLevel;
     private int killstreak;
+    private int credits;
 
-    public playerStats(int kills, int deaths, int wantedLevel, int killstreak) {
+    public playerStats(int kills, int deaths, int wantedLevel, int killstreak, int credits) {
         this.kills = kills;
         this.deaths = deaths;
         this.wantedLevel = wantedLevel;
         this.killstreak = killstreak;
+        this.credits = credits;
     }
 
     public int getKills() {
         return kills;
     }
 
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
+    public int getCredits(){ return credits; }
+
+    public void setCredits(int credits) {this.credits = credits; }
 
     public int getDeaths() {
         return deaths;
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
     }
 
     public int getWantedLevel() {
@@ -39,10 +37,6 @@ public class playerStats {
 
     public int getKillstreak() {
         return killstreak;
-    }
-
-    public void setKillstreak(int killstreak) {
-        this.killstreak = killstreak;
     }
 
     public void addKill() {
