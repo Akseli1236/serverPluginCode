@@ -1,7 +1,5 @@
 package org.chestrestocker.chestRestocker.listeners;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +7,11 @@ import java.util.Map;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-<<<<<<< HEAD
-=======
 
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
@@ -28,18 +22,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.Vector;
 import org.chestrestocker.chestRestocker.LoadItemDistribution;
 import org.chestrestocker.chestRestocker.scanners.RestockTimer;
-<<<<<<< HEAD
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-=======
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
-
 
 public class ChestOpenListener implements Listener {
 
@@ -67,32 +49,6 @@ public class ChestOpenListener implements Listener {
         }
 
         Chest chest = (Chest) event.getClickedBlock().getState();
-<<<<<<< HEAD
-        Vector identifier;
-        InventoryHolder holder = chest.getInventory().getHolder();
-        if (holder instanceof DoubleChest doubleChest) {
-            Chest left = (Chest) doubleChest.getLeftSide();
-            identifier = left.getLocation().toVector();
-        }else {
-            identifier = chest.getLocation().toVector();
-        }
-
-
-        // Check if the chest is inside a valid region
-        if (isInValidRegion(chest.getLocation())) {
-            // If it's a new chest, create a RestockTimer and add it to the HashMap
-
-            if (!chestRestockTimers.containsKey(identifier)){
-
-                RestockTimer restockTimer = new RestockTimer(loadItemDistribution);
-                restockTimer.setChest(chest);
-                chestRestockTimers.put(identifier, restockTimer);
-            }
-
-            // Start the restocking timer for the chest
-            RestockTimer restockTimer = chestRestockTimers.get(identifier);
-            restockTimer.startTimer();
-=======
         List<Vector> identifier = new ArrayList<>();
 
         InventoryHolder holder = chest.getInventory().getHolder();
@@ -120,7 +76,6 @@ public class ChestOpenListener implements Listener {
                     restockTimer.startTimer();
                 }
             }
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         }
     }
     private boolean isInValidRegion(org.bukkit.Location location) {
@@ -152,9 +107,4 @@ public class ChestOpenListener implements Listener {
 
         return false;
     }
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79

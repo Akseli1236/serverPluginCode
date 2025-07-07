@@ -3,10 +3,6 @@ package org.server.gtamc;
 import java.util.HashMap;
 import java.util.Map;
 
-<<<<<<< HEAD
-import org.bukkit.GameMode;
-=======
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -90,8 +86,4 @@ public class PlayerData implements Listener {
     public Player getPlayer(String playerName) {return players.get(playerName);}
 
     public Location getLastDeathLocation(String playerName) {return lastDeathLocations.get(playerName);}
-
-
-
-
 }

@@ -11,11 +11,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-<<<<<<< HEAD
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockEvent;
-=======
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
+
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -128,11 +124,7 @@ public class ShootManager implements Listener {
         }
 
         // Replace the original item with the new one
-<<<<<<< HEAD
-        item.setType(newItem.getType());
-=======
         item.setItemMeta(newItem.getItemMeta());
->>>>>>> ae8c77c6322c0e0a0f5d3264eb193dbde7957d79
         item.setAmount(newItem.getAmount());
         item.setItemMeta(newItem.getItemMeta());
     }
