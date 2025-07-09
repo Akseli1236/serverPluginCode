@@ -29,7 +29,7 @@ public class MobSpawnerManager {
                 String regionName = (String) regionData.get("region");
                 boolean requireSky = regionData.containsKey("requireSky") ? (boolean) regionData.get("requireSky") : true;
 
-		
+
 
                 List<String> disallowedBlockStrings = regionData.containsKey("disallowedBlocks")
                         ? (List<String>) regionData.get("disallowedBlocks")
@@ -72,8 +72,8 @@ public class MobSpawnerManager {
 
                 int minY = regionData.containsKey("minY") ? (int) regionData.get("minY") : 0;
                 int maxY = regionData.containsKey("maxY") ? (int) regionData.get("maxY") : 256;
-		int spawnRadius = regionData.containsKey("spawnRadius") ? (int) regionData.get("spawnRadius") : 30;
-		int spawnSpeed = regionData.containsKey("spawnSpeed") ? (int) regionData.get("spawnSpeed") : 30;
+                int spawnRadius = regionData.containsKey("spawnRadius") ? (int) regionData.get("spawnRadius") : 30;
+                int spawnSpeed = regionData.containsKey("spawnSpeed") ? (int) regionData.get("spawnSpeed") : 30;
 
                 MobSpawnConfig config = new MobSpawnConfig(
                         worldName,
@@ -83,8 +83,8 @@ public class MobSpawnerManager {
                         minY,
                         maxY,
                         allowedMobsWithSettings,
-			spawnSpeed,
-			spawnRadius
+                        spawnSpeed,
+                        spawnRadius
                 );
 
                 spawnConfigs.add(config);

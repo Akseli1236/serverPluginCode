@@ -1,0 +1,27 @@
+package org.server.mapcrates;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+public final class MapCrates extends JavaPlugin
+{
+
+    @Override
+    public void onEnable(){
+        Commands airdropCommands = new Commands(this);
+
+        Objects.requireNonNull(this.getCommand("start_airdops")).setExecutor(airdropCommands);
+        Objects.requireNonNull(this.getCommand("stop_airdrops")).setExecutor(airdropCommands);
+
+        new Airdrop(this);
+
+    }
+
+    @Override
+    public void onDisable(){
+
+    }
+}
