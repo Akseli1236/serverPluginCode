@@ -1,12 +1,9 @@
-name: GTAMCMechanics
+name: MapCrates
 version: '1.0'
-main: org.server.gtamc.GTAMC
-api-version: '1.25'
-depend: [Wanted]
+main: org.server.mapcrates.MapCrates
+api-version: '1.21'
+depend: []
 commands:
-  start_airdrops:
+  airdrops:
     description: Starts airdrop spawning
     usage: /airdrops start
-  stop_airdrops:
-    description: Stop airdrop spawning
-    usage: /airdrops stop

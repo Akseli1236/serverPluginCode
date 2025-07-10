@@ -121,7 +121,7 @@ public class Shoot implements Listener {
     private boolean shiftSteady = false;
     private boolean breakingBlock = false;
     private boolean burstMode = false;
-    
+
     private InventoryAction inventoryActions;
 
     // List contains these in order: Bullets, isReloadingPrimary, shotCooldown, secondaryFire, secondaryAmmo, DualWield bullets isReloadingDualWield
@@ -1699,7 +1699,7 @@ public class Shoot implements Listener {
 
         if (secondaryAmmo != -1){
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                player.sendActionBar(Component.text(color+itemName+" «"+primaryAmmo + fireModeIdentifier+secondaryAmmo+"»",color));
+                player.sendActionBar(Component.text(itemName+" «"+primaryAmmo + fireModeIdentifier+secondaryAmmo+"»",color));
 
             }, 0L, 40L); // Repeats every 2 seconds (40 ticks)
         }else if (dualAmmo != -1){

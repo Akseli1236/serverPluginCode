@@ -13,8 +13,7 @@ public final class MapCrates extends JavaPlugin
     public void onEnable(){
         Commands airdropCommands = new Commands(this);
 
-        Objects.requireNonNull(this.getCommand("start_airdops")).setExecutor(airdropCommands);
-        Objects.requireNonNull(this.getCommand("stop_airdrops")).setExecutor(airdropCommands);
+        Objects.requireNonNull(this.getCommand("airdrops")).setExecutor(airdropCommands);
 
         new Airdrop(this);
 

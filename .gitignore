@@ -164,5 +164,5 @@ $RECYCLE.BIN/
 *#*
 *.iml
 *.idea*
-
+unrelatedCode*
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows
