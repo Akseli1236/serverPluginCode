@@ -2,14 +2,11 @@ package org.server.gtamc;
 
 import java.util.List;
 
-
 public class WeaponClass {
-
 
     private Root root;
 
     // Getter and Setter for Olympia
-
 
     public Root getRoot() {
         return root;
@@ -46,18 +43,54 @@ public class WeaponClass {
         public void setSkin(Skin skin) {
             this.skin = skin;
         }
-        public String getProjectile() {return projectile;}
-        public void setProjectile(String projectile) {this.projectile = projectile;}
-        public Shoot getShoot() {return shoot;}
-        public void setShoot(Shoot shoot) {this.shoot = shoot;}
-        public Reload getReload() {return reload;}
-        public void setReload(Reload reload) {this.reload = reload;}
-        public Damage getDamage() {return damage;}
-        public void setDamage(Damage damage) {this.damage = damage;}
-        public Firearm_action getFirearm_action() {return firearm_action;}
-        public void setFirearm_action(Firearm_action firearm_action) {this.firearm_action = firearm_action;}
-        public Scope getScope() {return scope;}
-        public void setScope(Scope scope) {this.scope = scope;}
+
+        public String getProjectile() {
+            return projectile;
+        }
+
+        public void setProjectile(String projectile) {
+            this.projectile = projectile;
+        }
+
+        public Shoot getShoot() {
+            return shoot;
+        }
+
+        public void setShoot(Shoot shoot) {
+            this.shoot = shoot;
+        }
+
+        public Reload getReload() {
+            return reload;
+        }
+
+        public void setReload(Reload reload) {
+            this.reload = reload;
+        }
+
+        public Damage getDamage() {
+            return damage;
+        }
+
+        public void setDamage(Damage damage) {
+            this.damage = damage;
+        }
+
+        public Firearm_action getFirearm_action() {
+            return firearm_action;
+        }
+
+        public void setFirearm_action(Firearm_action firearm_action) {
+            this.firearm_action = firearm_action;
+        }
+
+        public Scope getScope() {
+            return scope;
+        }
+
+        public void setScope(Scope scope) {
+            this.scope = scope;
+        }
 
         // Inner class to represent Info in the YAML structure
         public static class Info {
@@ -66,7 +99,6 @@ public class WeaponClass {
             private String weapon_get_mechanics;
             private Cancel cancel;
             private Dual_Wield dual_wield;
-
 
             // Getter and Setter for WeaponItem
             public WeaponItem getWeapon_item() {
@@ -118,7 +150,7 @@ public class WeaponClass {
                 private boolean hide_flags;
                 private boolean deny_use_in_crafting;
                 private boolean secondary_fire_type;
-		private boolean burst_mode;
+                private boolean burst_mode;
 
                 // Getter and Setter for type
                 public String getType() {
@@ -177,13 +209,13 @@ public class WeaponClass {
                     return secondary_fire_type;
                 }
 
-		public void setBurst_mode(boolean burst_mode){
-		    this.burst_mode = burst_mode;
-		}
-		public boolean isBurst_mode(){
-		    return burst_mode;
-		}
+                public void setBurst_mode(boolean burst_mode) {
+                    this.burst_mode = burst_mode;
+                }
 
+                public boolean isBurst_mode() {
+                    return burst_mode;
+                }
 
             }
 
@@ -209,7 +241,6 @@ public class WeaponClass {
                         this.message = message;
                     }
                 }
-
 
             }
 
@@ -237,6 +268,7 @@ public class WeaponClass {
                 public boolean isBreak_blocks() {
                     return break_blocks;
                 }
+
                 public void setBreak_blocks(boolean break_blocks) {
                     this.break_blocks = break_blocks;
                 }
@@ -252,30 +284,39 @@ public class WeaponClass {
                 public boolean isWhitelist() {
                     return whitelist;
                 }
+
                 public void setWhitelist(boolean whitelist) {
                     this.whitelist = whitelist;
                 }
+
                 public List<String> getWeapons() {
                     return weapons;
                 }
+
                 public void setWeapons(List<String> weapons) {
                     this.weapons = weapons;
                 }
+
                 public boolean isUnbreakable() {
                     return unbreakable;
                 }
+
                 public void setUnbreakable(boolean unbreakable) {
                     this.unbreakable = unbreakable;
                 }
+
                 public boolean isHide_flags() {
                     return hide_flags;
                 }
+
                 public void setHide_flags(boolean hide_flags) {
                     this.hide_flags = hide_flags;
                 }
+
                 public boolean isDeny_use_in_crafting() {
                     return deny_use_in_crafting;
                 }
+
                 public void setDeny_use_in_crafting(boolean deny_use_in_crafting) {
                     this.deny_use_in_crafting = deny_use_in_crafting;
                 }
@@ -286,7 +327,7 @@ public class WeaponClass {
 
         public static class Skin {
 
-            //@JsonProperty("default")
+            // @JsonProperty("default")
             private Integer default_skin;
             private String scope;
             private String sprint;
@@ -320,16 +361,18 @@ public class WeaponClass {
             public String getBlue() {
                 return blue;
             }
+
             public void setBlue(String blue) {
                 this.blue = blue;
             }
+
             public String getRed() {
                 return red;
             }
+
             public void setRed(String red) {
                 this.red = red;
             }
-
 
         }
 
@@ -340,12 +383,11 @@ public class WeaponClass {
             private int fully_automatic_shots_per_second;
             private int projectiles_per_shot;
             private int delay_between_shots;
-	    private int shots_per_burst;
-	    private int burst_fire_rate;
-	    private int burst_restart_delay;
+            private int shots_per_burst;
+            private int burst_fire_rate;
+            private int burst_restart_delay;
             private Spread spread;
             private List<String> mechanics;
-	    
 
             public int getFully_automatic_shots_per_second() {
                 return fully_automatic_shots_per_second;
@@ -364,50 +406,61 @@ public class WeaponClass {
                 this.trigger = trigger;
             }
 
-            public int getProjectile_speed() {return projectile_speed;}
+            public int getProjectile_speed() {
+                return projectile_speed;
+            }
+
             public void setProjectile_speed(int projectile_speed) {
                 this.projectile_speed = projectile_speed;
             }
-            public int getProjectiles_per_shot() {return projectiles_per_shot;}
+
+            public int getProjectiles_per_shot() {
+                return projectiles_per_shot;
+            }
+
             public void setProjectiles_per_shot(int projectiles_per_shot) {
                 this.projectiles_per_shot = projectiles_per_shot;
             }
-            public int getDelay_between_shots() {return delay_between_shots;}
+
+            public int getDelay_between_shots() {
+                return delay_between_shots;
+            }
+
             public void setDelay_between_shots(int delay_between_shots) {
                 this.delay_between_shots = delay_between_shots;
             }
 
-	    public List<String> getMechanics() {
+            public List<String> getMechanics() {
                 return mechanics;
             }
-	    
-	    public void setMechanics(List<String> mechanics) {
+
+            public void setMechanics(List<String> mechanics) {
                 this.mechanics = mechanics;
             }
 
-	    public void setShots_per_burst(int shots_per_burst){
-		this.shots_per_burst = shots_per_burst;
-	    }
+            public void setShots_per_burst(int shots_per_burst) {
+                this.shots_per_burst = shots_per_burst;
+            }
 
-	    public int getShots_per_burst(){
-		return shots_per_burst;
-	    }
+            public int getShots_per_burst() {
+                return shots_per_burst;
+            }
 
-	    public void setBurst_fire_rate(int burst_fire_rate){
-		this.burst_fire_rate = burst_fire_rate;
-	    }
-	    
-	    public int getBurst_fire_rate(){
-		return burst_fire_rate;
-	    }
-	     public void setBurst_restart_delay(int burst_restart_delay){
-		 this.burst_restart_delay = burst_restart_delay;
-	    }
+            public void setBurst_fire_rate(int burst_fire_rate) {
+                this.burst_fire_rate = burst_fire_rate;
+            }
 
-	    public int getBurst_restart_delay(){
-		return burst_restart_delay;
-	    }
+            public int getBurst_fire_rate() {
+                return burst_fire_rate;
+            }
 
+            public void setBurst_restart_delay(int burst_restart_delay) {
+                this.burst_restart_delay = burst_restart_delay;
+            }
+
+            public int getBurst_restart_delay() {
+                return burst_restart_delay;
+            }
 
             public Spread getSpread() {
                 return spread;
@@ -416,8 +469,7 @@ public class WeaponClass {
             public void setSpread(Spread spread) {
                 this.spread = spread;
             }
-	   
-	    
+
             // Inner classes
             public static class Trigger {
                 private String main_hand;
@@ -429,16 +481,18 @@ public class WeaponClass {
                 public String getMain_hand() {
                     return main_hand;
                 }
+
                 public void setMain_hand(String main_hand) {
                     this.main_hand = main_hand;
                 }
+
                 public String getOff_hand() {
                     return off_hand;
                 }
+
                 public void setOff_hand(String off_hand) {
                     this.off_hand = off_hand;
                 }
-
 
                 public Circumstance getCircumstance() {
                     return circumstance;
@@ -451,6 +505,7 @@ public class WeaponClass {
                 public boolean isSteady_with_sneak() {
                     return steady_with_sneak;
                 }
+
                 public void setSteady_with_sneak(boolean steady_with_sneak) {
                     this.steady_with_sneak = steady_with_sneak;
                 }
@@ -472,6 +527,7 @@ public class WeaponClass {
                     public String getDual_wielding() {
                         return dual_wielding;
                     }
+
                     public void setDual_wielding(String dual_wielding) {
                         this.dual_wielding = dual_wielding;
                     }
@@ -491,10 +547,10 @@ public class WeaponClass {
                 private double base_spread;
                 private Modify_Spread_When modify_spread_when;
 
-
                 public Spread_image getSpread_image() {
                     return spread_image;
                 }
+
                 public void setSpread_image(Spread_image spread_image) {
                     this.spread_image = spread_image;
                 }
@@ -502,6 +558,7 @@ public class WeaponClass {
                 public double getBase_spread() {
                     return base_spread;
                 }
+
                 public void setBase_spread(double base_spread) {
                     this.base_spread = base_spread;
                 }
@@ -523,6 +580,7 @@ public class WeaponClass {
                     public String getName() {
                         return name;
                     }
+
                     public void setName(String name) {
                         this.name = name;
                     }
@@ -530,12 +588,15 @@ public class WeaponClass {
                     public int getField_of_view_width() {
                         return field_of_view_width;
                     }
+
                     public void setField_of_view_width(int field_of_view_width) {
                         this.field_of_view_width = field_of_view_width;
                     }
+
                     public int getField_of_view_height() {
                         return field_of_view_height;
                     }
+
                     public void setField_of_view_height(int field_of_view_height) {
                         this.field_of_view_height = field_of_view_height;
                     }
@@ -545,15 +606,19 @@ public class WeaponClass {
                     private String in_midair;
                     private String sneaking;
                     private String zooming;
+
                     public String getIn_midair() {
                         return in_midair;
                     }
+
                     public void setIn_midair(String in_midair) {
                         this.in_midair = in_midair;
                     }
+
                     public String getSneaking() {
                         return sneaking;
                     }
+
                     public void setSneaking(String sneaking) {
                         this.sneaking = sneaking;
                     }
@@ -561,6 +626,7 @@ public class WeaponClass {
                     public String getZooming() {
                         return zooming;
                     }
+
                     public void setZooming(String zooming) {
                         this.zooming = zooming;
                     }
@@ -599,34 +665,42 @@ public class WeaponClass {
             public int getMagazine_size() {
                 return magazine_size;
             }
+
             public void setMagazine_size(int magazine_size) {
                 this.magazine_size = magazine_size;
             }
+
             public int getAmmo_per_reload() {
                 return ammo_per_reload;
             }
+
             public void setAmmo_per_reload(int ammo_per_reload) {
                 this.ammo_per_reload = ammo_per_reload;
             }
+
             public int getReload_duration() {
                 return reload_duration;
             }
+
             public void setReload_duration(int reload_duration) {
                 this.reload_duration = reload_duration;
             }
+
             public List<String> getStart_mechanics() {
                 return start_mechanics;
             }
+
             public void setStart_mechanics(List<String> start_mechanics) {
                 this.start_mechanics = start_mechanics;
             }
+
             public List<String> getFinish_mechanics() {
                 return finish_mechanics;
             }
+
             public void setFinish_mechanics(List<String> finish_mechanics) {
                 this.finish_mechanics = finish_mechanics;
             }
-
 
             // Inner classes
             public static class Ammo {
@@ -659,12 +733,15 @@ public class WeaponClass {
                 public String getMain_hand() {
                     return main_hand;
                 }
+
                 public void setMain_hand(String main_hand) {
                     this.main_hand = main_hand;
                 }
+
                 public String getOff_hand() {
                     return off_hand;
                 }
+
                 public void setOff_hand(String off_hand) {
                     this.off_hand = off_hand;
                 }
@@ -692,6 +769,7 @@ public class WeaponClass {
             public boolean getFlaming() {
                 return flaming;
             }
+
             public void setFlaming(boolean flaming) {
                 this.flaming = flaming;
             }
@@ -723,9 +801,11 @@ public class WeaponClass {
             public Head getHead() {
                 return head;
             }
+
             public void setHead(Head head) {
                 this.head = head;
             }
+
             public static class Head {
                 private double bonus_damage;
                 private List<String> mechanics;
@@ -733,12 +813,15 @@ public class WeaponClass {
                 public double getBonus_damage() {
                     return bonus_damage;
                 }
+
                 public void setBonus_damage(double bonus_damage) {
                     this.bonus_damage = bonus_damage;
                 }
+
                 public List<String> getMechanics() {
                     return mechanics;
                 }
+
                 public void setMechanics(List<String> mechanics) {
                     this.mechanics = mechanics;
                 }
@@ -758,36 +841,47 @@ public class WeaponClass {
             public double getZoom_amount() {
                 return zoom_amount;
             }
+
             public void setZoom_amount(double zoom_amount) {
                 this.zoom_amount = zoom_amount;
             }
+
             public boolean isUnscope_after_shot() {
                 return unscope_after_shot;
             }
+
             public void setUnscope_after_shot(boolean unscope_after_shot) {
                 this.unscope_after_shot = unscope_after_shot;
             }
+
             public List<String> getMechanics() {
                 return mechanics;
             }
+
             public void setMechanics(List<String> mechanics) {
                 this.mechanics = mechanics;
             }
+
             public Trigger getTrigger() {
                 return trigger;
             }
+
             public void setTrigger(Trigger trigger) {
                 this.trigger = trigger;
             }
+
             public boolean isNight_vision() {
                 return night_vision;
             }
+
             public void setNight_vision(boolean night_vision) {
                 this.night_vision = night_vision;
             }
+
             public Zoom_Off getZoom_off() {
                 return zoom_off;
             }
+
             public void setZoom_off(Zoom_Off zoom_off) {
                 this.zoom_off = zoom_off;
             }
@@ -807,12 +901,15 @@ public class WeaponClass {
                 public List<Integer> getStacks() {
                     return stacks;
                 }
+
                 public void setStacks(List<Integer> stacks) {
                     this.stacks = stacks;
                 }
+
                 public List<String> getMechanics() {
                     return mechanics;
                 }
+
                 public void setMechanics(List<String> mechanics) {
                     this.mechanics = mechanics;
                 }
@@ -824,6 +921,7 @@ public class WeaponClass {
                 public List<String> getMechanics() {
                     return mechanics;
                 }
+
                 public void setMechanics(List<String> mechanics) {
                     this.mechanics = mechanics;
                 }
@@ -837,13 +935,16 @@ public class WeaponClass {
                 public String getMain_hand() {
                     return main_hand;
                 }
+
                 public void setMain_hand(String main_hand) {
                     this.main_hand = main_hand;
 
                 }
+
                 public String getOff_hand() {
                     return off_hand;
                 }
+
                 public void setOff_hand(String off_hand) {
                     this.off_hand = off_hand;
                 }
@@ -905,8 +1006,5 @@ public class WeaponClass {
             }
         }
 
-
-
     }
 }
-

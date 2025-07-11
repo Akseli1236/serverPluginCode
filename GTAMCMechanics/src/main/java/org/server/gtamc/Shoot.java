@@ -81,7 +81,7 @@ public class Shoot implements Listener {
     private final Plugin plugin;
     private final Weapon weapon;
     private final ModifiedItemBehavior modifiedItemBehavior;
-    //private final WASD wasd;
+    // private final WASD wasd;
 
     private BukkitTask currentTask = null;
     private BukkitTask controlFire = null;
@@ -124,75 +124,74 @@ public class Shoot implements Listener {
 
     private InventoryAction inventoryActions;
 
-    // List contains these in order: Bullets, isReloadingPrimary, shotCooldown, secondaryFire, secondaryAmmo, DualWield bullets isReloadingDualWield
+    // List contains these in order: Bullets, isReloadingPrimary, shotCooldown,
+    // secondaryFire, secondaryAmmo, DualWield bullets isReloadingDualWield
     private final Map<UUID, List<Object>> bulletsLeft = new HashMap<>();
     private final Map<Double, Double> damageDrop = new HashMap<>();
     private final Map<String, List<String>> weaponSounds = new HashMap<>();
 
     private final Map<String, TextColor> colorCodes = Map.ofEntries(
-        Map.entry("black", TextColor.color(0x000000)),
-        Map.entry("dark_blue", TextColor.color(0x0000AA)),
-        Map.entry("dark_green", TextColor.color(0x00AA00)),
-        Map.entry("dark_aqua", TextColor.color(0x00AAAA)),
-        Map.entry("dark_red", TextColor.color(0xAA0000)),
-        Map.entry("dark_purple", TextColor.color(0xAA00AA)),
-        Map.entry("gold", TextColor.color(0xFFAA00)),
-        Map.entry("gray", TextColor.color(0xAAAAAA)),
-        Map.entry("dark_gray", TextColor.color(0x555555)),
-        Map.entry("blue", TextColor.color(0x5555FF)),
-        Map.entry("green", TextColor.color(0x55FF55)),
-        Map.entry("aqua", TextColor.color(0x55FFFF)),
-        Map.entry("red", TextColor.color(0xFF5555)),
-        Map.entry("light_purple", TextColor.color(0xFF55FF)),
-        Map.entry("yellow", TextColor.color(0xFFFF55)),
-        Map.entry("white", TextColor.color(0xFFFFFF))
-    );
+            Map.entry("black", TextColor.color(0x000000)),
+            Map.entry("dark_blue", TextColor.color(0x0000AA)),
+            Map.entry("dark_green", TextColor.color(0x00AA00)),
+            Map.entry("dark_aqua", TextColor.color(0x00AAAA)),
+            Map.entry("dark_red", TextColor.color(0xAA0000)),
+            Map.entry("dark_purple", TextColor.color(0xAA00AA)),
+            Map.entry("gold", TextColor.color(0xFFAA00)),
+            Map.entry("gray", TextColor.color(0xAAAAAA)),
+            Map.entry("dark_gray", TextColor.color(0x555555)),
+            Map.entry("blue", TextColor.color(0x5555FF)),
+            Map.entry("green", TextColor.color(0x55FF55)),
+            Map.entry("aqua", TextColor.color(0x55FFFF)),
+            Map.entry("red", TextColor.color(0xFF5555)),
+            Map.entry("light_purple", TextColor.color(0xFF55FF)),
+            Map.entry("yellow", TextColor.color(0xFFFF55)),
+            Map.entry("white", TextColor.color(0xFFFFFF)));
 
-    public Shoot(Plugin plugin, Weapon weapon, WASD wasd)
-    {
+    public Shoot(Plugin plugin, Weapon weapon, WASD wasd) {
         this.weapon = weapon;
         this.plugin = plugin;
         this.modifiedItemBehavior = new ModifiedItemBehavior(plugin);
-        //this.wasd = wasd;
+        // this.wasd = wasd;
     }
 
-    public void update(){
+    public void update() {
         weapon.clearAll();
         weapon.readFile();
         weapon.weaponUpdate(plugin);
     }
 
-    public void setInventoryOpen(boolean state, Player player){
+    public void setInventoryOpen(boolean state, Player player) {
         InventoryOpen = state;
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (itemInHand.getType() == Material.AIR){
+        if (itemInHand.getType() == Material.AIR) {
             return;
         }
         UUID finalUuid = returnUUID(itemInHand);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> cancelReloadTasks(finalUuid, player),2);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> cancelReloadTasks(finalUuid, player), 2);
     }
 
-    public void setInventoryAction(InventoryAction state){
+    public void setInventoryAction(InventoryAction state) {
         inventoryActions = state;
     }
 
-    public InventoryAction getInventoryAction(){
-	return inventoryActions;
+    public InventoryAction getInventoryAction() {
+        return inventoryActions;
     }
 
-    public void setItemSlot(int slot){
+    public void setItemSlot(int slot) {
         itemSlot = slot;
     }
 
-    public int getItemSlot(){
-	return itemSlot;
+    public int getItemSlot() {
+        return itemSlot;
     }
 
-    public void setBreakingBlock(boolean state){
-	breakingBlock = state;
+    public void setBreakingBlock(boolean state) {
+        breakingBlock = state;
     }
 
-    public UUID setOrGetUUID(ItemMeta itemMeta, ItemStack ItemInHand){
+    public UUID setOrGetUUID(ItemMeta itemMeta, ItemStack ItemInHand) {
         UUID uuid = UUID.randomUUID();
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         NamespacedKey unique_id = new NamespacedKey(plugin, "unique_id");
@@ -206,12 +205,11 @@ public class Shoot implements Listener {
             uuid = UUID.fromString(Objects.requireNonNull(container.get(unique_id, PersistentDataType.STRING)));
         }
 
-
         return uuid;
     }
 
-    private void cancelZoom(Player player){
-        if (zoomScheduler != null && !zoomScheduler.isCancelled()){
+    private void cancelZoom(Player player) {
+        if (zoomScheduler != null && !zoomScheduler.isCancelled()) {
             zoomScheduler.cancel();
             zoomScheduler = null;
             zoomOn = false;
@@ -225,7 +223,7 @@ public class Shoot implements Listener {
         }
     }
 
-    private void cancelReloadTasks(UUID finalUuid, Player player){
+    private void cancelReloadTasks(UUID finalUuid, Player player) {
         Iterator<BukkitTask> iterator = reloadTasks.iterator();
         while (iterator.hasNext()) {
             BukkitTask task = iterator.next();
@@ -240,31 +238,30 @@ public class Shoot implements Listener {
         }
     }
 
-    public void removeEffects(HumanEntity entity){
+    public void removeEffects(HumanEntity entity) {
         Player player = (Player) entity;
         cancelZoom(player);
     }
 
     private void removeAttackCooldown(Player player) {
         AttributeInstance attribute = player.getAttribute(Attribute.ATTACK_SPEED);
-        if (attribute == null){
+        if (attribute == null) {
             return;
         }
         double baseValue = attribute.getBaseValue();
 
-
-        if(baseValue != 16){
+        if (baseValue != 16) {
             attribute.setBaseValue(16);
             player.saveData();
         }
     }
 
-    private List<Object> processMeta(WeaponClass value, ItemMeta itemMeta){
+    private List<Object> processMeta(WeaponClass value, ItemMeta itemMeta) {
         List<Object> loreItems = new ArrayList<>();
         int iterator = 0;
-        List<Component> fullLoreLine =  new ArrayList<>();
+        List<Component> fullLoreLine = new ArrayList<>();
 
-        for (String loreItem :  value.getRoot().getInfo().getWeapon_item().getLore()){
+        for (String loreItem : value.getRoot().getInfo().getWeapon_item().getLore()) {
 
             int index = loreItem.indexOf(">");
             String itemName = loreItem.substring(index + 1);
@@ -274,7 +271,7 @@ public class Shoot implements Listener {
             Component coloredItemName = Component.text(itemName, color);
             fullLoreLine.addLast(coloredItemName);
 
-            if (iterator == 0){
+            if (iterator == 0) {
                 shootingType = itemName.split(" ")[1];
             }
             iterator++;
@@ -292,8 +289,7 @@ public class Shoot implements Listener {
 
     }
 
-
-    private void fillBullets(UUID finalUuid){
+    private void fillBullets(UUID finalUuid) {
         if (bulletsLeft.get(finalUuid) == null) {
             bulletsLeft.put(finalUuid, new ArrayList<>());
             bulletsLeft.get(finalUuid).add(magSize);
@@ -301,25 +297,28 @@ public class Shoot implements Listener {
             bulletsLeft.get(finalUuid).add(false);
             bulletsLeft.get(finalUuid).add(false);
             bulletsLeft.get(finalUuid).add(-1);
-            if (hasSecondaryAction){bulletsLeft.get(finalUuid).set(4, 1);}
+            if (hasSecondaryAction) {
+                bulletsLeft.get(finalUuid).set(4, 1);
+            }
             bulletsLeft.get(finalUuid).add(-1);
-            if (dualWield){bulletsLeft.get(finalUuid).set(5, magSize);}
+            if (dualWield) {
+                bulletsLeft.get(finalUuid).set(5, magSize);
+            }
             bulletsLeft.get(finalUuid).add(false);
         } else if (resetNextShotCooldown)
             bulletsLeft.get(finalUuid).set(2, false);
     }
 
-    private void renamePreProcess(UUID finalUuid, WeaponClass value, Player player){
+    private void renamePreProcess(UUID finalUuid, WeaponClass value, Player player) {
         int secondaryAmmo = (int) bulletsLeft.get(finalUuid).get(4);
         int bulletAmmo = Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString());
         Boolean state = (Boolean) bulletsLeft.get(finalUuid).get(3);
         int dualAmmo = (int) bulletsLeft.get(finalUuid).get(5);
-        Integer[] arr = {bulletAmmo, secondaryAmmo, dualAmmo};
+        Integer[] arr = { bulletAmmo, secondaryAmmo, dualAmmo };
         renameItem(value.getRoot().getInfo().getWeapon_item().getName(), arr, player, state);
     }
 
-    public void loadWeapons(ItemStack ItemInHand, Player player){
-
+    public void loadWeapons(ItemStack ItemInHand, Player player) {
 
         ItemMeta itemMeta = ItemInHand.getItemMeta();
 
@@ -327,52 +326,53 @@ public class Shoot implements Listener {
             // Get the existing lore or create a new one if it's null
 
             weapon.getWeapons().forEach((key, value) -> {
-                    if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())) {
-                        removeAttackCooldown(player);
-                        UUID finalUuid = setOrGetUUID(itemMeta, ItemInHand);
-                        if (value.getRoot().getInfo().getWeapon_item().isUnbreakable()){
+                if (value.getRoot().getInfo().getWeapon_item().getType()
+                        .equalsIgnoreCase(ItemInHand.getType().toString())) {
+                    removeAttackCooldown(player);
+                    UUID finalUuid = setOrGetUUID(itemMeta, ItemInHand);
+                    if (value.getRoot().getInfo().getWeapon_item().isUnbreakable()) {
+                        itemMeta.setUnbreakable(true);
+                    }
+                    dualWield = false;
+                    if (value.getRoot().getInfo().getDual_wield() != null) {
+                        dualWield = true;
+                        if (value.getRoot().getInfo().getDual_wield().isUnbreakable()) {
                             itemMeta.setUnbreakable(true);
                         }
-                        dualWield = false;
-                        if (value.getRoot().getInfo().getDual_wield() != null){
-                            dualWield = true;
-                            if (value.getRoot().getInfo().getDual_wield().isUnbreakable()){
-                                itemMeta.setUnbreakable(true);
-                            }
-                        }
+                    }
 
-                        List<Object> loreItems = processMeta(value, itemMeta);
-                        String itemName = (String) loreItems.getFirst();
-                        NamedTextColor color = (NamedTextColor) loreItems.get(1);
+                    List<Object> loreItems = processMeta(value, itemMeta);
+                    String itemName = (String) loreItems.getFirst();
+                    NamedTextColor color = (NamedTextColor) loreItems.get(1);
 
-                        Component displayName = Component.text(itemName, color);
-                        itemMeta.displayName(displayName);
-                        damage = value.getRoot().getDamage().getBase_damage();
-                        reloadTime = value.getRoot().getReload().getReload_duration();
-                        magSize = value.getRoot().getReload().getMagazine_size();
+                    Component displayName = Component.text(itemName, color);
+                    itemMeta.displayName(displayName);
+                    damage = value.getRoot().getDamage().getBase_damage();
+                    reloadTime = value.getRoot().getReload().getReload_duration();
+                    magSize = value.getRoot().getReload().getMagazine_size();
 
-                        Projectile_Type = null;
-                        if (value.getRoot().getReload().getAmmo().getAmmos() != null){
-                            Projectile_Type = value.getRoot().getReload().getAmmo().getAmmos().getFirst();
-                        }
+                    Projectile_Type = null;
+                    if (value.getRoot().getReload().getAmmo().getAmmos() != null) {
+                        Projectile_Type = value.getRoot().getReload().getAmmo().getAmmos().getFirst();
+                    }
 
-                        weapon_Type = value.getRoot().getProjectile().split("\\.")[0];
-                        projectilesPerShot = value.getRoot().getShoot().getProjectiles_per_shot();
-                        fireRate = value.getRoot().getShoot().getDelay_between_shots();
-                        ammoPerReload = value.getRoot().getReload().getAmmo_per_reload();
+                    weapon_Type = value.getRoot().getProjectile().split("\\.")[0];
+                    projectilesPerShot = value.getRoot().getShoot().getProjectiles_per_shot();
+                    fireRate = value.getRoot().getShoot().getDelay_between_shots();
+                    ammoPerReload = value.getRoot().getReload().getAmmo_per_reload();
                     armorDamage = value.getRoot().getDamage().getArmor_damage();
                     hasSecondaryAction = value.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
-		    burstMode = value.getRoot().getInfo().getWeapon_item().isBurst_mode();
-		    shotsPerBurst = Math.max(1, value.getRoot().getShoot().getShots_per_burst());
-		    burstFireRate =  value.getRoot().getShoot().getBurst_fire_rate();
+                    burstMode = value.getRoot().getInfo().getWeapon_item().isBurst_mode();
+                    shotsPerBurst = Math.max(1, value.getRoot().getShoot().getShots_per_burst());
+                    burstFireRate = value.getRoot().getShoot().getBurst_fire_rate();
                     zoomAmount = 0.0;
                     bonusDamage = 0.0;
                     shiftSteady = false;
-                    if (value.getRoot().getDamage().getHead() != null){
+                    if (value.getRoot().getDamage().getHead() != null) {
                         bonusDamage = value.getRoot().getDamage().getHead().getBonus_damage();
                     }
 
-                    if (value.getRoot().getScope() != null){
+                    if (value.getRoot().getScope() != null) {
                         zoomAmount = value.getRoot().getScope().getZoom_amount();
                     }
 
@@ -380,15 +380,13 @@ public class Shoot implements Listener {
                         fireRate = Math.floorDiv(20, value.getRoot().getShoot().getFully_automatic_shots_per_second());
                     }
 
-                    if (value.getRoot().getShoot().getTrigger().isSteady_with_sneak()){
+                    if (value.getRoot().getShoot().getTrigger().isSteady_with_sneak()) {
                         shiftSteady = true;
                     }
 
-		    if (burstMode) {
-			fireRate = value.getRoot().getShoot().getBurst_restart_delay();
-		    }
-
-		    System.out.println(burstMode + ":" + shotsPerBurst + ":" + burstFireRate + ":" + fireRate);
+                    if (burstMode) {
+                        fireRate = value.getRoot().getShoot().getBurst_restart_delay();
+                    }
 
                     flaming = value.getRoot().getDamage().getFlaming();
 
@@ -406,22 +404,23 @@ public class Shoot implements Listener {
                     }
 
                     Projectile_Speed = value.getRoot().getShoot().getProjectile_speed();
-                    if (value.getRoot().getShoot().getSpread() != null){
+                    if (value.getRoot().getShoot().getSpread() != null) {
                         spread = value.getRoot().getShoot().getSpread().getBase_spread();
-                    }else {
+                    } else {
                         spread = 0.0;
                     }
 
                     weaponSounds.put("Shoot_Mechanics", value.getRoot().getShoot().getMechanics());
                     weaponSounds.put("Weapon_Get_Mechanics", new ArrayList<>());
                     weaponSounds.get("Weapon_Get_Mechanics").add(value.getRoot().getInfo().getWeapon_get_mechanics());
-                    weaponSounds.put("Out_Of_Ammo_Mechanics", value.getRoot().getReload().getAmmo().getOutOf_ammo_mechanics());
+                    weaponSounds.put("Out_Of_Ammo_Mechanics",
+                            value.getRoot().getReload().getAmmo().getOutOf_ammo_mechanics());
                     weaponSounds.put("Start_Mechanics", value.getRoot().getReload().getStart_mechanics());
                     weaponSounds.put("Finish_Mechanics", value.getRoot().getReload().getFinish_mechanics());
                     weaponSounds.put("Open_Mechanics", value.getRoot().getFirearm_action().getOpen().getMechanics());
                     weaponSounds.put("Close_Mechanics", value.getRoot().getFirearm_action().getClose().getMechanics());
 
-                    if (!InventoryOpen && !fromGround){
+                    if (!InventoryOpen && !fromGround) {
                         playWeaponSound(player, "Weapon_Get_Mechanics");
                         renamePreProcess(finalUuid, value, player);
                     }
@@ -430,9 +429,10 @@ public class Shoot implements Listener {
             });
 
             weapon.getTools().forEach((toolName, tool) -> {
-                if (tool.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())) {
+                if (tool.getRoot().getInfo().getWeapon_item().getType()
+                        .equalsIgnoreCase(ItemInHand.getType().toString())) {
                     UUID finalUuid = setOrGetUUID(itemMeta, ItemInHand);
-                    if (tool.getRoot().getInfo().getWeapon_item().isUnbreakable()){
+                    if (tool.getRoot().getInfo().getWeapon_item().isUnbreakable()) {
                         itemMeta.setUnbreakable(true);
                     }
                     List<Object> loreItems = processMeta(tool, itemMeta);
@@ -443,8 +443,8 @@ public class Shoot implements Listener {
                     reloadTime = tool.getRoot().getReload().getReload_duration();
                     magSize = tool.getRoot().getReload().getMagazine_size();
                     fireRate = tool.getRoot().getShoot().getDelay_between_shots();
-		    hasSecondaryAction = tool.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
-		    burstMode = tool.getRoot().getInfo().getWeapon_item().isBurst_mode();
+                    hasSecondaryAction = tool.getRoot().getInfo().getWeapon_item().isSecondary_fire_type();
+                    burstMode = tool.getRoot().getInfo().getWeapon_item().isBurst_mode();
 
                     itemMeta.displayName(displayName);
 
@@ -458,10 +458,12 @@ public class Shoot implements Listener {
                     weaponSounds.put("Finish_Mechanics", tool.getRoot().getReload().getFinish_mechanics());
                     weapon_Type = tool.getRoot().getProjectile();
 
-                    if (!InventoryOpen && !fromGround){
+                    if (!InventoryOpen && !fromGround) {
                         playWeaponSound(player, "Weapon_Get_Mechanics");
-//                        Integer[] arr = {Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString()), -1, -1};
-//                        renameItem(tool.getRoot().getInfo().getWeapon_item().getName(),arr , player, false);
+                        // Integer[] arr =
+                        // {Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString()), -1, -1};
+                        // renameItem(tool.getRoot().getInfo().getWeapon_item().getName(),arr , player,
+                        // false);
                         renamePreProcess(finalUuid, tool, player);
                     }
                     fromGround = false;
@@ -487,7 +489,7 @@ public class Shoot implements Listener {
     public void onItemSwitch(PlayerItemHeldEvent event) {
 
         Player player = event.getPlayer();
-        if (controlFire != null && !controlFire.isCancelled()){
+        if (controlFire != null && !controlFire.isCancelled()) {
             controlFire.cancel();
             controlFire = null;
         }
@@ -503,7 +505,6 @@ public class Shoot implements Listener {
 
         if (PrevItemInHand != null && PrevItemInHand.getType() != Material.AIR) {
 
-
             UUID finalUuid = returnUUID(PrevItemInHand);
             weapon.getWeapons().forEach((key, value) -> stopReload(value, finalUuid, PrevItemInHand, player));
             weapon.getTools().forEach((key, value) -> stopReload(value, finalUuid, PrevItemInHand, player));
@@ -514,13 +515,14 @@ public class Shoot implements Listener {
         // Additional logic for handling the switch can be added here
     }
 
-    private void stopReload(WeaponClass value, UUID finalUuid, ItemStack PrevItemInHand, Player player){
-        if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(PrevItemInHand.getType().toString())){
+    private void stopReload(WeaponClass value, UUID finalUuid, ItemStack PrevItemInHand, Player player) {
+        if (value.getRoot().getInfo().getWeapon_item().getType()
+                .equalsIgnoreCase(PrevItemInHand.getType().toString())) {
             if (bulletsLeft.get(finalUuid) == null) {
                 loadWeapons(PrevItemInHand, player);
             }
             boolean isReloading = (boolean) bulletsLeft.get(finalUuid).get(1);
-            if (isReloading){
+            if (isReloading) {
                 cancelReloadTasks(finalUuid, player);
                 player.sendMessage(Component.text("Reload canceled!", NamedTextColor.DARK_AQUA));
             }
@@ -537,16 +539,16 @@ public class Shoot implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             dontShoot = false;
             wasDrop = false;
-        },3);
+        }, 3);
         UUID finalUuid = returnUUID(item);
-
 
         weapon.getWeapons().forEach((key, value) -> reloadCheck(value, event, player, finalUuid, item));
         weapon.getTools().forEach((key, value) -> reloadCheck(value, event, player, finalUuid, item));
 
     }
 
-    private void reloadCheck(WeaponClass value, PlayerDropItemEvent event, Player player, UUID finalUuid, ItemStack item) {
+    private void reloadCheck(WeaponClass value, PlayerDropItemEvent event, Player player, UUID finalUuid,
+            ItemStack item) {
         if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(item.getType().toString())) {
             if (!InventoryOpen) {
                 event.setCancelled(true);
@@ -555,26 +557,26 @@ public class Shoot implements Listener {
                 boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
                 int secondaryAmmo = (int) bulletsLeft.get(finalUuid).get(4);
                 int dualWieldAmmo = (int) bulletsLeft.get(finalUuid).get(5);
-                if (!isReloading && ((Integer) bulletsLeft.get(finalUuid).getFirst() < magSize || secondaryAmmo == 0|| dualWieldAmmo < magSize)) {
+                if (!isReloading && ((Integer) bulletsLeft.get(finalUuid).getFirst() < magSize || secondaryAmmo == 0
+                        || dualWieldAmmo < magSize)) {
 
-                    if ((boolean) bulletsLeft.get(finalUuid).get(3)){
+                    if ((boolean) bulletsLeft.get(finalUuid).get(3)) {
                         reloadGrenadeLauncher(player, finalUuid, value.getRoot().getInfo().getWeapon_item().getName());
-                    }
-                    else if (weapon_Type != null && Projectile_Type != null){
+                    } else if (weapon_Type != null && Projectile_Type != null) {
                         reloadWeapon(value, player, finalUuid);
-                    }else{
+                    } else {
                         reloadTool(value, player, finalUuid);
                     }
 
-
-
                 }
-            } else if (inventoryActions == InventoryAction.DROP_ONE_SLOT || inventoryActions == InventoryAction.DROP_ALL_SLOT) {
+            } else if (inventoryActions == InventoryAction.DROP_ONE_SLOT
+                    || inventoryActions == InventoryAction.DROP_ALL_SLOT) {
                 ItemStack droppedItem = event.getItemDrop().getItemStack();
                 event.getItemDrop().remove();
-                Bukkit.getScheduler().runTaskLater(plugin, () -> player.getInventory().setItem(itemSlot, droppedItem), 1L);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> player.getInventory().setItem(itemSlot, droppedItem),
+                        1L);
 
-            } else{
+            } else {
                 cancelReloadTasks(finalUuid, player);
 
             }
@@ -583,7 +585,8 @@ public class Shoot implements Listener {
     }
 
     private boolean isHoe(ItemStack item) {
-        if (item == null) return false;
+        if (item == null)
+            return false;
         Material type = item.getType();
         return type == Material.WOODEN_HOE || type == Material.STONE_HOE ||
                 type == Material.IRON_HOE || type == Material.GOLDEN_HOE ||
@@ -591,7 +594,8 @@ public class Shoot implements Listener {
     }
 
     private boolean isShovel(ItemStack item) {
-        if (item == null) return false;
+        if (item == null)
+            return false;
         Material type = item.getType();
         return type == Material.WOODEN_SHOVEL || type == Material.STONE_SHOVEL ||
                 type == Material.IRON_SHOVEL || type == Material.GOLDEN_SHOVEL ||
@@ -614,7 +618,8 @@ public class Shoot implements Listener {
             // Check if the item should be kept (based on item type, name, etc.)
             weapon.getWeapons().forEach((key, value) -> {
                 if (item.getType().toString().equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType()) &&
-                        value.getRoot().getInfo().getWeapon_item().getLore().stream().anyMatch(line -> line.contains("Tier 5") || line.contains("Special"))) {
+                        value.getRoot().getInfo().getWeapon_item().getLore().stream()
+                                .anyMatch(line -> line.contains("Tier 5") || line.contains("Special"))) {
                     // Keep this item, so remove it from the drops list
                     iterator.remove();
                 }
@@ -626,20 +631,20 @@ public class Shoot implements Listener {
                 }
             });
 
-
         }
 
     }
 
-    public void checkFallDamage(EntityDamageEvent event){
+    public void checkFallDamage(EntityDamageEvent event) {
         Player player = (Player) event.getEntity();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         weapon.getTools().forEach((key, value) -> {
-            if (itemInHand.getType().toString().equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType())) {
+            if (itemInHand.getType().toString()
+                    .equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType())) {
                 event.setCancelled(true);
             }
         });
-        if (itemInHand.getType().toString().equalsIgnoreCase("diamond_shovel")){
+        if (itemInHand.getType().toString().equalsIgnoreCase("diamond_shovel")) {
             event.setCancelled(true);
         }
     }
@@ -649,15 +654,16 @@ public class Shoot implements Listener {
         List<ItemStack> itemsToRemove = new ArrayList<>();
         Player player = event.getPlayer();
         player.getInventory().forEach(key -> {
-            if (key != null && key.getType() != Material.AIR){
-                weapon.getWeapons().forEach((k, v) ->{
+            if (key != null && key.getType() != Material.AIR) {
+                weapon.getWeapons().forEach((k, v) -> {
                     if (key.getType().toString().equalsIgnoreCase(v.getRoot().getInfo().getWeapon_item().getType()) &&
-                            v.getRoot().getInfo().getWeapon_item().getLore().stream().anyMatch(line -> line.contains("Tier 5") || line.contains("Special"))){
+                            v.getRoot().getInfo().getWeapon_item().getLore().stream()
+                                    .anyMatch(line -> line.contains("Tier 5") || line.contains("Special"))) {
                         found.set(true);
                     }
                 });
-                weapon.getTools().forEach((k, v) ->{
-                    if (key.getType().toString().equalsIgnoreCase(v.getRoot().getInfo().getWeapon_item().getType())){
+                weapon.getTools().forEach((k, v) -> {
+                    if (key.getType().toString().equalsIgnoreCase(v.getRoot().getInfo().getWeapon_item().getType())) {
                         found.set(true);
                     }
                 });
@@ -673,8 +679,10 @@ public class Shoot implements Listener {
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
         if (offHandItem.getType() != Material.AIR) {
             weapon.getWeapons().forEach((key, value) -> {
-                if (offHandItem.getType().toString().equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType()) &&
-                        value.getRoot().getInfo().getWeapon_item().getLore().stream().anyMatch(line -> line.contains("Tier 5"))){
+                if (offHandItem.getType().toString()
+                        .equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType()) &&
+                        value.getRoot().getInfo().getWeapon_item().getLore().stream()
+                                .anyMatch(line -> line.contains("Tier 5"))) {
                     found.set(true);
                 }
             });
@@ -688,51 +696,52 @@ public class Shoot implements Listener {
         itemsToRemove.forEach(item -> event.getPlayer().getInventory().remove(item));
     }
 
-    private void correctShoot(Integer indexOfbullets, Integer val, UUID finalUuid, WeaponClass value, Player player, Integer indexOfSide) {
+    private void correctShoot(Integer indexOfbullets, Integer val, UUID finalUuid, WeaponClass value, Player player,
+            Integer indexOfSide) {
         bulletsLeft.get(finalUuid).set(indexOfSide, true);
-        bulletsLeft.get(finalUuid).set(indexOfbullets, val-shotsPerBurst+1);
-	if (burstMode){
-	    Bukkit.getScheduler().runTask(plugin, () -> {
-		    new BukkitRunnable() {
-			int count = 0;
+        int ammoleft = Integer.parseInt(bulletsLeft.get(finalUuid).get(indexOfbullets).toString());
+        bulletsLeft.get(finalUuid).set(indexOfbullets, val - shotsPerBurst + 1 >= 0 ? val - shotsPerBurst + 1 : 0);
+        if (burstMode) {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                new BukkitRunnable() {
+                    int count = 0;
 
-			@Override
-			public void run() {
-			    fireRifle(value, player);
-			    count++;
-			    if (count >= shotsPerBurst) {
-				this.cancel();
-			    }
-			}
-		    }.runTaskTimer(plugin, 0L, burstFireRate); // start immediately, repeat every 3 ticks
-		});
-	}else{
-	    fireRifle(value, player);
-	}
+                    @Override
+                    public void run() {
+                        fireRifle(value, player);
+                        count++;
+                        if (count >= shotsPerBurst || count >= ammoleft) {
+                            this.cancel();
+                        }
+                    }
+                }.runTaskTimer(plugin, 0L, burstFireRate); // start immediately, repeat every 3 ticks
+            });
+        } else {
+            fireRifle(value, player);
+        }
         Bukkit.getScheduler().runTaskLater(plugin, () -> bulletsLeft.get(finalUuid).set(indexOfSide, false), fireRate);
     }
 
-    public void handleShooting(Player player, boolean leftShot){
-        if (!isFlagAllowed(player, Flags.PVP)){
+    public void handleShooting(Player player, boolean leftShot) {
+        if (!isFlagAllowed(player, Flags.PVP)) {
             return;
         }
         ItemStack ItemInHand = player.getInventory().getItemInMainHand();
         UUID finalUuid = returnUUID(ItemInHand);
 
         weapon.getWeapons().forEach((key, value) -> {
-            if (ItemInHand.getType().toString().equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType())) {
+            if (ItemInHand.getType().toString()
+                    .equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType())) {
                 int indexOfbullets = 0;
 
-                if (leftShot){
+                if (leftShot) {
                     indexOfbullets = 5;
                 }
                 int val = Integer.parseInt(bulletsLeft.get(finalUuid).get(indexOfbullets).toString());
 
-
                 boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
                 boolean shotRight = (Boolean) bulletsLeft.get(finalUuid).get(2);
                 boolean shotLeft = (Boolean) bulletsLeft.get(finalUuid).get(6);
-
 
                 if (val > 0 && !isReloading) {
 
@@ -745,12 +754,12 @@ public class Shoot implements Listener {
                         correctShoot(indexOfbullets, val, finalUuid, value, player, 6);
                     }
 
-
                 }
                 renamePreProcess(finalUuid, value, player);
-                if (!dualWield){
+                if (!dualWield) {
                     startReload(finalUuid, player, isReloading, value, val);
-                } else if ((int) bulletsLeft.get(finalUuid).get(0) == 0 && (int) bulletsLeft.get(finalUuid).get(5) == 0) {
+                } else if ((int) bulletsLeft.get(finalUuid).get(0) == 0
+                        && (int) bulletsLeft.get(finalUuid).get(5) == 0) {
                     startReload(finalUuid, player, isReloading, value, val);
                 }
 
@@ -758,7 +767,8 @@ public class Shoot implements Listener {
         });
 
         weapon.getTools().forEach((key, value) -> {
-            if (ItemInHand.getType().toString().equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType())) {
+            if (ItemInHand.getType().toString()
+                    .equalsIgnoreCase(value.getRoot().getInfo().getWeapon_item().getType())) {
                 int val = Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString());
 
                 boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
@@ -769,7 +779,8 @@ public class Shoot implements Listener {
                     bulletsLeft.get(finalUuid).set(2, true);
                     bulletsLeft.get(finalUuid).set(0, val);
                     useTool(value, player);
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> bulletsLeft.get(finalUuid).set(2, false), fireRate);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> bulletsLeft.get(finalUuid).set(2, false),
+                            fireRate);
 
                 }
                 startReload(finalUuid, player, isReloading, value, val);
@@ -777,19 +788,19 @@ public class Shoot implements Listener {
         });
     }
 
-    private void startReload(UUID finalUuid, Player player, boolean isReloading, WeaponClass value, Integer ammoLeft){
+    private void startReload(UUID finalUuid, Player player, boolean isReloading, WeaponClass value, Integer ammoLeft) {
         if (ammoLeft <= 0 && !isReloading) {
             // Begin reloading
             if (weapon_Type != null && Projectile_Type != null) {
                 reloadWeapon(value, player, finalUuid);
-            }else{
+            } else {
                 reloadTool(value, player, finalUuid);
             }
 
         }
     }
 
-    private void reloadGrenadeLauncher(Player player, UUID finalUuid, String weapon_name){
+    private void reloadGrenadeLauncher(Player player, UUID finalUuid, String weapon_name) {
         boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
         AtomicInteger primaryAmmo = new AtomicInteger((int) bulletsLeft.get(finalUuid).get(0));
         AtomicInteger secondaryAmmo = new AtomicInteger((int) bulletsLeft.get(finalUuid).get(4));
@@ -802,7 +813,7 @@ public class Shoot implements Listener {
             reloadTasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 secondaryAmmo.set(1);
                 bulletsLeft.get(finalUuid).set(4, 1);
-                Integer[] arr = {primaryAmmo.get(), secondaryAmmo.get(), -1};
+                Integer[] arr = { primaryAmmo.get(), secondaryAmmo.get(), -1 };
                 renameItem(weapon_name, arr, player, state.get());
                 playWeaponSound(player, "Finish_Mechanics");
                 player.sendMessage(Component.text("Reload complete! Magazine refilled.", NamedTextColor.GREEN));
@@ -811,7 +822,7 @@ public class Shoot implements Listener {
         }
     }
 
-    private void launchGrenade(Player player){
+    private void launchGrenade(Player player) {
         ItemStack ItemInHand = player.getInventory().getItemInMainHand();
         UUID finalUuid = returnUUID(ItemInHand);
 
@@ -829,7 +840,8 @@ public class Shoot implements Listener {
         }
         AtomicReference<String> weapon_name = new AtomicReference<>();
         weapon.getWeapons().forEach((key, value) -> {
-            if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())) {
+            if (value.getRoot().getInfo().getWeapon_item().getType()
+                    .equalsIgnoreCase(ItemInHand.getType().toString())) {
                 weapon_name.set(value.getRoot().getInfo().getWeapon_item().getName());
                 renamePreProcess(finalUuid, value, player);
             }
@@ -838,30 +850,30 @@ public class Shoot implements Listener {
 
     }
 
-
-    public void shootSemiAuto(Player player){
+    public void shootSemiAuto(Player player) {
         // Check if the player is holding a diamond pickaxe
         ItemStack ItemInHand = player.getInventory().getItemInMainHand();
         UUID finalUuid = returnUUID(ItemInHand);
 
-        if (bulletsLeft.get(finalUuid) == null || !isFlagAllowed(player, Flags.PVP) || shootingType == null || ItemInHand.getType() == Material.AIR || InventoryOpen || breakingBlock){
+        if (bulletsLeft.get(finalUuid) == null || !isFlagAllowed(player, Flags.PVP) || shootingType == null
+                || ItemInHand.getType() == Material.AIR || InventoryOpen || breakingBlock) {
             return;
         }
 
         boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if (shootingType.equalsIgnoreCase("semi-auto") && !dontShoot){
-                if (!(boolean) bulletsLeft.get(finalUuid).get(3)){
+            if (shootingType.equalsIgnoreCase("semi-auto") && !dontShoot) {
+                if (!(boolean) bulletsLeft.get(finalUuid).get(3)) {
                     handleShooting(player, false);
-                }else {
+                } else {
                     launchGrenade(player);
                 }
 
-            }else if (dualWield && !isReloading && !dontShoot){
+            } else if (dualWield && !isReloading && !dontShoot) {
                 handleShooting(player, true);
 
             }
-        },1);
+        }, 1);
 
     }
 
@@ -898,13 +910,15 @@ public class Shoot implements Listener {
             // Check if the PLACE_VEHICLE flag is set
             StateFlag.State flagState = region.getFlag(flag);
 
-            // If the flag is not ALLOW, return true to indicate that minecarts are not allowed
+            // If the flag is not ALLOW, return true to indicate that minecarts are not
+            // allowed
             if (flagState != StateFlag.State.ALLOW) {
                 return false; // Minecarts are not allowed in this region
             }
         }
 
-        // If no region explicitly denies minecarts, return false (minecarts are allowed)
+        // If no region explicitly denies minecarts, return false (minecarts are
+        // allowed)
         return true;
     }
 
@@ -926,12 +940,12 @@ public class Shoot implements Listener {
             }
 
             dontShoot = true;
-            Bukkit.getScheduler().runTaskLater(plugin, () -> dontShoot = false,4);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> dontShoot = false, 4);
         }
 
-	if (event.getAction() == Action.LEFT_CLICK_BLOCK && ItemInHand.getType() == Material.DIAMOND_PICKAXE){
-	    setBreakingBlock(true);
-	}
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK && ItemInHand.getType() == Material.DIAMOND_PICKAXE) {
+            setBreakingBlock(true);
+        }
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = event.getItem();
@@ -943,32 +957,34 @@ public class Shoot implements Listener {
                     Location location = clickedBlock.getLocation().add(0.5, 1, 0.5);
 
                     // Summon a minecart at the clicked location
-                    Minecart minecart = (Minecart) Objects.requireNonNull(location.getWorld()).spawnEntity(location, EntityType.MINECART);
+                    Minecart minecart = (Minecart) Objects.requireNonNull(location.getWorld()).spawnEntity(location,
+                            EntityType.MINECART);
                     minecart.setVelocity(new Vector(0, 0, 0)); // Prevent immediate movement
 
                     // Cancel the original block placement
                     event.setCancelled(true);
 
-                    event.getPlayer().sendMessage(Component.text("Minecart placed!",NamedTextColor.GREEN));
+                    event.getPlayer().sendMessage(Component.text("Minecart placed!", NamedTextColor.GREEN));
                     player.getInventory().remove(item);
                 }
             }
         }
 
         weapon.getTools().forEach((key, value) -> {
-            if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())){
+            if (value.getRoot().getInfo().getWeapon_item().getType()
+                    .equalsIgnoreCase(ItemInHand.getType().toString())) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     if (clickedBlock != null && clickedBlock.getType() == Material.CHEST) {
                         event.setCancelled(true);
                     }
-                    if (clickedBlock == null){
+                    if (clickedBlock == null) {
                         return;
                     }
-                    if ((isHoe(ItemInHand) || isShovel(ItemInHand)) && clickedBlock.getType() == Material.GRASS_BLOCK){
+                    if ((isHoe(ItemInHand) || isShovel(ItemInHand)) && clickedBlock.getType() == Material.GRASS_BLOCK) {
                         event.setCancelled(true);
                     }
                 }
-                if (event.getAction().toString().contains("LEFT_CLICK_BLOCK")){
+                if (event.getAction().toString().contains("LEFT_CLICK_BLOCK")) {
                     event.setCancelled(true);
                 }
                 if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -978,38 +994,39 @@ public class Shoot implements Listener {
                 }
             }
 
-
         });
 
         weapon.getWeapons().forEach((key, value) -> {
-            if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(ItemInHand.getType().toString())) {
+            if (value.getRoot().getInfo().getWeapon_item().getType()
+                    .equalsIgnoreCase(ItemInHand.getType().toString())) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     if (clickedBlock != null && clickedBlock.getType() == Material.CHEST) {
                         event.setCancelled(true);
                         dontShoot = true;
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> dontShoot = false,2);
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> dontShoot = false, 2);
                     }
-                    if (clickedBlock == null){
+                    if (clickedBlock == null) {
                         return;
                     }
-                    if ((isHoe(ItemInHand) || isShovel(ItemInHand)) && clickedBlock.getType() == Material.GRASS_BLOCK){
+                    if ((isHoe(ItemInHand) || isShovel(ItemInHand)) && clickedBlock.getType() == Material.GRASS_BLOCK) {
                         event.setCancelled(true);
                     }
                 }
-                if (event.getAction().toString().contains("LEFT_CLICK_BLOCK")){
+                if (event.getAction().toString().contains("LEFT_CLICK_BLOCK")) {
                     event.setCancelled(true);
                 }
                 if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                    if (zoomAmount > 0 && !zoomOn && !wasDrop){
-                        double temp = zoomAmount*10 - 10;
+                    if (zoomAmount > 0 && !zoomOn && !wasDrop) {
+                        double temp = zoomAmount * 10 - 10;
 
                         zoomOn = true;
 
                         zoomScheduler = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 1, (int) temp, false, false));
-                        },0,1);
-
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0,
+                                    false, false));
+                            player.addPotionEffect(
+                                    new PotionEffect(PotionEffectType.SLOWNESS, 1, (int) temp, false, false));
+                        }, 0, 1);
 
                     } else if (zoomAmount > 0 && zoomScheduler != null && !zoomScheduler.isCancelled()) {
                         zoomScheduler.cancel();
@@ -1024,11 +1041,12 @@ public class Shoot implements Listener {
                     UUID finalUuid = returnUUID(ItemInHand);
                     if (ItemInHand.getType() == Material.WOODEN_HOE && isFlagAllowed(player, Flags.PVP)) {
                         flameThrower(player, ItemInHand, value);
-                    }else{
-                        if (!shootingType.equalsIgnoreCase("semi-auto")){
-                            if (controlFire == null || controlFire.isCancelled()){
+                    } else {
+                        if (!shootingType.equalsIgnoreCase("semi-auto")) {
+                            if (controlFire == null || controlFire.isCancelled()) {
                                 boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
-                                if (isReloading && weapon_Type.equalsIgnoreCase("shotgun") && (Integer) bulletsLeft.get(finalUuid).get(0) > 0) {
+                                if (isReloading && weapon_Type.equalsIgnoreCase("shotgun")
+                                        && (Integer) bulletsLeft.get(finalUuid).get(0) > 0) {
                                     cancelReloadTasks(finalUuid, player);
                                     bulletsLeft.get(finalUuid).set(2, false);
                                 }
@@ -1048,13 +1066,13 @@ public class Shoot implements Listener {
                                     }
                                 }, 0, 1); // Start immediately and repeat every tick
                             }
-                        }else if (hasSecondaryAction){
+                        } else if (hasSecondaryAction) {
                             boolean state = (boolean) bulletsLeft.get(finalUuid).get(3);
                             bulletsLeft.get(finalUuid).set(3, !state);
 
                             boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
                             renamePreProcess(finalUuid, value, player);
-                            if (isReloading){
+                            if (isReloading) {
                                 cancelReloadTasks(finalUuid, player);
                                 player.sendMessage(Component.text("Reload canceled!", NamedTextColor.DARK_AQUA));
                             }
@@ -1077,14 +1095,13 @@ public class Shoot implements Listener {
         if (val > 0 && !shot && !isReloading) {
             bulletsLeft.get(finalUuid).set(2, true);
             bulletsLeft.get(finalUuid).set(0, val - 1);
-            for(int i = 0; i <24; i++){
+            for (int i = 0; i < 24; i++) {
                 Egg egg = player.launchProjectile(Egg.class);
                 Vector originalVelocity = egg.getVelocity();
 
                 originalVelocity.setX(originalVelocity.getX() * 0.5);
                 originalVelocity.setY(originalVelocity.getY() * 0.5);
                 originalVelocity.setZ(originalVelocity.getZ() * 0.5);
-
 
                 Vector newVelocity = originalVelocity.add(randomOffset(new Random()));
                 egg.setVelocity(newVelocity);
@@ -1118,82 +1135,82 @@ public class Shoot implements Listener {
     }
 
     private void playWeaponSound(Player player, String mechanics) {
-        for (String sound : weaponSounds.get(mechanics)){
-            if (sound.contains("sound")){
-                String play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf("}"));
+        for (String sound : weaponSounds.get(mechanics)) {
+            if (sound.contains("sound")) {
+                String play = sound.substring(sound.indexOf("sound=") + 6, sound.indexOf("}"));
                 String volume = "1";
                 String pitch = "1";
-                //String noise = "1";
+                // String noise = "1";
                 if (sound.contains("volume")) {
-                    play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf(", v"));
+                    play = sound.substring(sound.indexOf("sound=") + 6, sound.indexOf(", v"));
                     if (sound.contains("pitch")) {
-                        volume = sound.substring(sound.indexOf("volume=")+7, sound.indexOf(", p"));
-                        pitch = sound.substring(sound.indexOf("pitch=")+6, sound.indexOf(", n"));
-                    }else{
-                        volume = sound.substring(sound.indexOf("volume=")+7, sound.indexOf(", n"));
+                        volume = sound.substring(sound.indexOf("volume=") + 7, sound.indexOf(", p"));
+                        pitch = sound.substring(sound.indexOf("pitch=") + 6, sound.indexOf(", n"));
+                    } else {
+                        volume = sound.substring(sound.indexOf("volume=") + 7, sound.indexOf(", n"));
                     }
                 } else if (sound.contains("pitch")) {
-                    play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf(", p"));
+                    play = sound.substring(sound.indexOf("sound=") + 6, sound.indexOf(", p"));
                     if (sound.contains("listener")) {
-                        pitch = sound.substring(sound.indexOf("pitch=")+6, sound.indexOf(", l"));
-                    }else {
-                        pitch = sound.substring(sound.indexOf("pitch=")+6, sound.indexOf("}"));
+                        pitch = sound.substring(sound.indexOf("pitch=") + 6, sound.indexOf(", l"));
+                    } else {
+                        pitch = sound.substring(sound.indexOf("pitch=") + 6, sound.indexOf("}"));
                     }
                 }
 
                 play = "minecraft:" + play;
                 // if (sound.contains("noise") && !sound.contains("listener")) {
-                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
+                // noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
                 // }else if (sound.contains("noise")) {
-                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
+                // noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
                 // }
 
                 net.kyori.adventure.sound.Sound playSound = net.kyori.adventure.sound.Sound.sound(
-                    net.kyori.adventure.key.Key.key(play),// the string name of the sound, e.g., "minecraft:block.note_block.harp"
-                    net.kyori.adventure.sound.Sound.Source.MASTER, // or PLAYER, MUSIC, etc.
-                    Float.parseFloat(volume),                // volume
-                    Float.parseFloat(pitch)                 // pitch
+                        net.kyori.adventure.key.Key.key(play), // the string name of the sound, e.g.,
+                                                               // "minecraft:block.note_block.harp"
+                        net.kyori.adventure.sound.Sound.Source.MASTER, // or PLAYER, MUSIC, etc.
+                        Float.parseFloat(volume), // volume
+                        Float.parseFloat(pitch) // pitch
                 );
                 player.getWorld().playSound(playSound);
-                //player.getWorld().playSound(player.getLocation(), Sound.valueOf(play), Float.parseFloat(volume), Float.parseFloat(pitch));
+                // player.getWorld().playSound(player.getLocation(), Sound.valueOf(play),
+                // Float.parseFloat(volume), Float.parseFloat(pitch));
             }
         }
     }
 
-    public void reloadWeapon(WeaponClass value, Player player, UUID finalUuid){
-
+    public void reloadWeapon(WeaponClass value, Player player, UUID finalUuid) {
 
         renamePreProcess(finalUuid, value, player);
 
         bulletsLeft.get(finalUuid).set(1, true);
         String ammo = switch (Projectile_Type.toLowerCase()) {
             case "assaultrifle_ammo" ->
-                    weapon.getAmmos().get("Assaultrifle_Ammo").getAssaultrifle_ammo().getItem_ammo().bullet_item.getType();
+                weapon.getAmmos().get("Assaultrifle_Ammo").getAssaultrifle_ammo().getItem_ammo().bullet_item.getType();
             case "pistol_ammo" ->
-                    weapon.getAmmos().get("Assaultrifle_Ammo").getPistol_ammo().getItem_ammo().bullet_item.getType();
+                weapon.getAmmos().get("Assaultrifle_Ammo").getPistol_ammo().getItem_ammo().bullet_item.getType();
             case "shotgun_ammo" ->
-                    weapon.getAmmos().get("Assaultrifle_Ammo").getShotgun_ammo().getItem_ammo().bullet_item.getType();
+                weapon.getAmmos().get("Assaultrifle_Ammo").getShotgun_ammo().getItem_ammo().bullet_item.getType();
             case "sniper_ammo" ->
-                    weapon.getAmmos().get("Assaultrifle_Ammo").getSniper_ammo().getItem_ammo().bullet_item.getType();
+                weapon.getAmmos().get("Assaultrifle_Ammo").getSniper_ammo().getItem_ammo().bullet_item.getType();
             default -> "";
         };
         Material ammoMaterial = Material.matchMaterial(ammo);
-        if (ammoMaterial == null){
+        if (ammoMaterial == null) {
             return;
         }
         boolean hasAmmo = player.getInventory().contains(ammoMaterial);
         if (!hasAmmo) {
             bulletsLeft.get(finalUuid).set(1, false);
-            if (!outOfAmmoCooldown){
+            if (!outOfAmmoCooldown) {
                 playWeaponSound(player, "Out_Of_Ammo_Mechanics");
-                player.sendMessage(Component.text("No ammo",NamedTextColor.GREEN));
+                player.sendMessage(Component.text("No ammo", NamedTextColor.GREEN));
                 outOfAmmoCooldown = true;
-                Bukkit.getScheduler().runTaskLater(plugin, () -> outOfAmmoCooldown = false,fireRate);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> outOfAmmoCooldown = false, fireRate);
             }
 
             return;
         }
-
 
         // Check the material
         // Add the stack size
@@ -1201,61 +1218,64 @@ public class Shoot implements Listener {
         playWeaponSound(player, "Start_Mechanics");
 
         reloadByIndexing(0, finalUuid, value, player, ammoMaterial);
-        Bukkit.getScheduler().runTaskLater(plugin, ()->{
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if ((int) bulletsLeft.get(finalUuid).get(5) != -1) {
                 reloadByIndexing(5, finalUuid, value, player, ammoMaterial);
             }
-        },10);
+        }, 10);
 
     }
 
     private void reloadByIndexing(Integer indexOfBullets,
-                                  UUID finalUuid, WeaponClass value, Player player,
-                                  Material ammoMaterial) {
+            UUID finalUuid, WeaponClass value, Player player,
+            Material ammoMaterial) {
 
-        AtomicInteger totalCount = new AtomicInteger(Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() == ammoMaterial).mapToInt(ItemStack::getAmount).sum());
+        AtomicInteger totalCount = new AtomicInteger(Arrays.stream(player.getInventory().getContents())
+                .filter(item -> item != null && item.getType() == ammoMaterial).mapToInt(ItemStack::getAmount).sum());
         int remaining = Integer.parseInt(bulletsLeft.get(finalUuid).get(indexOfBullets).toString());
         boolean isReloading = (boolean) bulletsLeft.get(finalUuid).get(1);
-        if (!isReloading){
+        if (!isReloading) {
             return;
         }
         BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             magSize = value.getRoot().getReload().getMagazine_size();
 
             int remove = magSize - remaining;
-            if (totalCount.get() + remaining < magSize){
+            if (totalCount.get() + remaining < magSize) {
                 magSize = totalCount.get() + remaining;
                 remove = totalCount.get();
             }
-            if (ammoPerReload > 0){
+            if (ammoPerReload > 0) {
                 remove = Math.min(ammoPerReload, totalCount.get());
                 magSize = Math.min(remaining + ammoPerReload, value.getRoot().getReload().getMagazine_size());
             }
-
 
             removeItems(ammoMaterial, remove, player);
             bulletsLeft.get(finalUuid).set(indexOfBullets, magSize);
 
             renamePreProcess(finalUuid, value, player);
-            if (ammoPerReload > 0 && magSize < value.getRoot().getReload().getMagazine_size()){
+            if (ammoPerReload > 0 && magSize < value.getRoot().getReload().getMagazine_size()) {
                 reloadByIndexing(indexOfBullets, finalUuid, value, player, ammoMaterial);
             }
-
 
             playWeaponSound(player, "Finish_Mechanics");
             Integer finalMagSize = value.getRoot().getReload().getMagazine_size();
 
-            AtomicInteger finalTotalCount = new AtomicInteger(Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() == ammoMaterial).mapToInt(ItemStack::getAmount).sum());
-            if (finalTotalCount.get() <= 0){
+            AtomicInteger finalTotalCount = new AtomicInteger(Arrays.stream(player.getInventory().getContents())
+                    .filter(item -> item != null && item.getType() == ammoMaterial).mapToInt(ItemStack::getAmount)
+                    .sum());
+            if (finalTotalCount.get() <= 0) {
                 bulletsLeft.get(finalUuid).set(1, false);
-                player.sendMessage(Component.text("Reload complete! Magazine refilled.",NamedTextColor.GREEN));
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.", NamedTextColor.GREEN));
 
             }
-            if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize) && bulletsLeft.get(finalUuid).get(5).equals(-1)){
+            if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize)
+                    && bulletsLeft.get(finalUuid).get(5).equals(-1)) {
                 bulletsLeft.get(finalUuid).set(1, false);
-                player.sendMessage(Component.text("Reload complete! Magazine refilled.",NamedTextColor.GREEN));
-            }else if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize) && bulletsLeft.get(finalUuid).get(5).equals(finalMagSize)){
-                player.sendMessage(Component.text("Reload complete! Magazine refilled.",NamedTextColor.GREEN));
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.", NamedTextColor.GREEN));
+            } else if (bulletsLeft.get(finalUuid).get(0).equals(finalMagSize)
+                    && bulletsLeft.get(finalUuid).get(5).equals(finalMagSize)) {
+                player.sendMessage(Component.text("Reload complete! Magazine refilled.", NamedTextColor.GREEN));
                 bulletsLeft.get(finalUuid).set(1, false);
             }
 
@@ -1265,7 +1285,7 @@ public class Shoot implements Listener {
 
     }
 
-    private  void removeItems(Material itemType, int amountToRemove, Player player) {
+    private void removeItems(Material itemType, int amountToRemove, Player player) {
         int remainingAmount = amountToRemove;
 
         for (ItemStack item : player.getInventory().getContents()) {
@@ -1284,15 +1304,11 @@ public class Shoot implements Listener {
                 }
             }
 
-
         }
     }
 
-
-    public void onCreatureSpawn(CreatureSpawnEvent event)
-    {
-        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.EGG)
-        {
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.EGG) {
             event.setCancelled(true);
         }
     }
@@ -1301,14 +1317,13 @@ public class Shoot implements Listener {
 
         Entity entity = event.getEntity();
 
-
         // Double check: One here and one in shoot manager.
         if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player) {
 
             if (projectile.getType().equals(EntityType.EGG)) {
                 projectile.setInvulnerable(true);
-                if (flaming){
-                    projectile.setFireTicks(20*60);
+                if (flaming) {
+                    projectile.setFireTicks(20 * 60);
                 }
 
             }
@@ -1317,7 +1332,7 @@ public class Shoot implements Listener {
 
     private double calculateDamageWithArmor(double damage, double armorPoints, double armorToughness) {
         // Standard armor formula used in Minecraft
-        double reduction = armorPoints -  (4*damage/ (armorToughness + 8));
+        double reduction = armorPoints - (4 * damage / (armorToughness + 8));
         return damage * (1 - Math.max(reduction, armorPoints / 5) / 25.0);
     }
 
@@ -1326,7 +1341,6 @@ public class Shoot implements Listener {
         double protectionFactor = protectionLevel * 0.03;
         return damage * (1 - Math.min(protectionFactor, 0.8)); // Cap at 80% reduction
     }
-
 
     public void onEggHit(ProjectileHitEvent event) {
         // Check if the projectile is an Egg
@@ -1344,14 +1358,13 @@ public class Shoot implements Listener {
             Location hitLocation = projectile.getLocation();
             double distance = entityLocation.distance(playerLocation);
             AtomicReference<Double> damageChange = new AtomicReference<>((double) 0);
-            if (!damageDrop.isEmpty()){
-                damageDrop.forEach((key, value) ->{
-                    if (distance > key){
+            if (!damageDrop.isEmpty()) {
+                damageDrop.forEach((key, value) -> {
+                    if (distance > key) {
                         damageChange.set(value);
                     }
                 });
             }
-
 
             // Calculate the head's region (typically ~1 block above the entity's eye level)
             double headHeight = entityLocation.getY() + hitEntity.getHeight() * 0.8; // Adjust for different entities
@@ -1368,7 +1381,6 @@ public class Shoot implements Listener {
 
                 FireworkMeta meta = firework.getFireworkMeta();
 
-
                 // Set the firework effect
                 FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL) // Shape: BALL
@@ -1380,7 +1392,7 @@ public class Shoot implements Listener {
                 meta.setPower(1); // Flight time (scaled down for immediate detonation)
 
                 firework.setFireworkMeta(meta);
-                Bukkit.getScheduler().runTaskLater(plugin, firework::detonate,7);
+                Bukkit.getScheduler().runTaskLater(plugin, firework::detonate, 7);
                 // Detonate the firework immediately
 
                 extraDamage = bonusDamage;
@@ -1393,7 +1405,8 @@ public class Shoot implements Listener {
             // Get the armor points of the entity
 
             double armorPoints = Objects.requireNonNull(hitEntity.getAttribute(Attribute.ARMOR)).getValue();
-            double armorToughness = Objects.requireNonNull(hitEntity.getAttribute(Attribute.ARMOR_TOUGHNESS)).getValue();
+            double armorToughness = Objects.requireNonNull(hitEntity.getAttribute(Attribute.ARMOR_TOUGHNESS))
+                    .getValue();
             // Factor in armor reduction
             double damageAfterArmor = calculateDamageWithArmor(baseDamage, armorPoints, armorToughness);
 
@@ -1401,17 +1414,16 @@ public class Shoot implements Listener {
 
             ItemStack[] armorContents = Objects.requireNonNull(hitEntity.getEquipment()).getArmorContents();
 
-
             AtomicInteger protectionLevel = new AtomicInteger(0);
             // Loop through each piece of armor
             for (ItemStack armorPiece : armorContents) {
                 if (armorPiece != null) { // Ensure the armor piece is not null
                     ItemMeta armorMeta = armorPiece.getItemMeta();
                     if (armorMeta instanceof Damageable) {
-                        ((Damageable) armorMeta).setDamage(((Damageable) armorMeta).getDamage()+ (int) armorDamage);
+                        ((Damageable) armorMeta).setDamage(((Damageable) armorMeta).getDamage() + (int) armorDamage);
                         armorPiece.setItemMeta(armorMeta);
                     }
-                    //armorPiece.setDurability((short) (armorPiece.getDurability() + armorDamage));
+                    // armorPiece.setDurability((short) (armorPiece.getDurability() + armorDamage));
 
                     // Get the enchantments on this armor piece
                     if (armorMeta != null && Objects.requireNonNull(armorPiece.getItemMeta()).hasEnchants()) {
@@ -1424,14 +1436,14 @@ public class Shoot implements Listener {
                     }
                 }
             }
-//            hitEntity.getEquipment().setArmorContents(armorContents);
+            // hitEntity.getEquipment().setArmorContents(armorContents);
             if (protectionLevel.get() > 0) {
                 damageAfterArmor = applyProtectionEnchantmentReduction(damageAfterArmor, protectionLevel.get());
             }
             double absorption = hitEntity.getAbsorptionAmount();
             // Apply the calculated damage
 
-            if (damageEvent){
+            if (damageEvent) {
                 return;
             }
             System.out.println(damageAfterArmor);
@@ -1444,49 +1456,48 @@ public class Shoot implements Listener {
                     // Part of the damage is absorbed, subtract the remaining from regular health
                     double remainingDamage = damageAfterArmor - absorption;
                     hitEntity.setAbsorptionAmount(0); // Remove all absorption
-                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - remainingDamage)); // Subtract remaining damage from health
+                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - remainingDamage)); // Subtract remaining
+                                                                                               // damage from health
                 }
             } else {
                 // No absorption, subtract damage directly from health
                 double remainingHealth = Math.max(0, hitEntity.getHealth() - damageAfterArmor);
 
-                if (remainingHealth > 0){
+                if (remainingHealth > 0) {
                     hitEntity.setHealth(remainingHealth);
-                }else{
-                    hitEntity.damage(damageAfterArmor*40, player);
+                } else {
+                    hitEntity.damage(damageAfterArmor * 40, player);
                 }
             }
-            if (hitEntity.getHealth() > 0){
+            if (hitEntity.getHealth() > 0) {
                 hitEntity.damage(0.5);
             }
 
-
-
             if (projectile.getType().equals(EntityType.EGG)) {
-                if (player.getInventory().getItemInMainHand().getType() == Material.FLINT_AND_STEEL){
+                if (player.getInventory().getItemInMainHand().getType() == Material.FLINT_AND_STEEL) {
                     hitEntity.setFireTicks(20 * 5);
-                }else if (flaming){
-                    hitEntity.setFireTicks(20*3);
+                } else if (flaming) {
+                    hitEntity.setFireTicks(20 * 3);
                 }
 
             }
             damageEvent = true;
-            if (weapon_Type.equalsIgnoreCase("shotgun")){
+            if (weapon_Type.equalsIgnoreCase("shotgun")) {
                 damageEvent = false;
-            }else if (weapon_Type.equalsIgnoreCase("flame")){
-                Bukkit.getScheduler().runTaskLater(plugin, () -> damageEvent = false,10);
-            }else {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> damageEvent = false,1);
+            } else if (weapon_Type.equalsIgnoreCase("flame")) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> damageEvent = false, 10);
+            } else {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> damageEvent = false, 1);
             }
 
         }
     }
+
     private Vector randomOffset(Random random) {
         return new Vector(
                 (random.nextDouble() - 0.5) * spread,
                 (random.nextDouble() - 0.5) * spread,
-                (random.nextDouble() - 0.5) * spread
-        );
+                (random.nextDouble() - 0.5) * spread);
     }
 
     private void applyLeap(String command, Player player) {
@@ -1501,17 +1512,15 @@ public class Shoot implements Listener {
         Vector offset = getVector(command);
 
         Vector playerDirection = player.getLocation().getDirection().normalize();
-        Vector movement = playerDirection.clone().multiply(speed*offset.getZ());
+        Vector movement = playerDirection.clone().multiply(speed * offset.getZ());
         movement.setY(movement.getY() + speed * offset.getY());
         movement.setX(movement.getX() + speed * offset.getX());
-        //Vector movement = offset.clone().normalize().multiply(offset.getZ());
-
+        // Vector movement = offset.clone().normalize().multiply(offset.getZ());
 
         // Apply the velocity to the player
-        if (!offset.isZero()){
+        if (!offset.isZero()) {
             player.setVelocity(movement);
         }
-
 
     }
 
@@ -1523,8 +1532,7 @@ public class Shoot implements Listener {
             offset = new Vector(
                     components[0].equals("~") ? 0 : Double.parseDouble(components[0]),
                     components[1].equals("~") ? 0 : Double.parseDouble(components[1]),
-                    components[2].equals("~") ? -1 : Double.parseDouble(components[2])
-            );
+                    components[2].equals("~") ? -1 : Double.parseDouble(components[2]));
         }
         return offset;
     }
@@ -1533,29 +1541,31 @@ public class Shoot implements Listener {
         ArrayList<String> leap = (ArrayList<String>) data.getRoot().getShoot().getMechanics();
         applyLeap(leap.getFirst(), player);
 
-
-        for (String sound : weaponSounds.get("Shoot_Mechanics")){
-            if (sound.contains("sound")){
-                String play = sound.substring(sound.indexOf("sound=")+6, sound.indexOf(", v")).strip();
-                String volume = sound.substring(sound.indexOf("volume=")+7, sound.indexOf(", p"));
-                String pitch = sound.substring(sound.indexOf("pitch=")+6, sound.indexOf(", n"));
-                //String noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
+        for (String sound : weaponSounds.get("Shoot_Mechanics")) {
+            if (sound.contains("sound")) {
+                String play = sound.substring(sound.indexOf("sound=") + 6, sound.indexOf(", v")).strip();
+                String volume = sound.substring(sound.indexOf("volume=") + 7, sound.indexOf(", p"));
+                String pitch = sound.substring(sound.indexOf("pitch=") + 6, sound.indexOf(", n"));
+                // String noise = sound.substring(sound.indexOf("noise=")+6,
+                // sound.indexOf("}"));
                 play = "minecraft:" + play;
                 // if (sound.contains("noise") && !sound.contains("listener")) {
-                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
+                // noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
                 // }else if (sound.contains("noise")) {
-                //     noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
+                // noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
                 // }
 
                 net.kyori.adventure.sound.Sound playSound = net.kyori.adventure.sound.Sound.sound(
-                    net.kyori.adventure.key.Key.key(play),// the string name of the sound, e.g., "minecraft:block.note_block.harp"
-                    net.kyori.adventure.sound.Sound.Source.MASTER, // or PLAYER, MUSIC, etc.
-                    Float.parseFloat(volume),                // volume
-                    Float.parseFloat(pitch)                 // pitch
+                        net.kyori.adventure.key.Key.key(play), // the string name of the sound, e.g.,
+                                                               // "minecraft:block.note_block.harp"
+                        net.kyori.adventure.sound.Sound.Source.MASTER, // or PLAYER, MUSIC, etc.
+                        Float.parseFloat(volume), // volume
+                        Float.parseFloat(pitch) // pitch
                 );
                 player.getWorld().playSound(playSound);
 
-                //player.getWorld().playSound(player.getLocation(), Sound.valueOf(play), Float.parseFloat(volume), Float.parseFloat(pitch)); // Gunshot-like sound
+                // player.getWorld().playSound(player.getLocation(), Sound.valueOf(play),
+                // Float.parseFloat(volume), Float.parseFloat(pitch)); // Gunshot-like sound
             }
 
         }
@@ -1568,12 +1578,9 @@ public class Shoot implements Listener {
     private void fireRifle(WeaponClass data, Player player) {
         ArrayList<String> leap = (ArrayList<String>) data.getRoot().getShoot().getMechanics();
         boolean onGround = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isSolid();
-        if (!player.isSneaking() || player.isSprinting() || !shiftSteady || !onGround){
+        if (!player.isSneaking() || player.isSprinting() || !shiftSteady || !onGround) {
             applyLeap(leap.getFirst(), player);
         }
-
-
-
 
         // Get the player's eye location and direction
         Location eyeLocation = player.getEyeLocation();
@@ -1594,14 +1601,14 @@ public class Shoot implements Listener {
             }
 
             // public String getType() {
-            //     return type;
+            // return type;
             // }
 
             public double getGravity() {
                 return gravity;
             }
             // public double getSpeed() {
-            //     return speed;
+            // return speed;
             // }
 
             public double getDrag() {
@@ -1611,32 +1618,43 @@ public class Shoot implements Listener {
 
         ProjectileDetails projectile_type = switch (weapon_Type.toLowerCase()) {
             case "assault_rifle" -> new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile().getProjectile_settings().getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile().getProjectile_settings().getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile().getProjectile_settings().getDrag().getBase(),
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile().getProjectile_settings().getMinimum().getSpeed()
-                    );
-            case "pistol" ->new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings().getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings().getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings().getDrag().getBase(),
-                    0
-            );
-            case "shotgun" ->new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings().getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings().getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings().getDrag().getBase(),
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings().getMinimum().getSpeed()
-            );
-            case "sniper_rifle" ->new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile().getProjectile_settings().getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile().getProjectile_settings().getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile().getProjectile_settings().getDrag().getBase(),
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile().getProjectile_settings().getMinimum().getSpeed()
-            );
+                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                            .getProjectile_settings().getType(),
+                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                            .getProjectile_settings().getGravity(),
+                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                            .getProjectile_settings().getDrag().getBase(),
+                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                            .getProjectile_settings().getMinimum().getSpeed());
+            case "pistol" -> new ProjectileDetails(
+                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings()
+                            .getType(),
+                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings()
+                            .getGravity(),
+                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings()
+                            .getDrag().getBase(),
+                    0);
+            case "shotgun" -> new ProjectileDetails(
+                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                            .getType(),
+                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                            .getGravity(),
+                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                            .getDrag().getBase(),
+                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                            .getMinimum().getSpeed());
+            case "sniper_rifle" -> new ProjectileDetails(
+                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                            .getProjectile_settings().getType(),
+                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                            .getProjectile_settings().getGravity(),
+                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                            .getProjectile_settings().getDrag().getBase(),
+                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                            .getProjectile_settings().getMinimum().getSpeed());
             default -> new ProjectileDetails("", 0, 0, 0);
         };
-        if (Objects.equals(projectile_type.type, "INVISIBLE")){
+        if (Objects.equals(projectile_type.type, "INVISIBLE")) {
             projectile_type.type = "SNOWBALL";
         }
 
@@ -1650,8 +1668,11 @@ public class Shoot implements Listener {
                     projectile.setShooter(player);
                     projectile.setGravity(false);
 
-                    Vector velocity = player.getEyeLocation().getDirection().normalize().multiply((double) (Projectile_Speed + projectile_type.speed/10) / 100 + 0.5); // Custom initial velocity
-		    projectile.setVelocity(velocity);
+                    Vector velocity = player.getEyeLocation().getDirection().normalize()
+                            .multiply((double) (Projectile_Speed + projectile_type.speed / 10) / 100 + 0.5); // Custom
+                                                                                                             // initial
+                                                                                                             // velocity
+                    projectile.setVelocity(velocity);
 
                     Vector gravity = new Vector(0, projectile_type.getGravity() / 200 * -1, 0); // Custom gravity
                     double dragStrength = projectile_type.getDrag();
@@ -1662,7 +1683,7 @@ public class Shoot implements Listener {
                         public void run() {
                             // Stop updating velocity if the projectile is no longer valid or is dead
                             if (!projectile.isValid() || projectile.isDead()) {
-                                this.cancel();  // Cancel this task if the projectile is no longer valid
+                                this.cancel(); // Cancel this task if the projectile is no longer valid
                                 return;
                             }
                             // Apply gravity to the projectile's velocity
@@ -1681,7 +1702,7 @@ public class Shoot implements Listener {
     private void renameItem(String newName, Integer[] bullets, Player player, boolean state) {
         int index = newName.indexOf(">");
         String itemName = newName.substring(index + 1);
-        TextColor color = colorCodes.get(newName.substring(1,index));
+        TextColor color = colorCodes.get(newName.substring(1, index));
 
         int primaryAmmo = bullets[0];
         int secondaryAmmo = bullets[1];
@@ -1694,22 +1715,22 @@ public class Shoot implements Listener {
         String fireModeIdentifier;
         if (state) {
             fireModeIdentifier = "->";
-        }else
+        } else
             fireModeIdentifier = "<-";
 
-        if (secondaryAmmo != -1){
+        if (secondaryAmmo != -1) {
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                player.sendActionBar(Component.text(itemName+" «"+primaryAmmo + fireModeIdentifier+secondaryAmmo+"»",color));
+                player.sendActionBar(Component
+                        .text(itemName + " «" + primaryAmmo + fireModeIdentifier + secondaryAmmo + "»", color));
 
             }, 0L, 40L); // Repeats every 2 seconds (40 ticks)
-        }else if (dualAmmo != -1){
+        } else if (dualAmmo != -1) {
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                player.sendActionBar(Component.text(itemName+" «"+dualAmmo + "|" +primaryAmmo+"»",color));
-                }, 0L, 40L); // Repeats every 2 se
-        }
-        else {
+                player.sendActionBar(Component.text(itemName + " «" + dualAmmo + "|" + primaryAmmo + "»", color));
+            }, 0L, 40L); // Repeats every 2 se
+        } else {
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                player.sendActionBar(Component.text(itemName+" «"+primaryAmmo+"»", color));
+                player.sendActionBar(Component.text(itemName + " «" + primaryAmmo + "»", color));
 
             }, 0L, 40L); // Repeats every 2 seconds (40 ticks)
         }
