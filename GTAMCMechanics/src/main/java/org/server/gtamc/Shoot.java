@@ -558,7 +558,7 @@ public class Shoot implements Listener {
                 int secondaryAmmo = (int) bulletsLeft.get(finalUuid).get(4);
                 int dualWieldAmmo = (int) bulletsLeft.get(finalUuid).get(5);
                 if (!isReloading && ((Integer) bulletsLeft.get(finalUuid).getFirst() < magSize || secondaryAmmo == 0
-                        || dualWieldAmmo < magSize)) {
+                        || (dualWieldAmmo < magSize && dualWieldAmmo >= 0))) {
 
                     if ((boolean) bulletsLeft.get(finalUuid).get(3)) {
                         reloadGrenadeLauncher(player, finalUuid, value.getRoot().getInfo().getWeapon_item().getName());
