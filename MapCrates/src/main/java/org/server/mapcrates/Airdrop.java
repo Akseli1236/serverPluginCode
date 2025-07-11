@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -33,10 +34,10 @@ public class Airdrop{
         this.regions = plugin.getConfig().getMapList("regions");
     }
 
-    public void startDrops(){
+    public void startDrops(String delay, String fallSpeed){
         dropTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                createDrops();
-            }, 0, 20*5);
+                createDrops(fallSpeed);
+            }, 0, 20 * Integer.parseInt(delay));
     }
 
 
@@ -52,7 +53,7 @@ public class Airdrop{
 
     }
 
-    private void createDrops(){
+    private void createDrops(String fallSpeed){
         regions.forEach(region -> {
                 World world = Bukkit.getWorld((String) region.get("world"));
                 RegionManager regionManager = WorldGuard.getInstance()
@@ -84,14 +85,23 @@ public class Airdrop{
                             currentLoc.setY(currentLoc.getY() - 1);
                             Block newBlock = currentLoc.getBlock();
 
-                            if (!newBlock.getType().isAir()) {
+                            if (!newBlock.getType().isAir()){
                                 this.cancel();
+                                currentLoc.getWorld().createExplosion(
+                                        null,             // source entity (can be a Player, Arrow, etc.)
+                                        currentLoc,       // location of explosion
+                                        10.0F,            // explosion power (4.0F is TNT, 10.0F is huge)
+                                        false,            // do not set fire
+                                        false             // do not break blocks
+                                );
+
                                 return;
                             }
+
                             oldBlock.setType(Material.AIR);
                             newBlock.setType(Material.CHEST);
                         }
-                    }.runTaskTimer(plugin, 0L, 10L));
+                    }.runTaskTimer(plugin, 0L, Integer.parseInt(fallSpeed)));
             });
     }
 }

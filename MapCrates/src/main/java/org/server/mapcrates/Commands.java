@@ -21,9 +21,18 @@ public class Commands implements CommandExecutor{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (command.getName().equals("airdrops")){
-            if (args[0].equals("start")){
-                airdrop.startDrops();
+            if (args.length < 1){
+                System.out.println("Input stop or start");
                 return true;
+            }
+            if (args[0].equals("start")){
+                try{
+                    airdrop.startDrops(args[1], args[2]);
+                    return true;
+                }catch (Exception e){
+                    System.out.println("Wrong amount of arguments");
+                }
+
             }
             if (args[0].equals("stop")){
                 airdrop.stopDrops();
