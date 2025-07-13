@@ -124,12 +124,14 @@ public class Shoot implements Listener {
 
     private InventoryAction inventoryActions;
 
-    // List contains these in order: Bullets, isReloadingPrimary, shotCooldown,
+    // List in bulletsLeft contains these in order: Bullets, isReloadingPrimary,
+    // shotCooldown,
     // secondaryFire, secondaryAmmo, DualWield bullets isReloadingDualWield
     private final Map<UUID, List<Object>> bulletsLeft = new HashMap<>();
     private final Map<Double, Double> damageDrop = new HashMap<>();
     private final Map<String, List<String>> weaponSounds = new HashMap<>();
 
+    // Mapping of minecraft colors as hexadecimal
     private final Map<String, TextColor> colorCodes = Map.ofEntries(
             Map.entry("black", TextColor.color(0x000000)),
             Map.entry("dark_blue", TextColor.color(0x0000AA)),
@@ -214,6 +216,7 @@ public class Shoot implements Listener {
             zoomScheduler = null;
             zoomOn = false;
 
+            // Removes slowness effect which gives smaller FOV
             if (!player.getActivePotionEffects().isEmpty()) {
                 for (PotionEffect effect : player.getActivePotionEffects()) {
                     player.removePotionEffect(effect.getType());
@@ -256,6 +259,7 @@ public class Shoot implements Listener {
         }
     }
 
+    // Method for processing item's metadata, such as name, name's color and lore.
     private List<Object> processMeta(WeaponClass value, ItemMeta itemMeta) {
         List<Object> loreItems = new ArrayList<>();
         int iterator = 0;
@@ -289,22 +293,25 @@ public class Shoot implements Listener {
 
     }
 
+    // TODO Propably need to change this at some point
+    // Sets the correct bullet counts for weapons
     private void fillBullets(UUID finalUuid) {
         if (bulletsLeft.get(finalUuid) == null) {
             bulletsLeft.put(finalUuid, new ArrayList<>());
-            bulletsLeft.get(finalUuid).add(magSize);
-            bulletsLeft.get(finalUuid).add(false);
-            bulletsLeft.get(finalUuid).add(false);
-            bulletsLeft.get(finalUuid).add(false);
-            bulletsLeft.get(finalUuid).add(-1);
+            bulletsLeft.get(finalUuid).add(magSize); // Magazine size
+            bulletsLeft.get(finalUuid).add(false); // Check for active reloads
+            bulletsLeft.get(finalUuid).add(false); // Manages fire rate
+            bulletsLeft.get(finalUuid).add(false); // Is secondary fire in use
+            bulletsLeft.get(finalUuid).add(-1); // Ammo for secondary fire, befault -1 if weapon doesnt have secondary
+                                                // fire
             if (hasSecondaryAction) {
                 bulletsLeft.get(finalUuid).set(4, 1);
             }
-            bulletsLeft.get(finalUuid).add(-1);
+            bulletsLeft.get(finalUuid).add(-1); // Dualwield weapon ammo, default -1 if weapon isn't dual wield
             if (dualWield) {
                 bulletsLeft.get(finalUuid).set(5, magSize);
             }
-            bulletsLeft.get(finalUuid).add(false);
+            bulletsLeft.get(finalUuid).add(false); // Check for active reloads for dual wield weapons
         } else if (resetNextShotCooldown)
             bulletsLeft.get(finalUuid).set(2, false);
     }
@@ -312,10 +319,27 @@ public class Shoot implements Listener {
     private void renamePreProcess(UUID finalUuid, WeaponClass value, Player player) {
         int secondaryAmmo = (int) bulletsLeft.get(finalUuid).get(4);
         int bulletAmmo = Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString());
-        Boolean state = (Boolean) bulletsLeft.get(finalUuid).get(3);
+        Boolean stateForFiremode = (Boolean) bulletsLeft.get(finalUuid).get(3);
         int dualAmmo = (int) bulletsLeft.get(finalUuid).get(5);
         Integer[] arr = { bulletAmmo, secondaryAmmo, dualAmmo };
-        renameItem(value.getRoot().getInfo().getWeapon_item().getName(), arr, player, state);
+        renameItem(value.getRoot().getInfo().getWeapon_item().getName(), arr, player, stateForFiremode);
+    }
+
+    private void resetWeaponBooleans() {
+        InventoryOpen = false;
+        dontShoot = false;
+        damageEvent = false;
+        zoomOn = false;
+        wasDrop = false;
+        outOfAmmoCooldown = false;
+        fromGround = false;
+        resetNextShotCooldown = false;
+        flaming = false;
+        hasSecondaryAction = false;
+        dualWield = false;
+        shiftSteady = false;
+        breakingBlock = false;
+        burstMode = false;
     }
 
     public void loadWeapons(ItemStack ItemInHand, Player player) {
@@ -324,16 +348,20 @@ public class Shoot implements Listener {
 
         if (itemMeta != null && ItemInHand.getType() != Material.AIR) {
             // Get the existing lore or create a new one if it's null
-
+            resetWeaponBooleans();
             weapon.getWeapons().forEach((key, value) -> {
                 if (value.getRoot().getInfo().getWeapon_item().getType()
                         .equalsIgnoreCase(ItemInHand.getType().toString())) {
+
                     removeAttackCooldown(player);
                     UUID finalUuid = setOrGetUUID(itemMeta, ItemInHand);
+
                     if (value.getRoot().getInfo().getWeapon_item().isUnbreakable()) {
                         itemMeta.setUnbreakable(true);
                     }
+
                     dualWield = false;
+
                     if (value.getRoot().getInfo().getDual_wield() != null) {
                         dualWield = true;
                         if (value.getRoot().getInfo().getDual_wield().isUnbreakable()) {
@@ -365,9 +393,11 @@ public class Shoot implements Listener {
                     burstMode = value.getRoot().getInfo().getWeapon_item().isBurst_mode();
                     shotsPerBurst = Math.max(1, value.getRoot().getShoot().getShots_per_burst());
                     burstFireRate = value.getRoot().getShoot().getBurst_fire_rate();
+
                     zoomAmount = 0.0;
                     bonusDamage = 0.0;
                     shiftSteady = false;
+
                     if (value.getRoot().getDamage().getHead() != null) {
                         bonusDamage = value.getRoot().getDamage().getHead().getBonus_damage();
                     }
@@ -1670,8 +1700,7 @@ public class Shoot implements Listener {
 
                     Vector velocity = player.getEyeLocation().getDirection().normalize()
                             .multiply((double) (Projectile_Speed + projectile_type.speed / 10) / 100 + 0.5); // Custom
-                                                                                                             // initial
-                                                                                                             // velocity
+
                     projectile.setVelocity(velocity);
 
                     Vector gravity = new Vector(0, projectile_type.getGravity() / 200 * -1, 0); // Custom gravity
