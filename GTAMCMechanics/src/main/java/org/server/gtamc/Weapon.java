@@ -1,35 +1,32 @@
 package org.server.gtamc;
 
 import org.bukkit.plugin.Plugin;
-import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
-
 
 public class Weapon {
 
     private Plugin plugin;
 
-    public void weaponUpdate(Plugin plugin){
+    public void weaponUpdate(Plugin plugin) {
         this.plugin = plugin;
         readFile();
     }
 
     private final List<String> FOLDER_NAMES = Arrays.asList(
-            "Weapons",   // The folder name for weapons
-            "Ammos",     // The folder name for ammos
+            "Weapons", // The folder name for weapons
+            "Ammos", // The folder name for ammos
             "Projectiles",
             "Tools"// The folder name for projectiles
     );
-    private final Map<String, WeaponClass> info = new HashMap<>();
+    private final Map<String, WeaponClass> weapons = new HashMap<>();
     private final Map<String, AmmoClass> ammos = new HashMap<>();
     private final Map<String, ProjectileClass> projectiles = new HashMap<>();
     private final Map<String, WeaponClass> tools = new HashMap<>();
@@ -41,16 +38,16 @@ public class Weapon {
             Object value = entry.getValue();
             if (value instanceof Map) {
                 // Recursively process nested maps
-                if (key.equalsIgnoreCase(lowerKey) && (folderName.equalsIgnoreCase("Weapons") || folderName.equalsIgnoreCase("Tools"))) {
-                    result.put("root", toLowercaseKeysRecursive((Map<String, Object>) value, key,folderName));
-                }else {
-                    result.put(lowerKey, toLowercaseKeysRecursive((Map<String, Object>) value, key,folderName));
+                if (key.equalsIgnoreCase(lowerKey)
+                        && (folderName.equalsIgnoreCase("Weapons") || folderName.equalsIgnoreCase("Tools"))) {
+                    result.put("root", toLowercaseKeysRecursive((Map<String, Object>) value, key, folderName));
+                } else {
+                    result.put(lowerKey, toLowercaseKeysRecursive((Map<String, Object>) value, key, folderName));
                 }
-
 
             } else if (value instanceof List) {
                 // Process lists
-                result.put(lowerKey, processListKeys((List<Object>) value, key,folderName));
+                result.put(lowerKey, processListKeys((List<Object>) value, key, folderName));
             } else {
                 // Leave values unchanged
                 result.put(lowerKey, value);
@@ -70,17 +67,17 @@ public class Weapon {
             }
         }
         return result;
-        // Removes '(' and ')'
     }
 
-    public Map<String, WeaponClass> getWeapons(){
-        return info;
+    public Map<String, WeaponClass> getWeapons() {
+        return weapons;
     }
 
-    public Map<String, AmmoClass> getAmmos(){
+    public Map<String, AmmoClass> getAmmos() {
         return ammos;
     }
-    public Map<String, ProjectileClass> getProjectiles(){
+
+    public Map<String, ProjectileClass> getProjectiles() {
         return projectiles;
     }
 
@@ -88,8 +85,8 @@ public class Weapon {
         return tools;
     }
 
-    public void clearAll(){
-        info.clear();
+    public void clearAll() {
+        weapons.clear();
         ammos.clear();
         projectiles.clear();
         tools.clear();
@@ -98,8 +95,7 @@ public class Weapon {
     public void readFile() {
         File dataFolder = plugin.getDataFolder();
 
-        // Replace with your output directory path
-        for (String folderName : FOLDER_NAMES){
+        for (String folderName : FOLDER_NAMES) {
             Path filePath = Path.of(dataFolder.toString(), folderName);
             File dir = new File(filePath.toString());
 
@@ -114,32 +110,16 @@ public class Weapon {
             File[] files = dir.listFiles((d, name) -> name.endsWith(".yml")); // Filter for .yml files
             if (files != null) {
                 for (File file : files) {
-                    try(FileInputStream fileInputStream = new FileInputStream(file)) {
-                        String outputFilePath = filePath + File.separator + "parse" +file.getName();
-
-                        // Assuming the YAML files are in a directory "weapons"
-
-                        // Create a SnakeYAML instance
-
+                    try (FileInputStream fileInputStream = new FileInputStream(file)) {
                         // Parse the YAML file into a Weapon object
                         Yaml yaml = new Yaml();
                         Map<String, Object> yamlData = yaml.load(fileInputStream);
                         String key = yamlData.entrySet().iterator().next().getKey();
                         Map<String, Object> lowerCaseKeysYaml = toLowercaseKeysRecursive(yamlData, key, folderName);
+                        String lowerCaseYamlString = yaml.dump(lowerCaseKeysYaml);
 
-                        // Write the transformed YAML back to a file
-                        DumperOptions options = new DumperOptions();
-                        options.setPrettyFlow(true); // Human-readable format
-                        Yaml yamlWriter = new Yaml(options);
-                        FileWriter writer = new FileWriter(outputFilePath);
-                        yamlWriter.dump(lowerCaseKeysYaml, writer);
-                        writer.close();
-
-
-                        FileInputStream fileInputStream2 = new FileInputStream(outputFilePath);
-                        //System.out.println("Transformed YAML saved to " + outputFilePath);
                         Constructor constructor = new Constructor(new LoaderOptions());
-                        switch(folderName) {
+                        switch (folderName) {
                             case "Weapons", "Tools":
                                 constructor = new Constructor(WeaponClass.class, new LoaderOptions());
                                 break;
@@ -155,18 +135,15 @@ public class Weapon {
                         }
 
                         Yaml yaml2 = new Yaml(constructor);
-                        Object loadedData = yaml2.load(fileInputStream2);
+                        Object loadedData = yaml2.load(lowerCaseYamlString);
 
                         // Check the loaded data type dynamically, and cast it
                         if (loadedData instanceof WeaponClass weaponData) {
                             if (folderName.equalsIgnoreCase("Weapons")) {
-                                info.put(key, weaponData);
-                            }
-                            else if (folderName.equalsIgnoreCase("Tools")) {
+                                weapons.put(key, weaponData);
+                            } else if (folderName.equalsIgnoreCase("Tools")) {
                                 tools.put(key, weaponData);
                             }
-
-
                             // Process the WeaponClass data
                         } else if (loadedData instanceof AmmoClass ammoData) {
                             ammos.put(key, ammoData);
@@ -175,20 +152,11 @@ public class Weapon {
                             projectiles.put(key, projectileData);
                             // Process the ProjectileClass data
                         }
-
-                        fileInputStream2.close();
-                        fileInputStream.close();
-
-                        File createdFile = new File(outputFilePath);
-                        createdFile.delete();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-
     }
-
 }
