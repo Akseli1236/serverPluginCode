@@ -24,7 +24,6 @@ public class PlayerData implements Listener {
     private final Weapon weapon;
     private final WASD wasd;
 
-
     public PlayerData(Plugin plugin, WASD wasd) {
         weapon = new Weapon();
         weapon.weaponUpdate(plugin);
@@ -33,7 +32,9 @@ public class PlayerData implements Listener {
 
     }
 
-    public Weapon getWeapon(){return weapon;}
+    public Weapon getWeapon() {
+        return weapon;
+    }
 
     public Map<String, Shoot> getPlayerShoots() {
         return playerShoots;
@@ -44,22 +45,23 @@ public class PlayerData implements Listener {
     }
 
     @EventHandler
-    public void PlayerDeathEvent(PlayerDeathEvent event){
+    public void PlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
         lastDeathLocations.put(player.getName(), player.getLocation());
     }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
-	String playerName = player.getName();
+        String playerName = player.getName();
 
-	if (removalTasks.containsKey(playerName)){
-	    removalTasks.get(playerName).cancel();
-	    removalTasks.remove(playerName);
-	}
-	
+        if (removalTasks.containsKey(playerName)) {
+            removalTasks.get(playerName).cancel();
+            removalTasks.remove(playerName);
+        }
+
         if (!playerShoots.containsKey(playerName)) {
             Shoot shoot = new Shoot(plugin, weapon, wasd);
             ModifiedItemBehavior modifiedItemBehavior = new ModifiedItemBehavior(plugin);
@@ -67,7 +69,7 @@ public class PlayerData implements Listener {
             playerShoots.put(playerName, shoot);
             players.put(playerName, player);
             usableItemBehaviors.put(playerName, modifiedItemBehavior);
-        }else {
+        } else {
             playerShoots.get(playerName).loadWeapons(player.getInventory().getItemInMainHand(), player);
         }
 
@@ -76,14 +78,18 @@ public class PlayerData implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-	String playerName = player.getName();
-	plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-		playerShoots.remove(playerName);
-	    }, 20L * 60 * 10);
-	
+        String playerName = player.getName();
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            playerShoots.remove(playerName);
+        }, 20L * 60 * 10);
+
     }
 
-    public Player getPlayer(String playerName) {return players.get(playerName);}
+    public Player getPlayer(String playerName) {
+        return players.get(playerName);
+    }
 
-    public Location getLastDeathLocation(String playerName) {return lastDeathLocations.get(playerName);}
+    public Location getLastDeathLocation(String playerName) {
+        return lastDeathLocations.get(playerName);
+    }
 }

@@ -1,0 +1,5 @@
+# Always use LF for source code
+*.java  text eol=lf
+*.el    text eol=lf
+*.sh    text eol=lf
+*.yml   text eol=lf

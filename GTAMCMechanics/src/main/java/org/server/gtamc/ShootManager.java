@@ -76,7 +76,7 @@ public class ShootManager implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event) {
-	
+
 	Shoot instance = shoots.get(event.getPlayer().getName());
 	instance.onPlayerInteract(event);
     }
@@ -128,7 +128,7 @@ public class ShootManager implements Listener {
         item.setAmount(newItem.getAmount());
         item.setItemMeta(newItem.getItemMeta());
     }
-    
+
     @EventHandler
     public void onShotCreate(SSCreatedEvent event){
         ItemStack[] items = event.getItems();

@@ -18,18 +18,16 @@ public class WASD extends PacketAdapter {
     private final Map<String, Car> playerCarMap = new HashMap<>();
     private final Map<String, Integer> movementMap = new HashMap<>();
 
-
-    public Map<String, Integer> getMovements(){
+    public Map<String, Integer> getMovements() {
         return movementMap;
     }
 
     @Override
     public void onPacketReceiving(PacketEvent event) {
-        if(event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)){
+        if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
             Object ppisv = event.getPacket().getHandle();
 
-
-            //Usage ppisv
+            // Usage ppisv
             String packetString = ppisv.toString();
             String inputString = packetString.substring(packetString.indexOf("Input[") + 6, packetString.indexOf("]"));
 
@@ -42,8 +40,8 @@ public class WASD extends PacketAdapter {
 
                 // Extract the movement type (e.g., "forward", "backward") and its boolean value
                 if (parts.length == 2) {
-                    String movementType = parts[0].trim();  // "forward", "backward", etc.
-                    int isActive = parts[1].trim().equals("true") ? 1 : 0;  // "false" or "true"
+                    String movementType = parts[0].trim(); // "forward", "backward", etc.
+                    int isActive = parts[1].trim().equals("true") ? 1 : 0; // "false" or "true"
 
                     // Put the result into the map
                     movementMap.put(movementType, isActive);
@@ -53,14 +51,11 @@ public class WASD extends PacketAdapter {
             if (playerCarMap.containsKey(event.getPlayer().getName())) {
                 Car instance = playerCarMap.get(event.getPlayer().getName());
                 instance.moveCar(event, movementMap);
-            }else {
+            } else {
                 Car instance = new Car(plugin);
                 playerCarMap.put(event.getPlayer().getName(), instance);
                 instance.moveCar(event, movementMap);
             }
-
-
-
         }
     }
 

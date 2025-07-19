@@ -302,8 +302,8 @@ public class Shoot implements Listener {
             bulletsLeft.get(finalUuid).add(false); // Check for active reloads
             bulletsLeft.get(finalUuid).add(false); // Manages fire rate
             bulletsLeft.get(finalUuid).add(false); // Is secondary fire in use
-            bulletsLeft.get(finalUuid).add(-1); // Ammo for secondary fire, befault -1 if weapon doesnt have secondary
-                                                // fire
+            bulletsLeft.get(finalUuid).add(-1); // Ammo for secondary fire, befault -1 if weapon doesnt have secondary fire
+
             if (hasSecondaryAction) {
                 bulletsLeft.get(finalUuid).set(4, 1);
             }
@@ -1576,14 +1576,7 @@ public class Shoot implements Listener {
                 String play = sound.substring(sound.indexOf("sound=") + 6, sound.indexOf(", v")).strip();
                 String volume = sound.substring(sound.indexOf("volume=") + 7, sound.indexOf(", p"));
                 String pitch = sound.substring(sound.indexOf("pitch=") + 6, sound.indexOf(", n"));
-                // String noise = sound.substring(sound.indexOf("noise=")+6,
-                // sound.indexOf("}"));
                 play = "minecraft:" + play;
-                // if (sound.contains("noise") && !sound.contains("listener")) {
-                // noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf("}"));
-                // }else if (sound.contains("noise")) {
-                // noise = sound.substring(sound.indexOf("noise=")+6, sound.indexOf(", l"));
-                // }
 
                 net.kyori.adventure.sound.Sound playSound = net.kyori.adventure.sound.Sound.sound(
                         net.kyori.adventure.key.Key.key(play), // the string name of the sound, e.g.,
@@ -1593,9 +1586,6 @@ public class Shoot implements Listener {
                         Float.parseFloat(pitch) // pitch
                 );
                 player.getWorld().playSound(playSound);
-
-                // player.getWorld().playSound(player.getLocation(), Sound.valueOf(play),
-                // Float.parseFloat(volume), Float.parseFloat(pitch)); // Gunshot-like sound
             }
 
         }
@@ -1756,7 +1746,7 @@ public class Shoot implements Listener {
         } else if (dualAmmo != -1) {
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 player.sendActionBar(Component.text(itemName + " «" + dualAmmo + "|" + primaryAmmo + "»", color));
-            }, 0L, 40L); // Repeats every 2 se
+            }, 0L, 40L); // Repeats every 2 sec
         } else {
             currentTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 player.sendActionBar(Component.text(itemName + " «" + primaryAmmo + "»", color));
