@@ -11,7 +11,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -28,9 +28,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.events.SSCreatedEvent;
 import org.wargamer2010.signshop.events.SSPreTransactionEvent;
@@ -45,14 +47,14 @@ public class ShootManager implements Listener {
     private final PlayerData playerData;
     private final WASD wasd;
 
-    public ShootManager(Plugin plugin, PlayerData playerData, WASD wasd)
-    {
+    private BukkitTask dropTask = null;
+
+    public ShootManager(Plugin plugin, PlayerData playerData, WASD wasd) {
         this.playerData = playerData;
         this.plugin = plugin;
         this.shoots = playerData.getPlayerShoots();
         this.wasd = wasd;
     }
-
 
     @EventHandler
     public void onExplosionEvent(EntityExplodeEvent event) {
@@ -63,7 +65,7 @@ public class ShootManager implements Listener {
     }
 
     @EventHandler
-    public void onItemSwitch(PlayerItemHeldEvent event){
+    public void onItemSwitch(PlayerItemHeldEvent event) {
         Shoot instance = shoots.get(event.getPlayer().getName());
         instance.onItemSwitch(event);
     }
@@ -72,13 +74,14 @@ public class ShootManager implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Shoot instance = shoots.get(event.getPlayer().getName());
         instance.onPlayerDropItem(event);
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-	Shoot instance = shoots.get(event.getPlayer().getName());
-	instance.onPlayerInteract(event);
+        Shoot instance = shoots.get(event.getPlayer().getName());
+        instance.onPlayerInteract(event);
     }
 
     @EventHandler
@@ -94,16 +97,24 @@ public class ShootManager implements Listener {
         Shoot instance = shoots.get(event.getEntity().getName());
         instance.onPlayerDeath(event);
     }
+
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Shoot instance = shoots.get(event.getPlayer().getName());
         instance.onPlayerRespawn(event);
     }
+
     @EventHandler
     public void onPlayerDropFromInventory(InventoryOpenEvent event) {
         Shoot shoot = shoots.get(event.getPlayer().getName());
         shoot.setInventoryOpen(true, (Player) event.getPlayer());
 
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event){
+        Shoot shoot = shoots.get(event.getPlayer().getName());
+        shoot.stopBlockPlace(event);
     }
 
     public void resetItemMeta(ItemStack item) {
@@ -114,7 +125,8 @@ public class ShootManager implements Listener {
         // Create a new ItemStack with the same type and amount
         ItemStack newItem = new ItemStack(item.getType(), item.getAmount());
 
-        // If the original item had durability or damage (for older versions or damageable items), preserve it
+        // If the original item had durability or damage (for older versions or
+        // damageable items), preserve it
         if (item.getItemMeta() instanceof Damageable originalDamageable) {
             ItemMeta newMeta = newItem.getItemMeta();
             if (newMeta instanceof Damageable newDamageable) {
@@ -130,7 +142,7 @@ public class ShootManager implements Listener {
     }
 
     @EventHandler
-    public void onShotCreate(SSCreatedEvent event){
+    public void onShotCreate(SSCreatedEvent event) {
         ItemStack[] items = event.getItems();
         for (ItemStack item : items) {
             resetItemMeta(item);
@@ -157,16 +169,17 @@ public class ShootManager implements Listener {
 
                 // Check if the normalized items match
                 if (shopItem.isSimilar(playerItem) && !event.getRequirementsOK()) {
-                    ssPlayer.sendMessage(SignShop.getInstance().getSignShopConfig().getError("player_verify_transaction", null));
+                    ssPlayer.sendMessage(
+                            SignShop.getInstance().getSignShopConfig().getError("player_verify_transaction", null));
                     return;
                 }
             }
         }
         if (!event.getRequirementsOK()) {
-            ssPlayer.sendMessage(SignShop.getInstance().getSignShopConfig().getError("player_doesnt_have_items_own", event.getMessageParts()));
+            ssPlayer.sendMessage(SignShop.getInstance().getSignShopConfig().getError("player_doesnt_have_items_own",
+                    event.getMessageParts()));
         }
     }
-
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -182,23 +195,22 @@ public class ShootManager implements Listener {
         shoot.setInventoryAction(event.getAction());
         shoot.setItemSlot(event.getSlot());
         shoot.removeEffects(event.getWhoClicked());
-        if (event.getCurrentItem() != null){
+        if (event.getCurrentItem() != null) {
             shoot.loadWeapons(event.getCurrentItem(), (Player) event.getWhoClicked());
         }
 
-
-
     }
+
     @EventHandler
     public void onPlayerCloseInventory(InventoryCloseEvent event) {
         if (playerData.getPlayerShoots().containsKey(event.getPlayer().getName())) {
-            Bukkit.getScheduler().runTaskLater(plugin, ()->{
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 Shoot shoot = shoots.get(event.getPlayer().getName());
                 shoot.setInventoryOpen(false, (Player) event.getPlayer());
 
                 Player player = (Player) event.getPlayer();
                 shoot.loadWeapons(player.getInventory().getItemInMainHand(), player);
-            },1);
+            }, 1);
 
         }
     }
@@ -212,8 +224,7 @@ public class ShootManager implements Listener {
     }
 
     @EventHandler
-    public void onCreatureSpawn(CreatureSpawnEvent event)
-    {
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
 
         Shoot instance = new Shoot(plugin, playerData.getWeapon(), wasd);
         instance.onCreatureSpawn(event);
@@ -242,12 +253,12 @@ public class ShootManager implements Listener {
         }
 
     }
-    public void updateWeaponData(){
+
+    public void updateWeaponData() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             Shoot shoot = shoots.get(player.getName());
             shoot.update();
         }
     }
-
 
 }

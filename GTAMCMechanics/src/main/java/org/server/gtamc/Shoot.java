@@ -46,6 +46,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
@@ -518,6 +519,8 @@ public class Shoot implements Listener {
 
     public void onItemSwitch(PlayerItemHeldEvent event) {
 
+        event.getPlayer().updateInventory();
+
         Player player = event.getPlayer();
         if (controlFire != null && !controlFire.isCancelled()) {
             controlFire.cancel();
@@ -582,6 +585,7 @@ public class Shoot implements Listener {
         if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(item.getType().toString())) {
             if (!InventoryOpen) {
                 event.setCancelled(true);
+                player.updateInventory();
                 renamePreProcess(finalUuid, value, player);
 
                 boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
@@ -630,6 +634,17 @@ public class Shoot implements Listener {
         return type == Material.WOODEN_SHOVEL || type == Material.STONE_SHOVEL ||
                 type == Material.IRON_SHOVEL || type == Material.GOLDEN_SHOVEL ||
                 type == Material.DIAMOND_SHOVEL || type == Material.NETHERITE_SHOVEL;
+    }
+
+    public void stopBlockPlace(BlockPlaceEvent event){
+
+        String itemType = event.getBlock().getType().toString();
+
+        weapon.getTools().forEach((key, value) -> {
+                if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(itemType)){
+                    event.setCancelled(true);
+                }
+            });
     }
 
     public void onPlayerDeath(PlayerDeathEvent event) {
