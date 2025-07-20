@@ -266,7 +266,7 @@ public class ShootManagerTest {
 
 	shootManager.onEggHit(mockHit);
 
-	verify(mockShoot).onEggHit(mockHit);
+	verify(mockShoot).onProjectileHit(mockHit);
 	
     }
 

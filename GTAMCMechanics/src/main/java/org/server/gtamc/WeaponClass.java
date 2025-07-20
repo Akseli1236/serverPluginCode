@@ -545,6 +545,7 @@ public class WeaponClass {
             public static class Spread {
                 private Spread_image spread_image;
                 private double base_spread;
+                private double sway;
                 private Modify_Spread_When modify_spread_when;
 
                 public Spread_image getSpread_image() {
@@ -565,6 +566,14 @@ public class WeaponClass {
 
                 public Modify_Spread_When getModify_spread_when() {
                     return modify_spread_when;
+                }
+
+                public double getSway(){
+                    return sway;
+                }
+
+                public void setSway(double sway){
+                    this.sway = sway;
                 }
 
                 public void setModify_spread_when(Modify_Spread_When modify_spread_when) {
@@ -752,6 +761,7 @@ public class WeaponClass {
 
             private double base_damage;
             private boolean flaming;
+            private int damage_delay;
             private double armor_damage;
             private List<String> dropoff;
             private List<String> mechanics;
@@ -772,6 +782,14 @@ public class WeaponClass {
 
             public void setFlaming(boolean flaming) {
                 this.flaming = flaming;
+            }
+
+            public void setDamage_delay(int damage_delay){
+                this.damage_delay = damage_delay;
+            }
+
+            public int getDamage_delay(){
+                return damage_delay;
             }
 
             public double getArmor_damage() {

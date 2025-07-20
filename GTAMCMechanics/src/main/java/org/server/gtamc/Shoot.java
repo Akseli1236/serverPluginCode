@@ -33,7 +33,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -89,7 +88,7 @@ public class Shoot implements Listener {
     private BukkitTask zoomScheduler = null;
     private final List<BukkitTask> reloadTasks = new ArrayList<>();
 
-    private Double spread;
+    private double spread;
     private double damage = 5;
     private Integer magSize;
     private Integer reloadTime;
@@ -97,12 +96,14 @@ public class Shoot implements Listener {
     private Integer ammoPerReload;
     private Integer fireRate;
     private Integer projectilesPerShot = 1;
-    private Double zoomAmount;
-    private Double bonusDamage;
+    private double zoomAmount;
+    private double bonusDamage;
     private double armorDamage;
     private Integer itemSlot;
     private Integer shotsPerBurst;
     private Integer burstFireRate;
+    private Integer damageDelay;
+    private double sway;
 
     private String Projectile_Type;
     private String weapon_Type;
@@ -122,6 +123,7 @@ public class Shoot implements Listener {
     private boolean shiftSteady = false;
     private boolean breakingBlock = false;
     private boolean burstMode = false;
+    private boolean canBeDamaged = true;
 
     private InventoryAction inventoryActions;
 
@@ -396,6 +398,11 @@ public class Shoot implements Listener {
                     burstMode = value.getRoot().getInfo().getWeapon_item().isBurst_mode();
                     shotsPerBurst = Math.max(1, value.getRoot().getShoot().getShots_per_burst());
                     burstFireRate = value.getRoot().getShoot().getBurst_fire_rate();
+                    damageDelay = value.getRoot().getDamage().getDamage_delay();
+
+                    if (value.getRoot().getShoot().getSpread() != null){
+                        sway = value.getRoot().getShoot().getSpread().getSway();
+                    }
 
                     zoomAmount = 0.0;
                     bonusDamage = 0.0;
@@ -1356,15 +1363,13 @@ public class Shoot implements Listener {
         return damage * (1 - Math.min(protectionFactor, 0.8)); // Cap at 80% reduction
     }
 
-    public void onEggHit(ProjectileHitEvent event) {
-        // Check if the projectile is an Egg
+    public void onProjectileHit(ProjectileHitEvent event) {
+
         Projectile projectile = event.getEntity();
         ProjectileSource shooter = projectile.getShooter();
         Player player = (Player) shooter;
 
-        // Check if the egg hits an entity (such as a player or mob)
-
-        if (player != null && event.getHitEntity() instanceof LivingEntity hitEntity && hitEntity != player) {
+        if (player != null && event.getHitEntity() instanceof LivingEntity hitEntity && hitEntity != player && canBeDamaged) {
             hitEntity.setNoDamageTicks(0);
             // Apply custom damage to the entity
             Location entityLocation = hitEntity.getLocation();
@@ -1461,7 +1466,7 @@ public class Shoot implements Listener {
                 return;
             }
             System.out.println(damageAfterArmor);
-
+            canBeDamaged = false;
             if (absorption > 0) {
                 if (damageAfterArmor <= absorption) {
                     // Damage is fully absorbed
@@ -1483,6 +1488,15 @@ public class Shoot implements Listener {
                     hitEntity.damage(damageAfterArmor * 40, player);
                 }
             }
+            if (damageDelay != 0){
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    canBeDamaged = true;
+                }, damageDelay);
+            }else{
+                canBeDamaged = true;
+            }
+
+
             if (hitEntity.getHealth() > 0) {
                 hitEntity.damage(0.5);
             }
@@ -1512,9 +1526,9 @@ public class Shoot implements Listener {
         double phi = Math.acos(2 * random.nextDouble() - 1); // Vertical angle (symmetric)
         double r = Math.cbrt(random.nextDouble()) * spread; // Radius, cubic root = uniform fill
 
-        double x = r * Math.sin(phi) * Math.cos(theta);
+        double x = r * Math.sin(phi) * Math.cos(theta) * 0.8;
         double y = r * Math.cos(phi) * 0.8;
-        double z = r * Math.sin(phi) * Math.sin(theta);
+        double z = r * Math.sin(phi) * Math.sin(theta) * 0.8;
 
         return new Vector(x, y, z);
     }
@@ -1671,9 +1685,9 @@ public class Shoot implements Listener {
                     projectile.setShooter(player);
                     projectile.setGravity(false);
 
-                    Vector sway = randomOffset(new Random()).multiply(0.05);
+                    Vector swayVector = randomOffset(new Random()).multiply(sway);
 
-                    Vector velocity = player.getEyeLocation().getDirection().normalize().add(sway)
+                    Vector velocity = player.getEyeLocation().getDirection().normalize().add(swayVector)
                             .multiply((double) (Projectile_Speed + projectile_type.speed / 10) / 100 + 0.5);
 
                     projectile.setVelocity(velocity);

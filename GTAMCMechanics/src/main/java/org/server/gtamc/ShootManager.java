@@ -38,6 +38,9 @@ import org.wargamer2010.signshop.events.SSPreTransactionEvent;
 import org.wargamer2010.signshop.player.PlayerCache;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+
 public class ShootManager implements Listener {
 
     private final Plugin plugin;
@@ -111,7 +114,7 @@ public class ShootManager implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event){
+    public void onBlockPlace(BlockPlaceEvent event) {
         Shoot shoot = shoots.get(event.getPlayer().getName());
         shoot.stopBlockPlace(event);
     }
@@ -189,12 +192,16 @@ public class ShootManager implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+
         Shoot shoot = shoots.get(event.getWhoClicked().getName());
         shoot.setInventoryOpen(true, (Player) event.getWhoClicked());
         shoot.setInventoryAction(event.getAction());
         shoot.setItemSlot(event.getSlot());
         shoot.removeEffects(event.getWhoClicked());
-        if (event.getCurrentItem() != null) {
+
+        Component titleComponent = event.getView().title();
+        int keyIndex = titleComponent.toString().indexOf("key");
+        if (event.getCurrentItem() != null && keyIndex != -1) {
             shoot.loadWeapons(event.getCurrentItem(), (Player) event.getWhoClicked());
         }
 
@@ -248,7 +255,7 @@ public class ShootManager implements Listener {
         event.getEntity();
         if (event.getEntity().getShooter() instanceof Player player) {
             Shoot instance = shoots.get(player.getName());
-            instance.onEggHit(event);
+            instance.onProjectileHit(event);
         }
 
     }
