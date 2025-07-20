@@ -108,7 +108,7 @@ public class Shoot implements Listener {
     private String weapon_Type;
     private String shootingType;
 
-    private boolean InventoryOpen = false;
+    private boolean inventoryOpen = false;
     private boolean dontShoot = false;
     private boolean damageEvent = false;
     private boolean zoomOn = false;
@@ -165,7 +165,10 @@ public class Shoot implements Listener {
     }
 
     public void setInventoryOpen(boolean state, Player player) {
-        InventoryOpen = state;
+        inventoryOpen = state;
+
+        cancelZoom(player);
+
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand.getType() == Material.AIR) {
             return;
@@ -303,7 +306,7 @@ public class Shoot implements Listener {
             bulletsLeft.get(finalUuid).add(false); // Check for active reloads
             bulletsLeft.get(finalUuid).add(false); // Manages fire rate
             bulletsLeft.get(finalUuid).add(false); // Is secondary fire in use
-            bulletsLeft.get(finalUuid).add(-1); // Ammo for secondary fire, befault -1 if weapon doesnt have secondary fire
+            bulletsLeft.get(finalUuid).add(-1); // Ammo for secondary fire, befault -1 if weapon doesnt have fire
 
             if (hasSecondaryAction) {
                 bulletsLeft.get(finalUuid).set(4, 1);
@@ -327,7 +330,6 @@ public class Shoot implements Listener {
     }
 
     private void resetWeaponBooleans() {
-        InventoryOpen = false;
         dontShoot = false;
         damageEvent = false;
         zoomOn = false;
@@ -451,7 +453,7 @@ public class Shoot implements Listener {
                     weaponSounds.put("Open_Mechanics", value.getRoot().getFirearm_action().getOpen().getMechanics());
                     weaponSounds.put("Close_Mechanics", value.getRoot().getFirearm_action().getClose().getMechanics());
 
-                    if (!InventoryOpen && !fromGround) {
+                    if (!inventoryOpen && !fromGround) {
                         playWeaponSound(player, "Weapon_Get_Mechanics");
                         renamePreProcess(finalUuid, value, player);
                     }
@@ -489,7 +491,7 @@ public class Shoot implements Listener {
                     weaponSounds.put("Finish_Mechanics", tool.getRoot().getReload().getFinish_mechanics());
                     weapon_Type = tool.getRoot().getProjectile();
 
-                    if (!InventoryOpen && !fromGround) {
+                    if (!inventoryOpen && !fromGround) {
                         playWeaponSound(player, "Weapon_Get_Mechanics");
                         // Integer[] arr =
                         // {Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString()), -1, -1};
@@ -583,7 +585,7 @@ public class Shoot implements Listener {
     private void reloadCheck(WeaponClass value, PlayerDropItemEvent event, Player player, UUID finalUuid,
             ItemStack item) {
         if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(item.getType().toString())) {
-            if (!InventoryOpen) {
+            if (!inventoryOpen) {
                 event.setCancelled(true);
                 player.updateInventory();
                 renamePreProcess(finalUuid, value, player);
@@ -636,15 +638,15 @@ public class Shoot implements Listener {
                 type == Material.DIAMOND_SHOVEL || type == Material.NETHERITE_SHOVEL;
     }
 
-    public void stopBlockPlace(BlockPlaceEvent event){
+    public void stopBlockPlace(BlockPlaceEvent event) {
 
         String itemType = event.getBlock().getType().toString();
 
         weapon.getTools().forEach((key, value) -> {
-                if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(itemType)){
-                    event.setCancelled(true);
-                }
-            });
+            if (value.getRoot().getInfo().getWeapon_item().getType().equalsIgnoreCase(itemType)) {
+                event.setCancelled(true);
+            }
+        });
     }
 
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -759,7 +761,7 @@ public class Shoot implements Listener {
                             this.cancel();
                         }
                     }
-                }.runTaskTimer(plugin, 0L, burstFireRate); // start immediately, repeat every 3 ticks
+                }.runTaskTimer(plugin, 0L, burstFireRate);
             });
         } else {
             fireRifle(value, player);
@@ -768,7 +770,7 @@ public class Shoot implements Listener {
     }
 
     public void handleShooting(Player player, boolean leftShot) {
-        if (!isFlagAllowed(player, Flags.PVP)) {
+        if (!isFlagAllowed(player, Flags.PVP) || inventoryOpen) {
             return;
         }
         ItemStack ItemInHand = player.getInventory().getItemInMainHand();
@@ -782,30 +784,30 @@ public class Shoot implements Listener {
                 if (leftShot) {
                     indexOfbullets = 5;
                 }
-                int val = Integer.parseInt(bulletsLeft.get(finalUuid).get(indexOfbullets).toString());
+                int bulletAmount = Integer.parseInt(bulletsLeft.get(finalUuid).get(indexOfbullets).toString());
 
                 boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
                 boolean shotRight = (Boolean) bulletsLeft.get(finalUuid).get(2);
                 boolean shotLeft = (Boolean) bulletsLeft.get(finalUuid).get(6);
 
-                if (val > 0 && !isReloading) {
+                if (bulletAmount > 0 && !isReloading) {
 
                     if (!shotRight && !leftShot) {
-                        val--;
-                        correctShoot(indexOfbullets, val, finalUuid, value, player, 2);
+                        bulletAmount--;
+                        correctShoot(indexOfbullets, bulletAmount, finalUuid, value, player, 2);
                     }
                     if (!shotLeft && dualWield && leftShot) {
-                        val--;
-                        correctShoot(indexOfbullets, val, finalUuid, value, player, 6);
+                        bulletAmount--;
+                        correctShoot(indexOfbullets, bulletAmount, finalUuid, value, player, 6);
                     }
 
                 }
                 renamePreProcess(finalUuid, value, player);
                 if (!dualWield) {
-                    startReload(finalUuid, player, isReloading, value, val);
+                    startReload(finalUuid, player, isReloading, value, bulletAmount);
                 } else if ((int) bulletsLeft.get(finalUuid).get(0) == 0
                         && (int) bulletsLeft.get(finalUuid).get(5) == 0) {
-                    startReload(finalUuid, player, isReloading, value, val);
+                    startReload(finalUuid, player, isReloading, value, bulletAmount);
                 }
 
             }
@@ -901,7 +903,7 @@ public class Shoot implements Listener {
         UUID finalUuid = returnUUID(ItemInHand);
 
         if (bulletsLeft.get(finalUuid) == null || !isFlagAllowed(player, Flags.PVP) || shootingType == null
-                || ItemInHand.getType() == Material.AIR || InventoryOpen || breakingBlock) {
+                || ItemInHand.getType() == Material.AIR || inventoryOpen || breakingBlock) {
             return;
         }
 
@@ -1082,82 +1084,49 @@ public class Shoot implements Listener {
                 }
                 // Check for left-click (ACTION_LEFT_CLICK_AIR or ACTION_LEFT_CLICK_BLOCK)
                 if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                    // Launch an egg from the player's location
+
                     UUID finalUuid = returnUUID(ItemInHand);
-                    if (ItemInHand.getType() == Material.WOODEN_HOE && isFlagAllowed(player, Flags.PVP)) {
-                        flameThrower(player, ItemInHand, value);
-                    } else {
-                        if (!shootingType.equalsIgnoreCase("semi-auto")) {
-                            if (controlFire == null || controlFire.isCancelled()) {
-                                boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
-                                if (isReloading && weapon_Type.equalsIgnoreCase("shotgun")
-                                        && (Integer) bulletsLeft.get(finalUuid).get(0) > 0) {
-                                    cancelReloadTasks(finalUuid, player);
-                                    bulletsLeft.get(finalUuid).set(2, false);
-                                }
-
-                                controlFire = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
-                                    int tickCount = 0; // Track the number of ticks
-
-                                    @Override
-                                    public void run() {
-                                        handleShooting(player, false);
-                                        tickCount++;
-
-                                        if (tickCount >= 4) {
-                                            controlFire.cancel();
-                                            controlFire = null;
-                                        }
-                                    }
-                                }, 0, 1); // Start immediately and repeat every tick
-                            }
-                        } else if (hasSecondaryAction) {
-                            boolean state = (boolean) bulletsLeft.get(finalUuid).get(3);
-                            bulletsLeft.get(finalUuid).set(3, !state);
-
+                    if (!shootingType.equalsIgnoreCase("semi-auto")) {
+                        if (controlFire == null || controlFire.isCancelled()) {
                             boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
-                            renamePreProcess(finalUuid, value, player);
-                            if (isReloading) {
+                            if (isReloading && weapon_Type.equalsIgnoreCase("shotgun")
+                                    && (Integer) bulletsLeft.get(finalUuid).get(0) > 0) {
                                 cancelReloadTasks(finalUuid, player);
-                                player.sendMessage(Component.text("Reload canceled!", NamedTextColor.DARK_AQUA));
+                                bulletsLeft.get(finalUuid).set(2, false);
                             }
 
+                            controlFire = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
+                                int tickCount = 0; // Track the number of ticks
+
+                                @Override
+                                public void run() {
+                                    handleShooting(player, false);
+                                    tickCount++;
+
+                                    if (tickCount >= 4) {
+                                        controlFire.cancel();
+                                        controlFire = null;
+                                    }
+                                }
+                            }, 0, 1); // Start immediately and repeat every tick
                         }
+                    } else if (hasSecondaryAction) {
+                        boolean state = (boolean) bulletsLeft.get(finalUuid).get(3);
+                        bulletsLeft.get(finalUuid).set(3, !state);
+
+                        boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
+                        renamePreProcess(finalUuid, value, player);
+                        if (isReloading) {
+                            cancelReloadTasks(finalUuid, player);
+                            player.sendMessage(Component.text("Reload canceled!", NamedTextColor.DARK_AQUA));
+                        }
+
                     }
                 }
+
             }
         });
 
-    }
-
-    private void flameThrower(Player player, ItemStack ItemInHand, WeaponClass value) {
-        UUID finalUuid = returnUUID(ItemInHand);
-        int val = Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString());
-
-        boolean isReloading = (Boolean) bulletsLeft.get(finalUuid).get(1);
-        boolean shot = (Boolean) bulletsLeft.get(finalUuid).get(2);
-
-        if (val > 0 && !shot && !isReloading) {
-            bulletsLeft.get(finalUuid).set(2, true);
-            bulletsLeft.get(finalUuid).set(0, val - 1);
-            for (int i = 0; i < 24; i++) {
-                Egg egg = player.launchProjectile(Egg.class);
-                Vector originalVelocity = egg.getVelocity();
-
-                originalVelocity.setX(originalVelocity.getX() * 0.5);
-                originalVelocity.setY(originalVelocity.getY() * 0.5);
-                originalVelocity.setZ(originalVelocity.getZ() * 0.5);
-
-                Vector newVelocity = originalVelocity.add(randomOffset(new Random()));
-                egg.setVelocity(newVelocity);
-            }
-            Bukkit.getScheduler().runTaskLater(plugin, () -> bulletsLeft.get(finalUuid).set(2, false), fireRate);
-
-        }
-        renamePreProcess(finalUuid, value, player);
-        if (Integer.parseInt(bulletsLeft.get(finalUuid).getFirst().toString()) <= 0 && !isReloading) {
-            reloadTool(value, player, finalUuid);
-        }
     }
 
     public void reloadTool(WeaponClass value, Player player, UUID finalUuid) {
@@ -1539,10 +1508,15 @@ public class Shoot implements Listener {
     }
 
     private Vector randomOffset(Random random) {
-        return new Vector(
-                (random.nextDouble() - 0.5) * spread,
-                (random.nextDouble() - 0.5) * spread,
-                (random.nextDouble() - 0.5) * spread);
+        double theta = random.nextDouble() * 2 * Math.PI; // Horizontal angle
+        double phi = Math.acos(2 * random.nextDouble() - 1); // Vertical angle (symmetric)
+        double r = Math.cbrt(random.nextDouble()) * spread; // Radius, cubic root = uniform fill
+
+        double x = r * Math.sin(phi) * Math.cos(theta);
+        double y = r * Math.cos(phi) * 0.8;
+        double z = r * Math.sin(phi) * Math.sin(theta);
+
+        return new Vector(x, y, z);
     }
 
     private void applyLeap(String command, Player player) {
@@ -1619,8 +1593,7 @@ public class Shoot implements Listener {
 
         // Get the player's eye location and direction
         Location eyeLocation = player.getEyeLocation();
-        Vector direction = eyeLocation.getDirection(); // The direction the player is facing
-        direction.normalize();
+        Vector direction = eyeLocation.getDirection().normalize(); // The direction the player is facing
 
         class ProjectileDetails {
             private String type;
@@ -1635,57 +1608,52 @@ public class Shoot implements Listener {
                 this.speed = speed;
             }
 
-            // public String getType() {
-            // return type;
-            // }
-
             public double getGravity() {
                 return gravity;
             }
-            // public double getSpeed() {
-            // return speed;
-            // }
 
             public double getDrag() {
                 return drag;
             }
         }
 
+        ProjectileClass projectileClass = weapon.getProjectiles().get("sniper_rifle");
+
         ProjectileDetails projectile_type = switch (weapon_Type.toLowerCase()) {
             case "assault_rifle" -> new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                    projectileClass.getAssault_rifle().getProjectile()
                             .getProjectile_settings().getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                    projectileClass.getAssault_rifle().getProjectile()
                             .getProjectile_settings().getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                    projectileClass.getAssault_rifle().getProjectile()
                             .getProjectile_settings().getDrag().getBase(),
-                    weapon.getProjectiles().get("sniper_rifle").getAssault_rifle().getProjectile()
+                    projectileClass.getAssault_rifle().getProjectile()
                             .getProjectile_settings().getMinimum().getSpeed());
             case "pistol" -> new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings()
+                    projectileClass.getPistol().getProjectile().getProjectile_settings()
                             .getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings()
+                    projectileClass.getPistol().getProjectile().getProjectile_settings()
                             .getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getPistol().getProjectile().getProjectile_settings()
+                    projectileClass.getPistol().getProjectile().getProjectile_settings()
                             .getDrag().getBase(),
                     0);
             case "shotgun" -> new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                    projectileClass.getShotgun().getProjectile().getProjectile_settings()
                             .getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                    projectileClass.getShotgun().getProjectile().getProjectile_settings()
                             .getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                    projectileClass.getShotgun().getProjectile().getProjectile_settings()
                             .getDrag().getBase(),
-                    weapon.getProjectiles().get("sniper_rifle").getShotgun().getProjectile().getProjectile_settings()
+                    projectileClass.getShotgun().getProjectile().getProjectile_settings()
                             .getMinimum().getSpeed());
             case "sniper_rifle" -> new ProjectileDetails(
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                    projectileClass.getSniper_rifle().getProjectile()
                             .getProjectile_settings().getType(),
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                    projectileClass.getSniper_rifle().getProjectile()
                             .getProjectile_settings().getGravity(),
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                    projectileClass.getSniper_rifle().getProjectile()
                             .getProjectile_settings().getDrag().getBase(),
-                    weapon.getProjectiles().get("sniper_rifle").getSniper_rifle().getProjectile()
+                    projectileClass.getSniper_rifle().getProjectile()
                             .getProjectile_settings().getMinimum().getSpeed());
             default -> new ProjectileDetails("", 0, 0, 0);
         };
@@ -1696,15 +1664,17 @@ public class Shoot implements Listener {
         EntityType entityType = EntityType.valueOf(projectile_type.type.toUpperCase());
         Bukkit.getScheduler().runTask(plugin, () -> {
             for (int i = 0; i <= projectilesPerShot; i++) {
-                Vector offset = randomOffset(new Random());
+                Vector offset = randomOffset(new Random()).add(direction.multiply(0.7));
 
                 Entity entity = player.getWorld().spawnEntity(eyeLocation.add(offset), entityType);
                 if (entity instanceof Projectile projectile) {
                     projectile.setShooter(player);
                     projectile.setGravity(false);
 
-                    Vector velocity = player.getEyeLocation().getDirection().normalize()
-                            .multiply((double) (Projectile_Speed + projectile_type.speed / 10) / 100 + 0.5); // Custom
+                    Vector sway = randomOffset(new Random()).multiply(0.05);
+
+                    Vector velocity = player.getEyeLocation().getDirection().normalize().add(sway)
+                            .multiply((double) (Projectile_Speed + projectile_type.speed / 10) / 100 + 0.5);
 
                     projectile.setVelocity(velocity);
 

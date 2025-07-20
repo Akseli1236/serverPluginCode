@@ -1,12 +1,14 @@
 package org.server.gtamc;
 
+import java.util.Objects;
+
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 
+import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.comphenix.protocol.ProtocolLibrary;
-
-import java.util.Objects;
 
 public final class GTAMC extends JavaPlugin {
 
@@ -34,8 +36,12 @@ public final class GTAMC extends JavaPlugin {
 
     @Override
     public void onDisable() {
-//        ProtocolLibrary.getProtocolManager().removePacketListeners(this);
-        System.out.println("Something went wrong...");
+        ProtocolLibrary.getProtocolManager().removePacketListeners(this);
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
+
+        getLogger().info("Plugin has been disabled.");
+
         // Plugin shutdown logic
     }
 }

@@ -47,7 +47,7 @@
         <version>3.5.3</version>
         <configuration>
           <useModulePath>false</useModulePath>
-	</configuration>
+	      </configuration>
       </plugin>
     </plugins>
     <resources>
