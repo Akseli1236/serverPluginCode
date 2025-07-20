@@ -79,10 +79,10 @@ public class PlayerData implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            playerShoots.remove(playerName);
-        }, 20L * 60 * 10);
-
+        removalTasks.put(playerName,
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    playerShoots.remove(playerName);
+                }, 20L * 60 * 10));
     }
 
     public Player getPlayer(String playerName) {
