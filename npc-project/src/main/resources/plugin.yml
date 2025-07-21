@@ -1,0 +1,9 @@
+name: npc-project
+version: '1.0'
+main: org.server.NPCServer
+api-version: '1.21'
+depend: [Citizens]
+commands:
+  rcheststocker:
+    description: Reload chest restocker config-file
+    usage: /rcheststocker
