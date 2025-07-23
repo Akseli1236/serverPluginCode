@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,10 +51,11 @@ public class ShootManagerTest {
 
     private Plugin mockPlugin = mock(Plugin.class);
     private Player mockPlayer = mock(Player.class);
+
+    @SuppressWarnings("unchecked")
     private Map<String, Shoot> shoots = mock(Map.class);
 
-
-     @BeforeEach
+    @BeforeEach
     public void setUp() {
         MockBukkit.mock(); // Start mocked server
     }
@@ -62,235 +64,237 @@ public class ShootManagerTest {
     public void tearDown() {
         MockBukkit.unmock(); // Stop mocked server
     }
-    
+
     @Test
     public void testOnExplosionEvent() {
-	ShootManager mockShootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
-	EntityExplodeEvent mockExplode = mock(EntityExplodeEvent.class);
-	List<Block> mockBlockList = mock(List.class);
-	TNTPrimed mockTnt = mock(TNTPrimed.class);
+        ShootManager mockShootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
+        EntityExplodeEvent mockExplode = mock(EntityExplodeEvent.class);
+        List<Block> mockBlockList = mock(List.class);
+        TNTPrimed mockTnt = mock(TNTPrimed.class);
 
-	when(mockExplode.getEntity()).thenReturn(mockTnt);
-	when(mockExplode.blockList()).thenReturn(mockBlockList);
+        when(mockExplode.getEntity()).thenReturn(mockTnt);
+        when(mockExplode.blockList()).thenReturn(mockBlockList);
 
-	mockShootManager.onExplosionEvent(mockExplode);
-	verify(mockExplode).getEntity();
-	verify(mockBlockList).clear();
-	
-    }
-
-    @Test
-    public void testOnItemSwitch(){
-	PlayerItemHeldEvent mockHeldEvent = mock(PlayerItemHeldEvent.class);
-	PlayerInteractEvent mockInteractEvent = mock(PlayerInteractEvent.class);
-	PlayerDropItemEvent mockDropItem = mock(PlayerDropItemEvent.class);
-	EntityPickupItemEvent mockPickItem = mock(EntityPickupItemEvent.class);
-	PlayerDeathEvent mockDeath = mock(PlayerDeathEvent.class);
-	PlayerRespawnEvent mockRespawn = mock(PlayerRespawnEvent.class);
-	InventoryOpenEvent mockDrop = mock(InventoryOpenEvent.class);
-	
-	Shoot mockShoot = mock(Shoot.class);
-	PlayerData mockData = mock(PlayerData.class);
-	
-	when(mockData.getPlayerShoots()).thenReturn(shoots);
-
-	ShootManager mockShootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
-	
-	when(mockHeldEvent.getPlayer()).thenReturn(mockPlayer);
-	when(mockInteractEvent.getPlayer()).thenReturn(mockPlayer);
-	when(mockDropItem.getPlayer()).thenReturn(mockPlayer);
-	when(mockPickItem.getEntity()).thenReturn(mockPlayer);
-	when(mockDeath.getEntity()).thenReturn(mockPlayer);
-	when(mockRespawn.getPlayer()).thenReturn(mockPlayer);
-	when(mockDrop.getPlayer()).thenReturn(mockPlayer);
-	
-	when(mockPlayer.getName()).thenReturn("TestPlayer");
-	when(shoots.get("TestPlayer")).thenReturn(mockShoot);
-	when(shoots.containsKey("TestPlayer")).thenReturn(true);
-
-	mockShootManager.onItemSwitch(mockHeldEvent);
-	mockShootManager.onPlayerDropItem(mockDropItem);
-	mockShootManager.onPlayerInteract(mockInteractEvent);
-	mockShootManager.onPlayerPickItemEvent(mockPickItem);
-	mockShootManager.onPlayerDeath(mockDeath);
-	mockShootManager.onPlayerRespawn(mockRespawn);
-	mockShootManager.onPlayerDropFromInventory(mockDrop);
-	
-	verify(mockShoot).onItemSwitch(mockHeldEvent);
-	verify(mockShoot).onPlayerInteract(mockInteractEvent);
-	verify(mockShoot).onPlayerItemPickup(mockPickItem);
-	verify(mockShoot).onPlayerDropItem(mockDropItem);
-	verify(mockShoot).onPlayerDeath(mockDeath);
-	verify(mockShoot).onPlayerRespawn(mockRespawn);
-	verify(mockShoot).setInventoryOpen(true, mockPlayer);
-    }
-
-    @Test
-    public void testResetItemMeta(){
-	
-	ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
-	ItemMeta meta = item.getItemMeta();
-	((Damageable) meta).setDamage(15);
-	meta.displayName(Component.text("Epic Sword", NamedTextColor.RED));
-	item.setItemMeta(meta);
-
-	assertEquals(Component.text("Epic Sword", NamedTextColor.RED), item.getItemMeta().displayName());
-
-	ShootManager shootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
-
-	// Act
-	shootManager.resetItemMeta(item);
-
-	// Assert
-	assertEquals(Material.IRON_SWORD, item.getType());
-	assertEquals(1, item.getAmount());
-
-	Damageable resultMeta = (Damageable) item.getItemMeta();
-	assertEquals(15, resultMeta.getDamage());
-
-	assertEquals(null, item.getItemMeta().displayName());
+        mockShootManager.onExplosionEvent(mockExplode);
+        verify(mockExplode).getEntity();
+        verify(mockBlockList).clear();
 
     }
 
     @Test
-    public void testOnEntityDamageByEntity(){
-	EntityDamageByEntityEvent mockEvent = mock(EntityDamageByEntityEvent.class);
-	Firework mockFireWork = mock(Firework.class);
-	ShootManager shootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
+    public void testOnItemSwitch() {
+        PlayerItemHeldEvent mockHeldEvent = mock(PlayerItemHeldEvent.class);
+        PlayerInteractEvent mockInteractEvent = mock(PlayerInteractEvent.class);
+        PlayerDropItemEvent mockDropItem = mock(PlayerDropItemEvent.class);
+        EntityPickupItemEvent mockPickItem = mock(EntityPickupItemEvent.class);
+        PlayerDeathEvent mockDeath = mock(PlayerDeathEvent.class);
+        PlayerRespawnEvent mockRespawn = mock(PlayerRespawnEvent.class);
+        InventoryOpenEvent mockDrop = mock(InventoryOpenEvent.class);
 
-	when(mockEvent.getDamager()).thenReturn(mockFireWork);
+        Shoot mockShoot = mock(Shoot.class);
+        PlayerData mockData = mock(PlayerData.class);
 
-	shootManager.onEntityDamageByEntity(mockEvent);
+        when(mockData.getPlayerShoots()).thenReturn(shoots);
 
-	verify(mockEvent).setCancelled(true);
+        ShootManager mockShootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+
+        when(mockHeldEvent.getPlayer()).thenReturn(mockPlayer);
+        when(mockInteractEvent.getPlayer()).thenReturn(mockPlayer);
+        when(mockDropItem.getPlayer()).thenReturn(mockPlayer);
+        when(mockPickItem.getEntity()).thenReturn(mockPlayer);
+        when(mockDeath.getEntity()).thenReturn(mockPlayer);
+        when(mockRespawn.getPlayer()).thenReturn(mockPlayer);
+        when(mockDrop.getPlayer()).thenReturn(mockPlayer);
+
+        when(mockPlayer.getName()).thenReturn("TestPlayer");
+        when(shoots.get("TestPlayer")).thenReturn(mockShoot);
+        when(shoots.containsKey("TestPlayer")).thenReturn(true);
+
+        mockShootManager.onItemSwitch(mockHeldEvent);
+        mockShootManager.onPlayerDropItem(mockDropItem);
+        mockShootManager.onPlayerInteract(mockInteractEvent);
+        mockShootManager.onPlayerPickItemEvent(mockPickItem);
+        mockShootManager.onPlayerDeath(mockDeath);
+        mockShootManager.onPlayerRespawn(mockRespawn);
+        mockShootManager.onPlayerDropFromInventory(mockDrop);
+
+        verify(mockShoot).onItemSwitch(mockHeldEvent);
+        verify(mockShoot).onPlayerInteract(mockInteractEvent);
+        verify(mockShoot).onPlayerItemPickup(mockPickItem);
+        verify(mockShoot).onPlayerDropItem(mockDropItem);
+        verify(mockShoot).onPlayerDeath(mockDeath);
+        verify(mockShoot).onPlayerRespawn(mockRespawn);
+        verify(mockShoot).setInventoryOpen(true, mockPlayer);
+    }
+
+    @Test
+    public void testResetItemMeta() {
+
+        ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
+        ItemMeta meta = item.getItemMeta();
+        ((Damageable) meta).setDamage(15);
+        meta.displayName(Component.text("Epic Sword", NamedTextColor.RED));
+        item.setItemMeta(meta);
+
+        assertEquals(Component.text("Epic Sword", NamedTextColor.RED), item.getItemMeta().displayName());
+
+        ShootManager shootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
+
+        // Act
+        shootManager.resetItemMeta(item);
+
+        // Assert
+        assertEquals(Material.IRON_SWORD, item.getType());
+        assertEquals(1, item.getAmount());
+
+        Damageable resultMeta = (Damageable) item.getItemMeta();
+        assertEquals(15, resultMeta.getDamage());
+
+        assertEquals(null, item.getItemMeta().displayName());
 
     }
 
     @Test
-    public void testOnInventoryClick(){
-	InventoryClickEvent mockEvent = mock(InventoryClickEvent.class);
-	Shoot mockShoot = mock(Shoot.class);
-	ItemStack mockItem = mock(ItemStack.class);
-	InventoryAction mockAction = InventoryAction.PICKUP_ALL;
+    public void testOnEntityDamageByEntity() {
+        EntityDamageByEntityEvent mockEvent = mock(EntityDamageByEntityEvent.class);
+        Firework mockFireWork = mock(Firework.class);
+        ShootManager shootManager = new ShootManager(mockPlugin, mock(PlayerData.class), mock(WASD.class));
 
-	PlayerData mockData = mock(PlayerData.class);
-	
-	when(mockData.getPlayerShoots()).thenReturn(shoots);
+        when(mockEvent.getDamager()).thenReturn(mockFireWork);
 
-	// Set up mocks
-	when(mockEvent.getWhoClicked()).thenReturn(mockPlayer);
-	when(mockPlayer.getName()).thenReturn("TestPlayer");
-	when(mockEvent.getAction()).thenReturn(mockAction);
-	when(mockEvent.getSlot()).thenReturn(5);
-	when(mockEvent.getCurrentItem()).thenReturn(mockItem);
-	when(shoots.get("TestPlayer")).thenReturn(mockShoot);
+        shootManager.onEntityDamageByEntity(mockEvent);
 
-	// Setup shoot manager with shoot map
+        verify(mockEvent).setCancelled(true);
 
-	ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+    }
 
-	// Act
-	shootManager.onInventoryClick(mockEvent);
+    @Test
+    public void testOnInventoryClick() {
+        InventoryClickEvent mockEvent = mock(InventoryClickEvent.class);
+        Shoot mockShoot = mock(Shoot.class);
+        ItemStack mockItem = mock(ItemStack.class);
+        InventoryAction mockAction = InventoryAction.PICKUP_ALL;
+        Component mockComponent = mock(Component.class);
+        InventoryView mockInventoryView = mock(InventoryView.class);
 
-	// Verify
-	verify(mockShoot).setInventoryOpen(true, mockPlayer);
-	verify(mockShoot).setInventoryAction(mockAction);
-	verify(mockShoot).setItemSlot(5);
-	verify(mockShoot).removeEffects(mockPlayer);
-	verify(mockShoot).loadWeapons(mockItem, mockPlayer);
+        PlayerData mockData = mock(PlayerData.class);
+
+        when(mockData.getPlayerShoots()).thenReturn(shoots);
+
+        // Set up mocks
+        when(mockEvent.getView()).thenReturn(mockInventoryView);
+        when(mockInventoryView.title()).thenReturn(mockComponent);
+        when(mockComponent.toString()).thenReturn("Random_key");
+        when(mockEvent.getWhoClicked()).thenReturn(mockPlayer);
+        when(mockPlayer.getName()).thenReturn("TestPlayer");
+        when(mockEvent.getAction()).thenReturn(mockAction);
+        when(mockEvent.getSlot()).thenReturn(5);
+        when(mockEvent.getCurrentItem()).thenReturn(mockItem);
+        when(shoots.get("TestPlayer")).thenReturn(mockShoot);
+
+        // Setup shoot manager with shoot map
+        ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+
+        // Act
+        shootManager.onInventoryClick(mockEvent);
+
+        // Verify
+        verify(mockShoot).setInventoryOpen(true, mockPlayer);
+        verify(mockShoot).setInventoryAction(mockAction);
+        verify(mockShoot).setItemSlot(5);
+        verify(mockShoot).removeEffects(mockPlayer);
+        verify(mockShoot).loadWeapons(mockItem, mockPlayer);
     }
 
     @Test
     public void testOnPlayerFallDamage() {
-	// Mocks
-	EntityDamageEvent mockEvent = mock(EntityDamageEvent.class);
-	Shoot mockShoot = mock(Shoot.class);
+        // Mocks
+        EntityDamageEvent mockEvent = mock(EntityDamageEvent.class);
+        Shoot mockShoot = mock(Shoot.class);
 
-	PlayerData mockData = mock(PlayerData.class);
-	
-	when(mockData.getPlayerShoots()).thenReturn(shoots);
+        PlayerData mockData = mock(PlayerData.class);
 
-	when(mockEvent.getEntity()).thenReturn(mockPlayer);
-	when(mockEvent.getCause()).thenReturn(EntityDamageEvent.DamageCause.FALL);
-	when(mockPlayer.getName()).thenReturn("TestPlayer");
-	when(shoots.get("TestPlayer")).thenReturn(mockShoot);
-	
-	ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+        when(mockData.getPlayerShoots()).thenReturn(shoots);
 
-	shootManager.onPlayerFallDamage(mockEvent);
-	verify(mockShoot).checkFallDamage(mockEvent);
+        when(mockEvent.getEntity()).thenReturn(mockPlayer);
+        when(mockEvent.getCause()).thenReturn(EntityDamageEvent.DamageCause.FALL);
+        when(mockPlayer.getName()).thenReturn("TestPlayer");
+        when(shoots.get("TestPlayer")).thenReturn(mockShoot);
+
+        ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+
+        shootManager.onPlayerFallDamage(mockEvent);
+        verify(mockShoot).checkFallDamage(mockEvent);
     }
 
     @Test
     public void testOnCreatureSpawn() {
-	CreatureSpawnEvent mockEvent = mock(CreatureSpawnEvent.class);
-	Weapon mockWeapon = mock(Weapon.class);
-	PlayerData mockData = mock(PlayerData.class);
+        CreatureSpawnEvent mockEvent = mock(CreatureSpawnEvent.class);
+        Weapon mockWeapon = mock(Weapon.class);
+        PlayerData mockData = mock(PlayerData.class);
 
-	when(mockData.getWeapon()).thenReturn(mockWeapon);
+        when(mockData.getWeapon()).thenReturn(mockWeapon);
 
-	try (MockedConstruction<Shoot> mocked = mockConstruction(Shoot.class)) {
-	    ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+        try (MockedConstruction<Shoot> mocked = mockConstruction(Shoot.class)) {
+            ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
 
-	    shootManager.onCreatureSpawn(mockEvent);
+            shootManager.onCreatureSpawn(mockEvent);
 
-	    // Verify Shoot was constructed
-	    assertEquals(1, mocked.constructed().size());
+            // Verify Shoot was constructed
+            assertEquals(1, mocked.constructed().size());
 
-	    // Get the constructed Shoot instance
-	    Shoot createdShoot = mocked.constructed().get(0);
+            // Get the constructed Shoot instance
+            Shoot createdShoot = mocked.constructed().get(0);
 
-	    // Verify method was called on it
-	    verify(createdShoot).onCreatureSpawn(mockEvent);
-	}
+            // Verify method was called on it
+            verify(createdShoot).onCreatureSpawn(mockEvent);
+        }
 
-	
     }
 
     @Test
-    public void testOnEggHit(){
-	ProjectileHitEvent mockHit = mock(ProjectileHitEvent.class);
-	Projectile mockProjectile = mock(Projectile.class);
-	Shoot mockShoot = mock(Shoot.class);
+    public void testOnEggHit() {
+        ProjectileHitEvent mockHit = mock(ProjectileHitEvent.class);
+        Projectile mockProjectile = mock(Projectile.class);
+        Shoot mockShoot = mock(Shoot.class);
 
-	PlayerData mockData = mock(PlayerData.class);
-	
-	when(mockData.getPlayerShoots()).thenReturn(shoots);
+        PlayerData mockData = mock(PlayerData.class);
 
-	ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
+        when(mockData.getPlayerShoots()).thenReturn(shoots);
 
-	when(mockHit.getEntity()).thenReturn(mockProjectile);
-	when(mockProjectile.getShooter()).thenReturn(mockPlayer);
-	when(mockPlayer.getName()).thenReturn("TestPlayer");
-	when(shoots.get("TestPlayer")).thenReturn(mockShoot);
+        ShootManager shootManager = new ShootManager(mockPlugin, mockData, mock(WASD.class));
 
-	shootManager.onEggHit(mockHit);
+        when(mockHit.getEntity()).thenReturn(mockProjectile);
+        when(mockProjectile.getShooter()).thenReturn(mockPlayer);
+        when(mockPlayer.getName()).thenReturn("TestPlayer");
+        when(shoots.get("TestPlayer")).thenReturn(mockShoot);
 
-	verify(mockShoot).onProjectileHit(mockHit);
-	
+        shootManager.onEggHit(mockHit);
+
+        verify(mockShoot).onProjectileHit(mockHit);
+
     }
 
     @Test
-    public void testUpdateWeaponData(){
-    Server mockServer = mock(Server.class);
-    Shoot mockShoot = mock(Shoot.class);
-    PlayerData mockData = mock(PlayerData.class);
-    WASD mockWASD = mock(WASD.class);
+    public void testUpdateWeaponData() {
+        Server mockServer = mock(Server.class);
+        Shoot mockShoot = mock(Shoot.class);
+        PlayerData mockData = mock(PlayerData.class);
+        WASD mockWASD = mock(WASD.class);
 
-    Collection<? extends Player> mockPlayers = Collections.singleton(mockPlayer);
-    doReturn(mockPlayers).when(mockServer).getOnlinePlayers();
+        Collection<? extends Player> mockPlayers = Collections.singleton(mockPlayer);
+        doReturn(mockPlayers).when(mockServer).getOnlinePlayers();
 
-    
-    when(mockData.getPlayerShoots()).thenReturn(shoots);
-    when(mockPlugin.getServer()).thenReturn(mockServer);
-    when(mockPlayer.getName()).thenReturn("TestPlayer");
-    when(shoots.get("TestPlayer")).thenReturn(mockShoot);
+        when(mockData.getPlayerShoots()).thenReturn(shoots);
+        when(mockPlugin.getServer()).thenReturn(mockServer);
+        when(mockPlayer.getName()).thenReturn("TestPlayer");
+        when(shoots.get("TestPlayer")).thenReturn(mockShoot);
 
-    ShootManager shootManager = new ShootManager(mockPlugin, mockData, mockWASD);
+        ShootManager shootManager = new ShootManager(mockPlugin, mockData, mockWASD);
 
-    shootManager.updateWeaponData();
+        shootManager.updateWeaponData();
 
-    verify(mockShoot).update();
+        verify(mockShoot).update();
     }
-   
+
 }

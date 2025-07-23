@@ -39,7 +39,6 @@ import org.wargamer2010.signshop.player.PlayerCache;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 
 public class ShootManager implements Listener {
 
