@@ -43,6 +43,10 @@ public class RestockTimer {
         restockChest(chest.getInventory());
     }
 
+    public void updateChestItems(Vector identifier, ItemStack[] updatedInventory){
+        chestIdentifier.replace(identifier, updatedInventory);
+    }
+
     private void restockChest(Inventory chestInventory) {
         // Custom loot table example
         isRestocking = System.currentTimeMillis()+30*1000;

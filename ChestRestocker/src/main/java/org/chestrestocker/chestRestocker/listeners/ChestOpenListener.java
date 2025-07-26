@@ -17,6 +17,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.Vector;
@@ -28,12 +30,22 @@ public class ChestOpenListener implements Listener {
     private final List<String> ALLOWED_REGIONS;
     // HashMap to store chests and their associated RestockTimers
     private final Map<Vector, RestockTimer> chestRestockTimers = new HashMap<>();
+    private Vector chestIdentifier = new Vector();
     private final LoadItemDistribution loadItemDistribution;
 
 
     public ChestOpenListener(LoadItemDistribution loadItemDistribution) {
         this.loadItemDistribution = loadItemDistribution;
         ALLOWED_REGIONS = loadItemDistribution.getAllowedRegions();
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event){
+        if (event.getInventory().getType() != InventoryType.CHEST){
+            return;
+        }
+        chestRestockTimers.get(chestIdentifier).updateChestItems(chestIdentifier, event.getInventory().getContents());
+
     }
 
     @EventHandler
@@ -67,6 +79,7 @@ public class ChestOpenListener implements Listener {
             // If it's a new chest, create a RestockTimer and add it to the HashMap
             for (Vector identify : identifier){
                 if (identify.equals(event.getClickedBlock().getLocation().toVector())){
+                    chestIdentifier = identify;
                     if (!chestRestockTimers.containsKey(identify)){
                         RestockTimer restockTimer = new RestockTimer(loadItemDistribution);
                         restockTimer.setChest(chest, identify);
