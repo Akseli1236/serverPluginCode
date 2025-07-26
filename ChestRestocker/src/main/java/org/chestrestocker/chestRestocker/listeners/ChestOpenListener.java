@@ -41,7 +41,7 @@ public class ChestOpenListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event){
-        if (event.getInventory().getType() != InventoryType.CHEST){
+        if (event.getInventory().getType() != InventoryType.CHEST || !chestRestockTimers.containsKey(chestIdentifier)){
             return;
         }
         chestRestockTimers.get(chestIdentifier).updateChestItems(chestIdentifier, event.getInventory().getContents());

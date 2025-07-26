@@ -1,12 +1,9 @@
 package org.server.mapcrates;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
 
 public class Commands implements CommandExecutor{
 
@@ -36,6 +33,11 @@ public class Commands implements CommandExecutor{
             }
             if (args[0].equals("stop")){
                 airdrop.stopDrops();
+                if (args.length > 2){
+                    if (args[1].equals("clear")){
+                        airdrop.clear();
+                    }
+                }
                 return true;
             }
 
