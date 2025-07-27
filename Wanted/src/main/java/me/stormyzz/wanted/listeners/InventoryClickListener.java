@@ -25,12 +25,13 @@ public class InventoryClickListener implements Listener {
         String openTitle = event.getView().getTitle();
 
         if (openTitle.equals(guiTitle)) {
-            event.setCancelled(true);  // prevent item movement
+            event.setCancelled(true); // prevent item movement
 
             Inventory clickedInventory = event.getClickedInventory();
             if (clickedInventory != null && clickedInventory.equals(event.getView().getTopInventory())) {
                 ItemStack clickedItem = event.getCurrentItem();
-                if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
+                if (clickedItem == null || clickedItem.getType() == Material.AIR)
+                    return;
 
                 // Run your purchase logic
                 handleClick(player, clickedItem);
@@ -42,7 +43,7 @@ public class InventoryClickListener implements Listener {
     public void onInventoryDrag(InventoryDragEvent event) {
         String guiTitle = ChatColor.translateAlternateColorCodes('&', config.getString("gui.title"));
         if (event.getView().getTitle().equals(guiTitle)) {
-            event.setCancelled(true);  // prevent drag
+            event.setCancelled(true); // prevent drag
         }
     }
 }

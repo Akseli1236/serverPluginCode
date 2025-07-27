@@ -13,7 +13,7 @@ public class AmmoManager {
             bulletsLeft.put(itemUUID, new AmmoData(initialAmmo));
         }
     }
-    
+
     // Get ammo data for a specific item
     public AmmoData getAmmoData(UUID itemUUID) {
         return bulletsLeft.get(itemUUID);

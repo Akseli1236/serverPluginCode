@@ -19,7 +19,7 @@ public class Commands implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
 
-        if (command.getName().equalsIgnoreCase("rcheststocker") && player.isOp()){
+        if (command.getName().equalsIgnoreCase("rcheststocker") && player.isOp()) {
             plugin.reloadConfig();
             loadItemDistribution.loader();
         }

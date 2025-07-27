@@ -42,7 +42,8 @@ public class DeathBalanceListener implements Listener {
         double balance = economy.getBalance(player);
         double balanceLost = Math.floor(balance * 0.20);
 
-        if (balanceLost <= 0) return;
+        if (balanceLost <= 0)
+            return;
 
         lostBalanceMap.put(player, balanceLost);
         economy.withdrawPlayer(player, balanceLost);
@@ -68,16 +69,16 @@ public class DeathBalanceListener implements Listener {
         }
     }
 
-
-
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player player))
+            return;
 
         Item item = event.getItem();
         ItemStack stack = item.getItemStack();
 
-        if (stack.getType() != Material.GOLD_NUGGET) return;
+        if (stack.getType() != Material.GOLD_NUGGET)
+            return;
 
         Economy economy = VaultEconomyManager.getEconomy();
         if (economy == null) {

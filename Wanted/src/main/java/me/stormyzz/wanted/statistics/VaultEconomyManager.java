@@ -1,4 +1,5 @@
 package me.stormyzz.wanted.statistics;
+
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -8,11 +9,13 @@ public class VaultEconomyManager {
 
     /**
      * Setup Vault economy.
+     *
      * @return true if the economy is successfully set up, false otherwise.
      */
     public static boolean setupEconomy() {
         // Check if Vault is present and enabled
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null || !Bukkit.getPluginManager().getPlugin("Vault").isEnabled()) {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null
+                || !Bukkit.getPluginManager().getPlugin("Vault").isEnabled()) {
             Bukkit.getLogger().warning("Vault plugin not found or not enabled.");
             return false;
         }
@@ -30,6 +33,7 @@ public class VaultEconomyManager {
 
     /**
      * Get the economy instance.
+     *
      * @return the economy provider if available, otherwise null.
      */
     public static Economy getEconomy() {

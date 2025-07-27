@@ -33,15 +33,14 @@ public class ChestOpenListener implements Listener {
     private Vector chestIdentifier = new Vector();
     private final LoadItemDistribution loadItemDistribution;
 
-
     public ChestOpenListener(LoadItemDistribution loadItemDistribution) {
         this.loadItemDistribution = loadItemDistribution;
         ALLOWED_REGIONS = loadItemDistribution.getAllowedRegions();
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event){
-        if (event.getInventory().getType() != InventoryType.CHEST || !chestRestockTimers.containsKey(chestIdentifier)){
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getInventory().getType() != InventoryType.CHEST || !chestRestockTimers.containsKey(chestIdentifier)) {
             return;
         }
         chestRestockTimers.get(chestIdentifier).updateChestItems(chestIdentifier, event.getInventory().getContents());
@@ -70,17 +69,17 @@ public class ChestOpenListener implements Listener {
             Chest right = (Chest) doubleChest.getRightSide();
             identifier.addLast(left.getLocation().toVector());
             identifier.addLast(right.getLocation().toVector());
-        }else {
+        } else {
             identifier.addLast(chest.getLocation().toVector());
         }
 
         // Check if the chest is inside a valid region
         if (isInValidRegion(chest.getLocation())) {
             // If it's a new chest, create a RestockTimer and add it to the HashMap
-            for (Vector identify : identifier){
-                if (identify.equals(event.getClickedBlock().getLocation().toVector())){
+            for (Vector identify : identifier) {
+                if (identify.equals(event.getClickedBlock().getLocation().toVector())) {
                     chestIdentifier = identify;
-                    if (!chestRestockTimers.containsKey(identify)){
+                    if (!chestRestockTimers.containsKey(identify)) {
                         RestockTimer restockTimer = new RestockTimer(loadItemDistribution);
                         restockTimer.setChest(chest, identify);
                         chestRestockTimers.put(identify, restockTimer);
@@ -91,6 +90,7 @@ public class ChestOpenListener implements Listener {
             }
         }
     }
+
     private boolean isInValidRegion(org.bukkit.Location location) {
         // Get the region manager for the world
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -108,8 +108,10 @@ public class ChestOpenListener implements Listener {
             ProtectedRegion region = regionManager.getRegion(regionName);
 
             if (region != null) {
-                // WorldGuard's 'contains' method requires a BlockVector3 instead of separate X, Y, Z
-                com.sk89q.worldedit.math.BlockVector3 vector = com.sk89q.worldedit.math.BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                // WorldGuard's 'contains' method requires a BlockVector3 instead of separate X,
+                // Y, Z
+                com.sk89q.worldedit.math.BlockVector3 vector = com.sk89q.worldedit.math.BlockVector3
+                        .at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
                 // Check if the location is within the region
                 if (region.contains(vector)) {

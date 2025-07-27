@@ -20,24 +20,26 @@ public class MobSpawnListener implements Listener {
     private final Map<String, Player> playersMap = new HashMap<>();
     private final Map<String, MobSpawning> playerMobSpawning = new HashMap<>();
     private Wanted plugin;
-    
+
     public MobSpawnListener(MobSpawnerManager spawnerManager, Wanted plugin) {
         this.spawnerManager = spawnerManager;
-	this.plugin = plugin;
-	
+        this.plugin = plugin;
+
     }
+
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-	playersMap.put(event.getPlayer().getName(), event.getPlayer());
-	MobSpawning playerMobs = new MobSpawning(plugin, event.getPlayer(), spawnerManager);
-	playerMobSpawning.put(event.getPlayer().getName(), playerMobs);
-	playerMobs.startSpawning();
-	
-       
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        playersMap.put(event.getPlayer().getName(), event.getPlayer());
+        MobSpawning playerMobs = new MobSpawning(plugin, event.getPlayer(), spawnerManager);
+        playerMobSpawning.put(event.getPlayer().getName(), playerMobs);
+        playerMobs.startSpawning();
+
     }
-    @EventHandler void onPlayerQuit(PlayerQuitEvent event){
-	playerMobSpawning.get(event.getPlayer().getName()).stopSpawning();
-	playerMobSpawning.remove(event.getPlayer().getName());
+
+    @EventHandler
+    void onPlayerQuit(PlayerQuitEvent event) {
+        playerMobSpawning.get(event.getPlayer().getName()).stopSpawning();
+        playerMobSpawning.remove(event.getPlayer().getName());
     }
 
     @EventHandler

@@ -568,11 +568,11 @@ public class WeaponClass {
                     return modify_spread_when;
                 }
 
-                public double getSway(){
+                public double getSway() {
                     return sway;
                 }
 
-                public void setSway(double sway){
+                public void setSway(double sway) {
                     this.sway = sway;
                 }
 
@@ -784,11 +784,11 @@ public class WeaponClass {
                 this.flaming = flaming;
             }
 
-            public void setDamage_delay(int damage_delay){
+            public void setDamage_delay(int damage_delay) {
                 this.damage_delay = damage_delay;
             }
 
-            public int getDamage_delay(){
+            public int getDamage_delay() {
                 return damage_delay;
             }
 

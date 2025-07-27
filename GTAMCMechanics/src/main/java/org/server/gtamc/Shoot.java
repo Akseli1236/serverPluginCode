@@ -242,7 +242,6 @@ public class Shoot implements Listener {
                 if (bulletsLeft.containsKey(finalUuid)) {
                     bulletsLeft.get(finalUuid).set(1, false);
                 }
-
             }
         }
     }
@@ -400,7 +399,7 @@ public class Shoot implements Listener {
                     burstFireRate = value.getRoot().getShoot().getBurst_fire_rate();
                     damageDelay = value.getRoot().getDamage().getDamage_delay();
 
-                    if (value.getRoot().getShoot().getSpread() != null){
+                    if (value.getRoot().getShoot().getSpread() != null) {
                         sway = value.getRoot().getShoot().getSpread().getSway();
                     }
 
@@ -1369,7 +1368,8 @@ public class Shoot implements Listener {
         ProjectileSource shooter = projectile.getShooter();
         Player player = (Player) shooter;
 
-        if (player != null && event.getHitEntity() instanceof LivingEntity hitEntity && hitEntity != player && canBeDamaged) {
+        if (player != null && event.getHitEntity() instanceof LivingEntity hitEntity && hitEntity != player
+                && canBeDamaged) {
             hitEntity.setNoDamageTicks(0);
             // Apply custom damage to the entity
             Location entityLocation = hitEntity.getLocation();
@@ -1488,14 +1488,13 @@ public class Shoot implements Listener {
                     hitEntity.damage(damageAfterArmor * 40, player);
                 }
             }
-            if (damageDelay != 0){
+            if (damageDelay != 0) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     canBeDamaged = true;
                 }, damageDelay);
-            }else{
+            } else {
                 canBeDamaged = true;
             }
-
 
             if (hitEntity.getHealth() > 0) {
                 hitEntity.damage(0.5);

@@ -15,8 +15,6 @@ public class LoadItemDistribution implements Listener {
     private final Plugin plugin;
     private List<String> ALLOWED_REGIONS;
 
-
-
     public LoadItemDistribution(Plugin plugin) {
         this.plugin = plugin;
 
@@ -39,7 +37,7 @@ public class LoadItemDistribution implements Listener {
         return ItemChance;
     }
 
-    public void loader(){
+    public void loader() {
         ItemChance.clear();
         loadItemChance();
     }

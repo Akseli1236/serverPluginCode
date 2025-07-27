@@ -16,6 +16,7 @@ public class ProjectileClass {
     public Pistol getPistol() {
         return pistol;
     }
+
     public Shotgun getShotgun() {
         return shotgun;
     }
@@ -43,7 +44,6 @@ public class ProjectileClass {
     public static class Assault_Rifle {
         private Projectile projectile;
 
-
         public Projectile getProjectile() {
             return projectile;
         }
@@ -51,8 +51,6 @@ public class ProjectileClass {
         public void setProjectile(Projectile projectile) {
             this.projectile = projectile;
         }
-
-
 
         // Getters and setters for the fields
 
@@ -67,6 +65,7 @@ public class ProjectileClass {
             public void setProjectile_settings(ProjectileSettings projectile_settings) {
                 this.projectile_settings = projectile_settings;
             }
+
             public Through getThrough() {
                 return through;
             }
@@ -113,7 +112,6 @@ public class ProjectileClass {
                     this.minimum = minimum;
                 }
 
-
                 public static class Minimum {
                     private int speed;
 
@@ -159,6 +157,7 @@ public class ProjectileClass {
                 }
 
             }
+
             public static class Through {
                 private int maximum_through_amount;
                 private Blocks blocks;
@@ -188,9 +187,6 @@ public class ProjectileClass {
                     this.maximum_through_amount = maximum_through_amount;
                 }
             }
-
-
-
 
             public static class Blocks {
                 private double default_speed_multiplier;
@@ -247,8 +243,8 @@ public class ProjectileClass {
             }
         }
 
-
     }
+
     public static class Sniper_Rifle {
         private Projectile projectile;
 
@@ -260,8 +256,6 @@ public class ProjectileClass {
             this.projectile = projectile;
         }
 
-
-
         // Getters and setters for the fields
 
         public static class Projectile {
@@ -275,6 +269,7 @@ public class ProjectileClass {
             public void setProjectile_settings(ProjectileSettings projectile_settings) {
                 this.projectile_settings = projectile_settings;
             }
+
             public Through getThrough() {
                 return through;
             }
@@ -282,7 +277,6 @@ public class ProjectileClass {
             public void setThrough(Through through) {
                 this.through = through;
             }
-
 
             public static class ProjectileSettings {
                 private String type;
@@ -321,8 +315,6 @@ public class ProjectileClass {
                 public void setMinimum(Minimum minimum) {
                     this.minimum = minimum;
                 }
-
-
 
                 public static class Minimum {
                     private int speed;
@@ -369,6 +361,7 @@ public class ProjectileClass {
                 }
 
             }
+
             public static class Through {
                 private int maximum_through_amount;
                 private Blocks blocks;
@@ -398,8 +391,6 @@ public class ProjectileClass {
                     this.maximum_through_amount = maximum_through_amount;
                 }
             }
-
-
 
             public static class Blocks {
                 private double default_speed_multiplier;
@@ -456,8 +447,8 @@ public class ProjectileClass {
             }
         }
 
-
     }
+
     public static class Shotgun {
         private Projectile projectile;
         private Through through;
@@ -529,7 +520,6 @@ public class ProjectileClass {
                     this.minimum = minimum;
                 }
 
-
                 public static class Minimum {
                     private int speed;
 
@@ -577,7 +567,6 @@ public class ProjectileClass {
             }
         }
 
-
         public static class Through {
             private int maximum_through_amount;
             private Blocks blocks;
@@ -606,7 +595,6 @@ public class ProjectileClass {
             public void setMaximum_through_amount(int maximum_through_amount) {
                 this.maximum_through_amount = maximum_through_amount;
             }
-
 
             public static class Blocks {
                 private double default_speed_multiplier;
@@ -663,8 +651,8 @@ public class ProjectileClass {
             }
         }
 
-
     }
+
     public static class Pistol {
         private Projectile projectile;
         private Through through;
@@ -736,7 +724,6 @@ public class ProjectileClass {
                     this.minimum = minimum;
                 }
 
-
                 public static class Minimum {
                     private int speed;
 
@@ -784,7 +771,6 @@ public class ProjectileClass {
             }
         }
 
-
         public static class Through {
             private int maximum_through_amount;
             private Blocks blocks;
@@ -813,7 +799,6 @@ public class ProjectileClass {
             public void setMaximum_through_amount(int maximum_through_amount) {
                 this.maximum_through_amount = maximum_through_amount;
             }
-
 
             public static class Blocks {
                 private double default_speed_multiplier;
@@ -870,8 +855,6 @@ public class ProjectileClass {
             }
         }
 
-
     }
-
 
 }

@@ -19,9 +19,13 @@ public class playerStats {
         return kills;
     }
 
-    public int getCredits(){ return credits; }
+    public int getCredits() {
+        return credits;
+    }
 
-    public void setCredits(int credits) {this.credits = credits; }
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
 
     public int getDeaths() {
         return deaths;

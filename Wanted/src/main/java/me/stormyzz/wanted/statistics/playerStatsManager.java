@@ -1,4 +1,5 @@
 package me.stormyzz.wanted.statistics;
+
 import com.google.gson.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -10,7 +11,8 @@ import java.util.UUID;
 
 public class playerStatsManager {
 
-    private static final File statsFile = new File(Bukkit.getPluginManager().getPlugin("Wanted").getDataFolder(), "player_stats.json");
+    private static final File statsFile = new File(Bukkit.getPluginManager().getPlugin("Wanted").getDataFolder(),
+            "player_stats.json");
     private static Map<String, playerStats> playerStats = new HashMap<>();
     private static final Gson gson = new Gson();
 
@@ -35,7 +37,7 @@ public class playerStatsManager {
                 e.printStackTrace();
             }
         } else {
-            saveStats();  // Ensure file is created on first run
+            saveStats(); // Ensure file is created on first run
             Bukkit.getLogger().warning("Stats file not found! Created new file.");
         }
     }
@@ -50,7 +52,7 @@ public class playerStatsManager {
         // Ensure economy is available before saving stats
         if (VaultEconomyManager.getEconomy() == null) {
             Bukkit.getLogger().warning("Vault economy is unavailable. Skipping balance saving.");
-            return;  // Skip saving balance if Vault is unavailable
+            return; // Skip saving balance if Vault is unavailable
         }
 
         JsonObject json = new JsonObject();
@@ -67,7 +69,7 @@ public class playerStatsManager {
             statsObj.addProperty("kdr", stats.getKDR());
             statsObj.addProperty("credits", stats.getCredits());
 
-            json.add(uuid, statsObj);  // Add player stats to the JSON object
+            json.add(uuid, statsObj); // Add player stats to the JSON object
         }
 
         try (Writer writer = new FileWriter(statsFile)) {

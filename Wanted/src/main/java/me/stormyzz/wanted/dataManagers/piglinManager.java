@@ -50,7 +50,8 @@ public class piglinManager {
                     killer.sendMessage(ChatColor.RED + "Looks like they called for backup");
 
                     for (int i = 0; i < 3; i++) {
-                        PigZombie piglin = (PigZombie) world.spawnEntity(backupSpawnLocation, EntityType.ZOMBIFIED_PIGLIN);
+                        PigZombie piglin = (PigZombie) world.spawnEntity(backupSpawnLocation,
+                                EntityType.ZOMBIFIED_PIGLIN);
                         piglin.setBaby(false);
                         piglins.add(piglin);
                         piglin.setTarget(killer);

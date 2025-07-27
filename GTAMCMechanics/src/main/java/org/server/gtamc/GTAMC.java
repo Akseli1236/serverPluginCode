@@ -25,8 +25,6 @@ public final class GTAMC extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("itempickup")).setExecutor(usefulCommands);
         Objects.requireNonNull(this.getCommand("rweapons")).setExecutor(usefulCommands);
 
-	
-
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
         protocolManager.addPacketListener(wasd);
         // Register the holding detection listener

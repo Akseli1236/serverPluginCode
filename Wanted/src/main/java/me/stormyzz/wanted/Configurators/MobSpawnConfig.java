@@ -19,16 +19,16 @@ public class MobSpawnConfig {
     private final Map<EntityType, MobSettings> allowedMobsWithSettings;
 
     public MobSpawnConfig(String worldName, String regionName, boolean requireSky,
-                          List<Material> disallowedBlocks, int minY, int maxY,
-                          Map<EntityType, MobSettings> allowedMobsWithSettings, int spawnSpeed, double spawnRadius) {
+            List<Material> disallowedBlocks, int minY, int maxY,
+            Map<EntityType, MobSettings> allowedMobsWithSettings, int spawnSpeed, double spawnRadius) {
         this.worldName = worldName;
         this.regionName = regionName;
         this.requireSky = requireSky;
         this.disallowedBlocks = disallowedBlocks;
         this.minY = minY;
         this.maxY = maxY;
-	this.spawnRadius = spawnRadius;
-	this.spawnSpeed = spawnSpeed;
+        this.spawnRadius = spawnRadius;
+        this.spawnSpeed = spawnSpeed;
         this.allowedMobsWithSettings = allowedMobsWithSettings;
     }
 
@@ -56,12 +56,12 @@ public class MobSpawnConfig {
         return maxY;
     }
 
-    public int getSpawnSpeed(){
-	return spawnSpeed;
+    public int getSpawnSpeed() {
+        return spawnSpeed;
     }
 
-    public double getSpawnRadius(){
-	return spawnRadius;
+    public double getSpawnRadius() {
+        return spawnRadius;
     }
 
     public Map<EntityType, MobSettings> getAllowedMobsWithSettings() {

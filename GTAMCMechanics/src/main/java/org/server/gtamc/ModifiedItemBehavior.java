@@ -24,9 +24,7 @@ public class ModifiedItemBehavior {
         item.setAmount(item.getAmount() - 1);
         bandageCooldown = true;
 
-
-        Bukkit.getScheduler().runTaskLater(plugin, ()-> bandageCooldown = false,40);
-
+        Bukkit.getScheduler().runTaskLater(plugin, () -> bandageCooldown = false, 40);
 
     }
 }

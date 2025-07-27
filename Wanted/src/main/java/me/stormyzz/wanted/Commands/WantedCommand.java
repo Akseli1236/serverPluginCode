@@ -25,7 +25,6 @@ public class WantedCommand implements CommandExecutor {
             plugin.getMobSpawnerManager().loadConfig();
             CreditShopGUI.reloadConfig(plugin);
 
-
             sender.sendMessage(ChatColor.GREEN + "Wanted reloaded");
 
             CustomScoreboard scoreboard = plugin.getCustomScoreboard();

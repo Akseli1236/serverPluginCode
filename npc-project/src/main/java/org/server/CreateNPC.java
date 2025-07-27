@@ -21,14 +21,15 @@ public class CreateNPC {
 
     }
 
-    private void spawnNPC(){
+    private void spawnNPC() {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "fullwall");
-                Location newLocation = plugin.getServer().getOnlinePlayers().stream()
+            NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "fullwall");
+            Location newLocation = plugin.getServer().getOnlinePlayers().stream()
                     .map(Player::getLocation)
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElse(null);
-                npc.spawn(newLocation);}, 0, 20 * 5);
+            npc.spawn(newLocation);
+        }, 0, 20 * 5);
     }
 }

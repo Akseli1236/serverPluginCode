@@ -13,7 +13,7 @@ public class MobBurnPreventionListener implements Listener {
         Entity entity = event.getEntity();
 
         // Prevent burning for tagged mobs
-        if ((entity.getType() == EntityType.ZOMBIE || entity.getType() == EntityType.SKELETON)){
+        if ((entity.getType() == EntityType.ZOMBIE || entity.getType() == EntityType.SKELETON)) {
             event.setCancelled(true);
         }
     }

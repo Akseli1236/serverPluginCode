@@ -46,13 +46,15 @@ public class PlayerKillListener implements Listener {
             playerStatsManager.setStats(killerUUID, killerStats);
 
             killer.sendMessage(ChatColor.RED + "Start running!");
-            killer.sendMessage(ChatColor.RED + "Your wanted level has been increased! It is now: " + killerStats.getWantedLevel());
+            killer.sendMessage(
+                    ChatColor.RED + "Your wanted level has been increased! It is now: " + killerStats.getWantedLevel());
 
             // Deposit money to the killer based on the victim's wanted level
             double reward = victimStats.getWantedLevel() * 5.0;
             if (reward > 0.0) {
                 economy.depositPlayer(killer, reward);
-                killer.sendMessage(ChatColor.GOLD + "You received " + reward + "$ for eliminating " + victim.getName() + " with the wanted level " + victimStats.getWantedLevel());
+                killer.sendMessage(ChatColor.GOLD + "You received " + reward + "$ for eliminating " + victim.getName()
+                        + " with the wanted level " + victimStats.getWantedLevel());
             }
 
             // Delegate piglin spawning to PiglinManager

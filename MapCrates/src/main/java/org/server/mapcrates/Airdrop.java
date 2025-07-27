@@ -8,7 +8,6 @@ import java.util.Random;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.Vector3;
-import com.sk89q.worldedit.world.registry.BlockMaterial;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -18,7 +17,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
@@ -79,7 +77,7 @@ public class Airdrop {
         for (int i = 0; i < count; i++) {
 
             Location point = from.clone().add(direction.clone().multiply(i * step));
-            if (!ropes.containsKey(key)){
+            if (!ropes.containsKey(key)) {
                 BlockDisplay display = (BlockDisplay) point.getWorld().spawnEntity(point, EntityType.BLOCK_DISPLAY);
                 display.setBlock(Material.END_ROD.createBlockData());
 
@@ -90,7 +88,7 @@ public class Airdrop {
                 continue;
 
             }
-            if (ropes.get(key).size() < count){
+            if (ropes.get(key).size() < count) {
                 BlockDisplay display = (BlockDisplay) point.getWorld().spawnEntity(point, EntityType.BLOCK_DISPLAY);
                 display.setBlock(Material.END_ROD.createBlockData());
 
@@ -103,7 +101,8 @@ public class Airdrop {
         }
     }
 
-    private void createParachute(Location loc, Map<String, BlockDisplay> parachuteBlocks, Map<String, List<BlockDisplay>> ropes) {
+    private void createParachute(Location loc, Map<String, BlockDisplay> parachuteBlocks,
+            Map<String, List<BlockDisplay>> ropes) {
         Location location = loc.clone().add(0, 5, 0);
 
         for (int i = 0; i < 2; ++i) {
@@ -112,8 +111,8 @@ public class Airdrop {
                     if (i == 1 && Math.abs(x) <= 1 && Math.abs(z) <= 1) {
                         continue;
                     }
-                    if (i == 0 && (Math.abs(x) > 1 || Math.abs(z) > 1)){
-                            continue;
+                    if (i == 0 && (Math.abs(x) > 1 || Math.abs(z) > 1)) {
+                        continue;
                     }
                     Location newLocation = location.clone().add(x, Math.negateExact(i), z);
 
@@ -121,14 +120,14 @@ public class Airdrop {
                         drawLine(loc, newLocation, ropes);
                     }
                     String key = i + ":" + x + ":" + z;
-                    if (!parachuteBlocks.containsKey(key)){
-                        BlockDisplay display = (BlockDisplay) newLocation.getWorld().spawn(newLocation, BlockDisplay.class);
+                    if (!parachuteBlocks.containsKey(key)) {
+                        BlockDisplay display = (BlockDisplay) newLocation.getWorld().spawn(newLocation,
+                                BlockDisplay.class);
                         display.setBlock(Bukkit.createBlockData(Material.WHITE_WOOL));
 
                         parachuteBlocks.put(key, display);
                         continue;
                     }
-
 
                     Block newBlock = newLocation.getBlock();
 
@@ -167,20 +166,34 @@ public class Airdrop {
             fallingChests.addFirst(
                     new BukkitRunnable() {
                         Location currentLoc = block.getLocation();
+                        double fallingDistance = 0.10;
 
                         @Override
                         public void run() {
 
                             Block oldBlock = currentLoc.getBlock();
-                            currentLoc.setY(currentLoc.getY() - 0.05);
+                            currentLoc.setY(currentLoc.getY() - fallingDistance);
+
+                            Block breakPoint = currentLoc.clone().add(0, -15, 0).getBlock();
+                            if (!breakPoint.getType().isAir()) {
+
+                                parachuteBlocks.forEach((key, value) -> value.remove());
+                                ropes.forEach((key, value) -> value.forEach(display -> display.remove()));
+                                fallingDistance = 0.50;
+
+                                currentLoc.getWorld().createExplosion(
+                                        null, // source entity (can be a Player, Arrow, etc.)
+                                        currentLoc, // location of explosion
+                                        10.0F, // explosion power (4.0F is TNT, 10.0F is huge)
+                                        false, // do not set fire
+                                        false // do not break blocks
+                                );
+                            }
 
                             Block newBlock = currentLoc.getBlock();
-
                             if (!newBlock.getType().isAir()) {
                                 oldBlock.setType(Material.CHEST);
                                 newDisplay.remove();
-                                parachuteBlocks.forEach((key, value) -> value.remove());
-                                ropes.forEach((key, value) -> value.forEach(display -> display.remove()));
                                 this.cancel();
                                 currentLoc.getWorld().createExplosion(
                                         null, // source entity (can be a Player, Arrow, etc.)

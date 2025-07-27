@@ -1,4 +1,5 @@
 package me.stormyzz.wanted.statistics;
+
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.stormyzz.wanted.Wanted;
 import org.bukkit.Bukkit;
@@ -19,7 +20,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class CustomScoreboard implements Listener {
 
     private final Wanted plugin;
@@ -30,16 +30,18 @@ public class CustomScoreboard implements Listener {
         this.plugin = plugin;
     }
 
-
     public void updateScoreboard(Player player) {
-        if (!plugin.getConfig().getBoolean("scoreboard.enabled", true)) return;
+        if (!plugin.getConfig().getBoolean("scoreboard.enabled", true))
+            return;
 
         UUID uuid = player.getUniqueId();
         String world = player.getWorld().getName();
         boolean isHub = world.equalsIgnoreCase("HUB");
 
-        List<String> lines = plugin.getConfig().getStringList(isHub ? "scoreboard.hub.lines" : "scoreboard.default.lines");
-        String titleRaw = plugin.getConfig().getString(isHub ? "scoreboard.hub.title" : "scoreboard.default.title", "&b&lServer");
+        List<String> lines = plugin.getConfig()
+                .getStringList(isHub ? "scoreboard.hub.lines" : "scoreboard.default.lines");
+        String titleRaw = plugin.getConfig().getString(isHub ? "scoreboard.hub.title" : "scoreboard.default.title",
+                "&b&lServer");
         String title = ChatColor.translateAlternateColorCodes('&', replacePlaceholders(player, titleRaw));
 
         Scoreboard board = playerScoreboards.get(uuid);
@@ -47,7 +49,8 @@ public class CustomScoreboard implements Listener {
 
         if (board == null || obj == null) {
             ScoreboardManager manager = Bukkit.getScoreboardManager();
-            if (manager == null) return;
+            if (manager == null)
+                return;
 
             board = manager.getNewScoreboard();
             obj = board.registerNewObjective("stats", "dummy", title);
@@ -121,13 +124,13 @@ public class CustomScoreboard implements Listener {
         }
     }
 
-
     private String replacePlaceholders(Player player, String line) {
         // Your custom replacements
         String uuid = player.getUniqueId().toString();
         playerStats stats = playerStatsManager.getStats(uuid);
         String worldName = player.getWorld().getName();
-        int playersInWorld = (int) Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld().equals(player.getWorld())).count();
+        int playersInWorld = (int) Bukkit.getOnlinePlayers().stream()
+                .filter(p -> p.getWorld().equals(player.getWorld())).count();
 
         line = line.replace("%world%", worldName);
         line = line.replace("%players%", String.valueOf(playersInWorld));
@@ -177,7 +180,8 @@ public class CustomScoreboard implements Listener {
 
     private void updateNametagsFor(Player viewer) {
         Scoreboard board = viewer.getScoreboard();
-        if (board == null) return;
+        if (board == null)
+            return;
 
         for (Player target : Bukkit.getOnlinePlayers()) {
             String teamName = "prefix_" + target.getName();
@@ -209,7 +213,7 @@ public class CustomScoreboard implements Listener {
         // Now update scoreboards for all players in the world
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getWorld().getName().equals(worldName)) {
-                updateScoreboard(player);  // Update scoreboard for each player in this world
+                updateScoreboard(player); // Update scoreboard for each player in this world
             }
         }
     }
@@ -237,7 +241,8 @@ public class CustomScoreboard implements Listener {
         }
     }
 
-    // Listener for player death (updates deaths, killstreak, and possibly wanted level)
+    // Listener for player death (updates deaths, killstreak, and possibly wanted
+    // level)
     @EventHandler
     public void onPlayerDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -257,8 +262,8 @@ public class CustomScoreboard implements Listener {
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        String fromWorld = event.getFrom().getWorld().getName();  // World player is leaving
-        String toWorld = event.getTo().getWorld().getName();  // World player is entering
+        String fromWorld = event.getFrom().getWorld().getName(); // World player is leaving
+        String toWorld = event.getTo().getWorld().getName(); // World player is entering
 
         new BukkitRunnable() {
             @Override
@@ -291,7 +296,7 @@ public class CustomScoreboard implements Listener {
                     cancel();
                 }
             }
-        }.runTaskTimer(Bukkit.getPluginManager().getPlugin("Wanted"), 0L, 100L);  // Update every 5 seconds
+        }.runTaskTimer(Bukkit.getPluginManager().getPlugin("Wanted"), 0L, 100L); // Update every 5 seconds
     }
 
     @EventHandler
@@ -336,10 +341,11 @@ public class CustomScoreboard implements Listener {
     private static final int MAX_ENTRY_LENGTH = 16;
 
     private String[] splitIntoPrefixSuffix(String text) {
-        if (text == null) return new String[] {"", ""};
+        if (text == null)
+            return new String[] { "", "" };
 
         if (text.length() <= MAX_ENTRY_LENGTH) {
-            return new String[] {text, ""};
+            return new String[] { text, "" };
         }
 
         // We'll split based on visible characters, preserving color codes
@@ -358,7 +364,7 @@ public class CustomScoreboard implements Listener {
             if (c == ChatColor.COLOR_CHAR) {
                 // Start of color code sequence
                 // Hex color: §x§R§R§G§G§B§B
-                if (i + 12 < text.length() && text.charAt(i+1) == 'x') {
+                if (i + 12 < text.length() && text.charAt(i + 1) == 'x') {
                     String hexCode = text.substring(i, i + 14); // §x§R§R§G§G§B§B = 14 chars total
                     if (visibleChars < MAX_ENTRY_LENGTH) {
                         prefix.append(hexCode);
@@ -390,7 +396,8 @@ public class CustomScoreboard implements Listener {
             }
         }
 
-        // Prepend last color code to suffix if not empty and suffix doesn't start with color code
+        // Prepend last color code to suffix if not empty and suffix doesn't start with
+        // color code
         if (suffix.length() > 0 && !suffix.toString().startsWith("" + ChatColor.COLOR_CHAR)) {
             suffix.insert(0, lastColorCode);
         }
@@ -400,8 +407,7 @@ public class CustomScoreboard implements Listener {
             suffix = new StringBuilder(suffix.substring(0, MAX_ENTRY_LENGTH));
         }
 
-        return new String[] {prefix.toString(), suffix.toString()};
+        return new String[] { prefix.toString(), suffix.toString() };
     }
 
 }
-

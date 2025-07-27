@@ -4,11 +4,10 @@ import java.util.Objects;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class MapCrates extends JavaPlugin
-{
+public final class MapCrates extends JavaPlugin {
 
     @Override
-    public void onEnable(){
+    public void onEnable() {
         Commands airdropCommands = new Commands(this);
 
         Objects.requireNonNull(this.getCommand("airdrops")).setExecutor(airdropCommands);
@@ -18,7 +17,7 @@ public final class MapCrates extends JavaPlugin
     }
 
     @Override
-    public void onDisable(){
+    public void onDisable() {
 
     }
 }

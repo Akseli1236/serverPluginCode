@@ -27,9 +27,8 @@ public class MobSpawnerManager {
 
                 String worldName = (String) regionData.get("world");
                 String regionName = (String) regionData.get("region");
-                boolean requireSky = regionData.containsKey("requireSky") ? (boolean) regionData.get("requireSky") : true;
-
-
+                boolean requireSky = regionData.containsKey("requireSky") ? (boolean) regionData.get("requireSky")
+                        : true;
 
                 List<String> disallowedBlockStrings = regionData.containsKey("disallowedBlocks")
                         ? (List<String>) regionData.get("disallowedBlocks")
@@ -49,8 +48,8 @@ public class MobSpawnerManager {
                         .toList();
 
                 // Parse allowedMobs as map from mob type -> settings map
-                Map<String, Map<String, Object>> rawAllowedMobs =
-                        (Map<String, Map<String, Object>>) regionData.get("allowedMobs");
+                Map<String, Map<String, Object>> rawAllowedMobs = (Map<String, Map<String, Object>>) regionData
+                        .get("allowedMobs");
                 Map<EntityType, MobSpawnConfig.MobSettings> allowedMobsWithSettings = new java.util.HashMap<>();
 
                 if (rawAllowedMobs != null) {
@@ -63,7 +62,8 @@ public class MobSpawnerManager {
                             boolean allowArmor = (boolean) settings.getOrDefault("allowArmor", true);
                             boolean allowItems = (boolean) settings.getOrDefault("allowItems", true);
 
-                            allowedMobsWithSettings.put(type, new MobSpawnConfig.MobSettings(name, allowArmor, allowItems));
+                            allowedMobsWithSettings.put(type,
+                                    new MobSpawnConfig.MobSettings(name, allowArmor, allowItems));
                         } catch (IllegalArgumentException e) {
                             plugin.getLogger().warning("Invalid mob type in allowedMobs: " + entry.getKey());
                         }
@@ -84,8 +84,7 @@ public class MobSpawnerManager {
                         maxY,
                         allowedMobsWithSettings,
                         spawnSpeed,
-                        spawnRadius
-                );
+                        spawnRadius);
 
                 spawnConfigs.add(config);
             } catch (ClassCastException | NullPointerException e) {
@@ -93,6 +92,7 @@ public class MobSpawnerManager {
             }
         }
     }
+
     public static List<MobSpawnConfig> getSpawnConfigs() {
         return spawnConfigs;
     }

@@ -1,4 +1,5 @@
 package me.stormyzz.wanted;
+
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.stormyzz.wanted.Commands.*;
 import me.stormyzz.wanted.Utilities.CreditShopGUI;
@@ -39,16 +40,13 @@ public final class Wanted extends JavaPlugin {
         getCommand("credits").setTabCompleter(tabCompleter);
         CreditShopGUI.loadConfig(this);
 
-
-
         Bukkit.getScheduler().runTaskTimerAsynchronously(
                 this,
                 () -> playerStatsManager.saveStats(),
                 0L,
-                20L * 60 * 15
-        );
+                20L * 60 * 15);
 
-        //Statistics saver
+        // Statistics saver
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 playerStatsManager.saveStats();
@@ -59,7 +57,7 @@ public final class Wanted extends JavaPlugin {
             }
         }));
 
-        //Vault getter
+        // Vault getter
         Bukkit.getScheduler().runTask(this, () -> {
             if (!VaultEconomyManager.setupEconomy()) {
                 getLogger().warning("Vault not found! Economy features may not work.");
@@ -71,9 +69,9 @@ public final class Wanted extends JavaPlugin {
             playerStatsManager.loadStats();
         });
 
-        //Worldguard getter
+        // Worldguard getter
         WorldGuardPlugin wg = getWorldGuard();
-        if (wg == null){
+        if (wg == null) {
             getLogger().severe("WorldGuard plugin not found! mob spawning will not work");
         }
 
@@ -81,14 +79,18 @@ public final class Wanted extends JavaPlugin {
 
     private WorldGuardPlugin getWorldGuard() {
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-        if (plugin instanceof  WorldGuardPlugin) return (WorldGuardPlugin) plugin;
+        if (plugin instanceof WorldGuardPlugin)
+            return (WorldGuardPlugin) plugin;
         return null;
     }
 
-    public MobSpawnerManager getMobSpawnerManager(){
+    public MobSpawnerManager getMobSpawnerManager() {
         return mobSpawnerManager;
     }
-    public CustomScoreboard getCustomScoreboard() { return customScoreboard; }
+
+    public CustomScoreboard getCustomScoreboard() {
+        return customScoreboard;
+    }
 
     @Override
     public void onDisable() {
