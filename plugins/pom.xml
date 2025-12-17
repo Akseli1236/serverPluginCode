@@ -1,8 +1,22 @@
-<modules>
-  <module>GTAMCMechanics</module>
-  <module>ChestRestocker</module>
-  <module>MapCrates</module>
-  <module>npc-project</module>
-  <module>RestartPlugin</module>
-  <module>Wanted</module>
-</modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>your.group</groupId>
+  <artifactId>plugins-parent</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>plugins/GTAMCMechanics</module>
+    <module>plugins/ChestRestocker</module>
+    <module>plugins/MapCrates</module>
+    <module>plugins/npc-project</module>
+    <module>plugins/RestartPlugin</module>
+    <module>plugins/Wanted</module>
+  </modules>
+
+</project>	

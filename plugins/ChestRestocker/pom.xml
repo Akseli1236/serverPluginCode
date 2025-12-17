@@ -8,6 +8,11 @@
     <artifactId>chest-restocker</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
+    <parent>
+      <groupId>your.group</groupId>
+      <artifactId>plugins-parent</artifactId>
+      <version>1.0.0</version>
+    </parent>
 
     <name>chest-restocker</name>
 
