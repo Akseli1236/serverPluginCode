@@ -29,7 +29,7 @@ public final class GTAMC extends JavaPlugin {
         protocolManager.addPacketListener(wasd);
         // Register the holding detection listener
         new HoldingDetection(this, protocolManager, playerData); // Pass 'this' to the constructor of HoldingDetection
-                                                                 // Test comment
+                                                                 // Test comment2
 
     }
 
