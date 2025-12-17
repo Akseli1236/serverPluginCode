@@ -46,7 +46,7 @@ jobs:
         git fetch origin
 
         MODULES=$(git diff --name-only ${{ steps.base.outputs.base }}...HEAD \
-          | grep '^plugins/' \
+          | grep '^plugins/' || true \
           | cut -d/ -f2 \
           | sort -u \
           | paste -sd, -)
