@@ -62,7 +62,7 @@ jobs:
     - name: Upload plugin JARs through tunnel
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.SERVER_HOST_DESTINATION }}
+        host: ${{ secrets.SERVER_HOST_DESTINATION:4334 }}
         username: ${{ secrets.SERVER_USER_DESTINATION }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
     
