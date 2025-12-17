@@ -74,3 +74,5 @@ jobs:
         source: "plugins/*/target/*.jar"
         target: ${{ secrets.SERVER_PATH }}
         strip_components: 3
+        script: |
+          docker compose restart minecraft
