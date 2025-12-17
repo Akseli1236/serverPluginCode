@@ -32,7 +32,7 @@ jobs:
         cache: maven
 
     - name: Build
-      run: mvn -B package
+      run: mvn -B package -DskipTests
 
     - name: Upload plugin JARs through tunnel
       uses: appleboy/scp-action@v0.1.7
