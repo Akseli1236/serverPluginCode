@@ -10,21 +10,31 @@
   <version>1.0.0</version>
   <packaging>pom</packaging>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.3</version>
-          <configuration>
-            <shadedArtifactAttached>false</shadedArtifactAttached>
-            <createDependencyReducedPom>false</createDependencyReducedPom>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+<build>
+  <pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.3</version>
+
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <shadedArtifactAttached>false</shadedArtifactAttached>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+</build>
 
   <modules>
     <module>plugins/GTAMCMechanics</module>
