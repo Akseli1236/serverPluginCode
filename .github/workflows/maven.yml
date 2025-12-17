@@ -43,19 +43,27 @@ jobs:
     - name: Build changed modules
       shell: bash
       run: |
-        git fetch origin
-
-        MODULES=$(git diff --name-only ${{ steps.base.outputs.base }}...HEAD \
+        git fetch origin main
+    
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          BASE="origin/${{ github.base_ref }}"
+        else
+          BASE="$(git rev-parse HEAD~1)"
+        fi
+    
+        echo "Diff base: $BASE"
+    
+        MODULES=$(git diff --name-only "$BASE"...HEAD \
           | grep '^plugins/' || true \
           | cut -d/ -f2 \
           | sort -u \
           | paste -sd, -)
-
+    
         if [ -z "$MODULES" ]; then
           echo "No module changes detected, skipping build"
           exit 0
         fi
-
+    
         echo "Building modules: $MODULES"
         mvn -B -pl "$MODULES" -am package
 
