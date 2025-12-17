@@ -5,7 +5,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>your.group</groupId>
+  <groupId>org.server</groupId>
   <artifactId>plugins-parent</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
@@ -13,9 +13,11 @@
   <modules>
     <module>plugins/GTAMCMechanics</module>
     <module>plugins/ChestRestocker</module>
+    <!--   
     <module>plugins/MapCrates</module>
     <module>plugins/npc-project</module>
     <module>plugins/RestartPlugin</module>
+    -->
     <module>plugins/Wanted</module>
   </modules>
 

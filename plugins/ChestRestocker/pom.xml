@@ -8,11 +8,12 @@
     <artifactId>chest-restocker</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <parent>
-      <groupId>your.group</groupId>
-      <artifactId>plugins-parent</artifactId>
-      <version>1.0.0</version>
-    </parent>
+  <parent>
+    <groupId>org.server</groupId>
+    <artifactId>plugins-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.xml</relativePath> <!-- THIS MUST BE CORRECT -->
+  </parent>
 
     <name>chest-restocker</name>
 
