@@ -30,6 +30,14 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+    - name: Install SignShop into local Maven repo
+      run: |
+        mvn install:install-file \
+          -Dfile=libs/SignShop-4.0.0.jar \
+          -DgroupId=com.kasslecraft \
+          -DartifactId=signshop \
+          -Dversion=4.0.0 \
+          -Dpackaging=jar
 
     - name: Build
       run: mvn -B package -DskipTests
