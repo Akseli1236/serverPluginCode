@@ -1,0 +1,8 @@
+<modules>
+  <module>GTAMCMechanics</module>
+  <module>ChestRestocker</module>
+  <module>MapCrates</module>
+  <module>npc-project</module>
+  <module>RestartPlugin</module>
+  <module>Wanted</module>
+</modules>
