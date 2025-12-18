@@ -58,4 +58,6 @@ jobs:
         target: ${{ secrets.SERVER_PATH }}
         strip_components: 3
         script: |
+          rm original-*
+          cd /home/akseli/MC_Server
           docker compose restart minecraft
