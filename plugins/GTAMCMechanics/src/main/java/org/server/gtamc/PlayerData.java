@@ -57,6 +57,8 @@ public class PlayerData implements Listener {
         Player player = event.getPlayer();
         String playerName = player.getName();
 
+        System.out.println("Hops and Lops");
+
         if (removalTasks.containsKey(playerName)) {
             removalTasks.get(playerName).cancel();
             removalTasks.remove(playerName);
