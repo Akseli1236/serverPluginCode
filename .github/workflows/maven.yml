@@ -57,7 +57,9 @@ jobs:
         source: "plugins/*/target/*.jar"
         target: ${{ secrets.SERVER_PATH }}
         strip_components: 3
-        script: |
-          rm original-*
-          cd /home/akseli/MC_Server
+    - name: Remove old files and restard Docker
+      run: |
+          cd /home/akseli/MC_Server/plugins
+          rm -f original-*
+          cd ..
           docker compose restart minecraft
