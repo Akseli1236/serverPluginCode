@@ -15,32 +15,42 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <build>
+    <build>
     <pluginManagement>
       <plugins>
+
+        <!-- COMPILER -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
+          <configuration>
+            <release>${java.version}</release>
+          </configuration>
+        </plugin>
+
+        <!-- SHADE (NO original-*.jar) -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.5.3</version>
-
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>shade</goal>
-              </goals>
-            </execution>
-          </executions>
-
           <configuration>
             <shadedArtifactAttached>false</shadedArtifactAttached>
             <createDependencyReducedPom>false</createDependencyReducedPom>
           </configuration>
         </plugin>
+
+        <!-- TESTS -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.5.3</version>
+        </plugin>
+
       </plugins>
     </pluginManagement>
   </build>
-  <modules>
+ <modules>
     <module>plugins/GTAMCMechanics</module>
     <module>plugins/ChestRestocker</module>
     <!--   
