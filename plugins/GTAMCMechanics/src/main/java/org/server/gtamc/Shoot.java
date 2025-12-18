@@ -140,6 +140,17 @@ public class Shoot implements Listener {
             Map.entry("dark_blue", TextColor.color(0x0000AA)),
             Map.entry("dark_green", TextColor.color(0x00AA00)),
             Map.entry("dark_aqua", TextColor.color(0x00AAAA)),
+            Map.entry("dark_red", TextColor.color(0xAA0000)),
+            Map.entry("dark_purple", TextColor.color(0xAA00AA)),
+            Map.entry("gold", TextColor.color(0xFFAA00)),
+            Map.entry("gray", TextColor.color(0xAAAAAA)),
+            Map.entry("dark_gray", TextColor.color(0x555555)),
+            Map.entry("blue", TextColor.color(0x5555FF)),
+            Map.entry("green", TextColor.color(0x55FF55)),
+            Map.entry("aqua", TextColor.color(0x55FFFF)),
+            Map.entry("red", TextColor.color(0xFF5555)),
+            Map.entry("light_purple", TextColor.color(0xFF55FF)),
+            Map.entry("yellow", TextColor.color(0xFFFF55)),
             Map.entry("white", TextColor.color(0xFFFFFF)));
 
     public Shoot(Plugin plugin, Weapon weapon, WASD wasd) {
