@@ -68,6 +68,11 @@ public class ShootManager implements Listener {
     @EventHandler
     public void onItemSwitch(PlayerItemHeldEvent event) {
         Shoot instance = shoots.get(event.getPlayer().getName());
+
+        if (instance == null){
+            return;
+        }
+
         instance.onItemSwitch(event);
     }
 
