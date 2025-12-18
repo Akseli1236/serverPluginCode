@@ -30,17 +30,6 @@
           </configuration>
         </plugin>
 
-        <!-- Shade: NO original-* files -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.3</version>
-          <configuration>
-            <shadedArtifactAttached>false</shadedArtifactAttached>
-            <createDependencyReducedPom>false</createDependencyReducedPom>
-          </configuration>
-        </plugin>
-
         <!-- Tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
