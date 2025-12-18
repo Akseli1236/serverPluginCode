@@ -19,16 +19,8 @@
   <name>gtamcmechanics</name>
 
    <!-- ================= BUILD ================= -->
-  <build>
+    <build>
     <plugins>
-
-      <!-- Uses parent compiler config -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-
-      <!-- Uses parent shade config -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -41,7 +33,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
   <repositories>

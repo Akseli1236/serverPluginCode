@@ -15,11 +15,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-    <build>
+<build>
     <pluginManagement>
       <plugins>
 
-        <!-- COMPILER -->
+        <!-- Java version (fixes source=8 issue) -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -29,7 +29,7 @@
           </configuration>
         </plugin>
 
-        <!-- SHADE (NO original-*.jar) -->
+        <!-- Shade: NO original-* files -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
@@ -40,7 +40,7 @@
           </configuration>
         </plugin>
 
-        <!-- TESTS -->
+        <!-- Tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -52,13 +52,12 @@
   </build>
  <modules>
     <module>plugins/GTAMCMechanics</module>
+    <!--
     <module>plugins/ChestRestocker</module>
-    <!--   
     <module>plugins/MapCrates</module>
     <module>plugins/npc-project</module>
     <module>plugins/RestartPlugin</module>
-    -->
-    <module>plugins/Wanted</module>
+    <module>plugins/Wanted</module>-->
   </modules>
 
 </project>	
