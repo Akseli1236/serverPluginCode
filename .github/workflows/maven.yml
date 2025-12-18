@@ -57,8 +57,19 @@ jobs:
         source: "plugins/*/target/*.jar"
         target: ${{ secrets.SERVER_PATH }}
         strip_components: 3
+    - name: Restart Minecraft Docker container
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_HOST_DESTINATION }}
+        username: ${{ secrets.SERVER_USER_DESTINATION }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+    
+        proxy_host: ${{ secrets.SERVER_HOST }}
+        proxy_port: 4334
+        proxy_username: ${{ secrets.SERVER_USER }}
+        proxy_key: ${{ secrets.SSH_PROXY_KEY }}
         script: |
-              cd /home/akseli/MC_Server/plugins
-              rm -f original-*
-              cd /home/akseli/MC_Server
-              docker compose restart minecraft
+          cd /home/akseli/MC_Server
+          docker compose down
+          docker compose up -d
+    
